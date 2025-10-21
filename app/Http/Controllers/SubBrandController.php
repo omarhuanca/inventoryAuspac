@@ -11,7 +11,7 @@ use Illuminate\Http\Request;
 
 class SubBrandController extends Controller
 {
-    protected SubBrandService $subBrandService;
+    private SubBrandService $subBrandService;
 
     public function __construct(SubBrandService $subBrandService)
     {

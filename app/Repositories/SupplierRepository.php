@@ -6,7 +6,7 @@ use App\Models\Supplier;
 
 class SupplierRepository
 {
-    protected Supplier $supplier;
+    private Supplier $supplier;
 
     public function __construct(Supplier $supplier)
     {

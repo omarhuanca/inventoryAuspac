@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\ModelNotFoundException;
 
 class SupplierService
 {
-    protected SupplierRepository $supplierRepository;
+    private SupplierRepository $supplierRepository;
 
     public function __construct(SupplierRepository $supplierRepository)
     {

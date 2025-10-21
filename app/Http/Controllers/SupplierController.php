@@ -11,7 +11,7 @@ use Illuminate\Http\Request;
 
 class SupplierController extends Controller
 {
-    protected SupplierService $supplierService;
+    private SupplierService $supplierService;
 
     public function __construct(SupplierService $supplierService)
     {

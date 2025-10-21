@@ -6,7 +6,7 @@ use App\Models\Brand;
 
 class BrandRepository
 {
-    protected Brand $brand;
+    private Brand $brand;
 
     public function __construct(Brand $brand)
     {

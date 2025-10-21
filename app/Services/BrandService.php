@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\ModelNotFoundException;
 
 class BrandService
 {
-    protected $brandRepository;
+    private BrandRepository $brandRepository;
 
     public function __construct(BrandRepository $brandRepository)
     {
