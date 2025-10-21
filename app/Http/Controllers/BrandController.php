@@ -9,6 +9,16 @@ use App\Http\Responses\ApiResponse;
 use App\Services\BrandService;
 use Illuminate\Http\Request;
 
+/**
+ * @OA\Info(
+ *     title="Inventory Auspac Documentation",
+ *     version="1.0.0",
+ *     description="Project Inventory Auspac Laravel 12 Documentation",
+ *     @OA\Contact(
+ *         email="example@email.com"
+ *     )
+ * )
+ */
 class BrandController extends Controller
 {
     private BrandService $brandService;
@@ -18,6 +28,22 @@ class BrandController extends Controller
         $this->brandService = $brandService;
     }
 
+    /**
+     * @OA\Get(
+     *     path="/api/brands",
+     *     summary="Get all brands",
+     *     tags={"Brands"},
+     *     description="Return a list of all brands.",
+     *     @OA\Response(
+     *         response=200,
+     *         description="Brand List.",
+     *         @OA\JsonContent(
+     *             type="object",
+     *             @OA\Property(property="data", type="array", @OA\Items(ref="#/components/schemas/Brand"))
+     *         )
+     *     )
+     * )
+     */
     public function index()
     {
         try {
@@ -28,6 +54,27 @@ class BrandController extends Controller
         }
     }
 
+    /**
+     * @OA\Post(
+     *     path="/api/brands",
+     *     summary="Create a new brand",
+     *     tags={"Brands"},
+     *     description="Create a new brand.",
+     *     @OA\RequestBody(
+     *         required=true,
+     *         @OA\JsonContent(ref="#/components/schemas/Brand")
+     *     ),
+     *     @OA\Response(
+     *         response=201,
+     *         description="Brand created successfully",
+     *         @OA\JsonContent(ref="#/components/schemas/Brand")
+     *     ),
+     *     @OA\Response(
+     *         response=400,
+     *         description="Bad request"
+     *     )
+     * )
+     */
     public function store(StoreBrandRequest $request)
     {
         try {
@@ -38,6 +85,30 @@ class BrandController extends Controller
         }
     }
 
+    /**
+     * @OA\Get(
+     *     path="/api/brands/{id}",
+     *     summary="Get a specific brand",
+     *     tags={"Brands"},
+     *     description="Return a specific brand by its ID.",
+     *     @OA\Parameter(
+     *         name="id",
+     *         in="path",
+     *         description="ID of the brand",
+     *         required=true,
+     *         @OA\Schema(type="integer", example=1)
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="Brand found",
+     *         @OA\JsonContent(ref="#/components/schemas/Brand")
+     *     ),
+     *     @OA\Response(
+     *         response=404,
+     *         description="Brand not found"
+     *     )
+     * )
+     */
     public function show(string $id)
     {
         try {
@@ -48,6 +119,34 @@ class BrandController extends Controller
         }
     }
 
+    /**
+     * @OA\Put(
+     *     path="/api/brands/{id}",
+     *     summary="Update a brand",
+     *     tags={"Brands"},
+     *     description="Update an existing brand by its ID.",
+     *     @OA\Parameter(
+     *         name="id",
+     *         in="path",
+     *         description="ID of the brand",
+     *         required=true,
+     *         @OA\Schema(type="integer", example=1)
+     *     ),
+     *     @OA\RequestBody(
+     *         required=true,
+     *         @OA\JsonContent(ref="#/components/schemas/Brand")
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="Brand updated successfully",
+     *         @OA\JsonContent(ref="#/components/schemas/Brand")
+     *     ),
+     *     @OA\Response(
+     *         response=404,
+     *         description="Brand not found"
+     *     )
+     * )
+     */
     public function update(UpdateBrandRequest $request, string $id)
     {
         try {

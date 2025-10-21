@@ -18,6 +18,22 @@ class SupplierController extends Controller
         $this->supplierService = $supplierService;
     }
 
+    /**
+     * @OA\Get(
+     *     path="/api/suppliers",
+     *     summary="Get all suppliers",
+     *     tags={"Suppliers"},
+     *     description="Return a list of all suppliers.",
+     *     @OA\Response(
+     *         response=200,
+     *         description="Supplier List.",
+     *         @OA\JsonContent(
+     *             type="object",
+     *             @OA\Property(property="data", type="array", @OA\Items(ref="#/components/schemas/Supplier"))
+     *         )
+     *     )
+     * )
+     */
     public function index()
     {
         try {
@@ -28,6 +44,27 @@ class SupplierController extends Controller
         }
     }
 
+    /**
+     * @OA\Post(
+     *     path="/api/suppliers",
+     *     summary="Create a new supplier",
+     *     tags={"Suppliers"},
+     *     description="Create a new supplier.",
+     *     @OA\RequestBody(
+     *         required=true,
+     *         @OA\JsonContent(ref="#/components/schemas/Supplier")
+     *     ),
+     *     @OA\Response(
+     *         response=201,
+     *         description="Supplier created successfully",
+     *         @OA\JsonContent(ref="#/components/schemas/Supplier")
+     *     ),
+     *     @OA\Response(
+     *         response=400,
+     *         description="Bad request"
+     *     )
+     * )
+     */
     public function store(StoreSupplierRequest $request)
     {
         try {
@@ -38,6 +75,30 @@ class SupplierController extends Controller
         }
     }
 
+    /**
+     * @OA\Get(
+     *     path="/api/suppliers/{id}",
+     *     summary="Get a specific supplier",
+     *     tags={"Suppliers"},
+     *     description="Return a specific supplier by its ID.",
+     *     @OA\Parameter(
+     *         name="id",
+     *         in="path",
+     *         description="ID of the supplier",
+     *         required=true,
+     *         @OA\Schema(type="integer", example=1)
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="Supplier found",
+     *         @OA\JsonContent(ref="#/components/schemas/Supplier")
+     *     ),
+     *     @OA\Response(
+     *         response=404,
+     *         description="Supplier not found"
+     *     )
+     * )
+     */
     public function show(string $id)
     {
         try {
@@ -48,6 +109,34 @@ class SupplierController extends Controller
         }
     }
 
+    /**
+     * @OA\Put(
+     *     path="/api/suppliers/{id}",
+     *     summary="Update a supplier",
+     *     tags={"Suppliers"},
+     *     description="Update an existing supplier by its ID.",
+     *     @OA\Parameter(
+     *         name="id",
+     *         in="path",
+     *         description="ID of the supplier",
+     *         required=true,
+     *         @OA\Schema(type="integer", example=1)
+     *     ),
+     *     @OA\RequestBody(
+     *         required=true,
+     *         @OA\JsonContent(ref="#/components/schemas/Supplier")
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="Supplier updated successfully",
+     *         @OA\JsonContent(ref="#/components/schemas/Supplier")
+     *     ),
+     *     @OA\Response(
+     *         response=404,
+     *         description="Supplier not found"
+     *     )
+     * )
+     */
     public function update(UpdateSupplierRequest $request, string $id)
     {
         try {

@@ -4,6 +4,19 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
+/**
+ * @OA\Schema(
+ *     schema="SubBrand",
+ *     type="object",
+ *     title="SubBrand",
+ *     @OA\Property(property="id", type="integer", example=1),
+ *     @OA\Property(property="code", type="string", example="ACME_ECO"),
+ *     @OA\Property(
+ *           property="brand",
+ *           ref="#/components/schemas/Brand"
+ *       ),
+ * )
+ */
 class SubBrand extends Model
 {
     protected $fillable = ['code', 'brand_id'];

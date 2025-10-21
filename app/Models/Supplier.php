@@ -4,6 +4,15 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
+/**
+ * @OA\Schema(
+ *     schema="Supplier",
+ *     type="object",
+ *     title="Supplier",
+ *     @OA\Property(property="id", type="integer", example=1),
+ *     @OA\Property(property="name", type="string", example="Supplier 1"),
+ * )
+ */
 class Supplier extends Model
 {
     protected $fillable = ['name'];
