@@ -17,22 +17,20 @@ class Supplier extends Model
         parent::__construct($attributes);
     }
 
-    public static function at(string $name): Supplier
-    {
-        $name = trim($name);
+        public static function at(string $name): Supplier
+        {
+            if ($name === '') {
+                throw new \RuntimeException(Supplier::NAME_EMPTY);
+            }
 
-        if ($name === '') {
-            throw new \RuntimeException(Supplier::NAME_EMPTY);
+            if (mb_strlen($name) < 2 || mb_strlen($name) > 150) {
+                throw new \RuntimeException(Supplier::NAME_LENGTH);
+            }
+
+            if (!preg_match('/^[\p{L}0-9\s\-\_&.,]+$/u', $name)) {
+                throw new \RuntimeException(Supplier::NAME_INVALID);
+            }
+
+            return new Supplier(['name' => trim($name)]);
         }
-
-        if (mb_strlen($name) < 2 || mb_strlen($name) > 150) {
-            throw new \RuntimeException(Supplier::NAME_LENGTH);
-        }
-
-        if (!preg_match('/^[\p{L}0-9\s\-\_&.,]+$/u', $name)) {
-            throw new \RuntimeException(Supplier::NAME_INVALID);
-        }
-
-        return new Supplier(['name' => $name]);
-    }
 }

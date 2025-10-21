@@ -20,8 +20,6 @@ class SubBrand extends Model
 
     public static function at(string $code, ?Brand $brand)
     {
-        $code = trim($code);
-
         if ($code === '') {
             throw new \RuntimeException(SubBrand::CODE_EMPTY);
         }
@@ -39,7 +37,7 @@ class SubBrand extends Model
         }
 
         return new SubBrand([
-            'code' => $code,
+            'code' => trim($code),
             'brand_id' => $brand->id,
         ]);
     }

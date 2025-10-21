@@ -19,8 +19,6 @@ class Brand extends Model
 
     public static function at(string $code): Brand
     {
-        $code = trim($code);
-
         if ($code === '')
         {
             throw new \RuntimeException(self::CODE_EMPTY);
@@ -35,7 +33,7 @@ class Brand extends Model
         }
 
         return new Brand([
-            'code' => $code,
+            'code' => trim($code),
         ]);
     }
 
