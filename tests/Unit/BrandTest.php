@@ -2,6 +2,7 @@
 
 namespace Tests\Unit;
 
+use App\Constants\BrandMessages;
 use App\Models\Brand;
 use PHPUnit\Framework\TestCase;
 
@@ -30,7 +31,7 @@ class BrandTest extends TestCase
         $this->shouldThrowAndAssert(
             fn () => Brand::at(''),
             \RuntimeException::class,
-            fn($e) => $this->assertEquals("Brand code cannot be empty.", $e->getMessage())
+            fn($e) => $this->assertEquals(BrandMessages::CODE_EMPTY, $e->getMessage())
         );
     }
 
@@ -39,7 +40,7 @@ class BrandTest extends TestCase
         $this->shouldThrowAndAssert(
             fn() => Brand::at('A'),
             \RuntimeException::class,
-            fn($e) => $this->assertEquals('Brand code must be between 2 and 50 characters long.', $e->getMessage())
+            fn($e) => $this->assertEquals(BrandMessages::CODE_LENGTH, $e->getMessage())
         );
     }
 
@@ -48,7 +49,7 @@ class BrandTest extends TestCase
         $this->shouldThrowAndAssert(
             fn() => Brand::at(str_repeat('A', 51)),
             \RuntimeException::class,
-            fn($e) => $this->assertEquals('Brand code must be between 2 and 50 characters long.', $e->getMessage())
+            fn($e) => $this->assertEquals(BrandMessages::CODE_LENGTH, $e->getMessage())
         );
     }
 
@@ -57,8 +58,7 @@ class BrandTest extends TestCase
         $this->shouldThrowAndAssert(
             fn() => Brand::at('ACME@CO'),
             \RuntimeException::class,
-            fn($e) => $this->assertEquals('Brand code contains invalid characters. Allowed: letters, numbers, hyphen and underscore', $e->getMessage())
+            fn($e) => $this->assertEquals(BrandMessages::CODE_INVALID_CHARS, $e->getMessage())
         );
     }
-
 }

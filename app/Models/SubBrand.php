@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Constants\SubBrandMessages;
 use Illuminate\Database\Eloquent\Model;
 
 class SubBrand extends Model
@@ -18,19 +19,19 @@ class SubBrand extends Model
         $code = trim($code);
 
         if ($code === '') {
-            throw new \RuntimeException('SubBrand code cannot be empty.');
+            throw new \RuntimeException(SubBrandMessages::CODE_EMPTY);
         }
 
         if (mb_strlen($code) < 2 || mb_strlen($code) > 50) {
-            throw new \RuntimeException('SubBrand code must be between 2 and 50 characters long.');
+            throw new \RuntimeException(SubBrandMessages::CODE_LENGTH);
         }
 
         if (!preg_match('/^[A-Za-z0-9_-]+$/', $code)) {
-            throw new \RuntimeException('SubBrand code contains invalid characters. Allowed: letters, numbers, hyphen and underscore');
+            throw new \RuntimeException(SubBrandMessages::CODE_INVALID);
         }
 
         if (!$brand instanceof Brand) {
-            throw new \RuntimeException('SubBrand must be associated with a valid Brand instance.');
+            throw new \RuntimeException(SubBrandMessages::BRAND_INVALID);
         }
 
         return new SubBrand([

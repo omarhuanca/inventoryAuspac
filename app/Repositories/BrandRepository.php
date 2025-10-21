@@ -24,7 +24,6 @@ class BrandRepository
 
     public function create(array $data)
     {
-        //$brand = Brand::at($data['code']);
         $brand = $this->brand::at($data['code']);
         $brand->save();
         return $brand;
