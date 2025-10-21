@@ -2,7 +2,6 @@
 
 namespace Tests\Unit;
 
-use App\Constants\BrandMessages;
 use App\Models\Brand;
 use PHPUnit\Framework\TestCase;
 
@@ -31,7 +30,7 @@ class BrandTest extends TestCase
         $this->shouldThrowAndAssert(
             fn () => Brand::at(''),
             \RuntimeException::class,
-            fn($e) => $this->assertEquals(BrandMessages::CODE_EMPTY, $e->getMessage())
+            fn($e) => $this->assertEquals(Brand::CODE_EMPTY, $e->getMessage())
         );
     }
 
@@ -40,7 +39,7 @@ class BrandTest extends TestCase
         $this->shouldThrowAndAssert(
             fn() => Brand::at('A'),
             \RuntimeException::class,
-            fn($e) => $this->assertEquals(BrandMessages::CODE_LENGTH, $e->getMessage())
+            fn($e) => $this->assertEquals(Brand::CODE_LENGTH, $e->getMessage())
         );
     }
 
@@ -49,7 +48,7 @@ class BrandTest extends TestCase
         $this->shouldThrowAndAssert(
             fn() => Brand::at(str_repeat('A', 51)),
             \RuntimeException::class,
-            fn($e) => $this->assertEquals(BrandMessages::CODE_LENGTH, $e->getMessage())
+            fn($e) => $this->assertEquals(Brand::CODE_LENGTH, $e->getMessage())
         );
     }
 
@@ -58,7 +57,7 @@ class BrandTest extends TestCase
         $this->shouldThrowAndAssert(
             fn() => Brand::at('ACME@CO'),
             \RuntimeException::class,
-            fn($e) => $this->assertEquals(BrandMessages::CODE_INVALID_CHARS, $e->getMessage())
+            fn($e) => $this->assertEquals(Brand::CODE_INVALID_CHARS, $e->getMessage())
         );
     }
 }
