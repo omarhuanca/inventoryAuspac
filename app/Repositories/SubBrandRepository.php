@@ -7,7 +7,7 @@ use App\Models\SubBrand;
 
 class SubBrandRepository
 {
-    protected SubBrand $subBrand;
+    private SubBrand $subBrand;
 
     public function __construct(SubBrand $subBrand)
     {

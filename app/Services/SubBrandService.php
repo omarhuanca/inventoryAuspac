@@ -8,8 +8,8 @@ use Illuminate\Database\Eloquent\ModelNotFoundException;
 
 class SubBrandService
 {
-    protected SubBrandRepository $subBrandRepository;
-    protected BrandService $brandService;
+    private SubBrandRepository $subBrandRepository;
+    private BrandService $brandService;
     public function __construct(SubBrandRepository $subBrandRepository, BrandService $brandService)
     {
         $this->subBrandRepository = $subBrandRepository;

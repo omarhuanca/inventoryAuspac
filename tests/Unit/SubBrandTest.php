@@ -35,7 +35,7 @@ class SubBrandTest extends TestCase
         $this->shouldThrowAndAssert(
             fn() => SubBrand::at('', $brand),
             \RuntimeException::class,
-            fn($e) => $this->assertEquals('SubBrand code cannot be empty.', $e->getMessage())
+            fn($e) => $this->assertEquals(SubBrand::CODE_EMPTY, $e->getMessage())
         );
     }
 
@@ -46,7 +46,7 @@ class SubBrandTest extends TestCase
         $this->shouldThrowAndAssert(
             fn() => SubBrand::at('A', $brand),
             \RuntimeException::class,
-            fn($e) => $this->assertEquals('SubBrand code must be between 2 and 50 characters long.', $e->getMessage())
+            fn($e) => $this->assertEquals(SubBrand::CODE_LENGTH, $e->getMessage())
         );
     }
 
@@ -57,7 +57,7 @@ class SubBrandTest extends TestCase
         $this->shouldThrowAndAssert(
             fn() => SubBrand::at(str_repeat('A', 51), $brand),
             \RuntimeException::class,
-            fn($e) => $this->assertEquals('SubBrand code must be between 2 and 50 characters long.', $e->getMessage())
+            fn($e) => $this->assertEquals(SubBrand::CODE_LENGTH, $e->getMessage())
         );
     }
 
@@ -68,7 +68,7 @@ class SubBrandTest extends TestCase
         $this->shouldThrowAndAssert(
             fn() => SubBrand::at('ACME@ECO', $brand),
             \RuntimeException::class,
-            fn($e) => $this->assertEquals('SubBrand code contains invalid characters. Allowed: letters, numbers, hyphen and underscore', $e->getMessage())
+            fn($e) => $this->assertEquals(SubBrand::CODE_INVALID, $e->getMessage())
         );
     }
 
@@ -77,9 +77,8 @@ class SubBrandTest extends TestCase
         $this->shouldThrowAndAssert(
             fn() => SubBrand::at('ACME_ECO', null),
             \RuntimeException::class,
-            fn($e) => $this->assertEquals('SubBrand must be associated with a valid Brand instance.', $e->getMessage()
+            fn($e) => $this->assertEquals(SubBrand::BRAND_INVALID, $e->getMessage()
             )
         );
     }
-
 }

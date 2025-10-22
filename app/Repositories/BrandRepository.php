@@ -6,7 +6,7 @@ use App\Models\Brand;
 
 class BrandRepository
 {
-    protected Brand $brand;
+    private Brand $brand;
 
     public function __construct(Brand $brand)
     {
@@ -24,7 +24,6 @@ class BrandRepository
 
     public function create(array $data)
     {
-        //$brand = Brand::at($data['code']);
         $brand = $this->brand::at($data['code']);
         $brand->save();
         return $brand;

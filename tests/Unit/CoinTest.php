@@ -2,10 +2,10 @@
 
 namespace Tests\Unit;
 
-use App\Models\Brand;
+use App\Models\Coin;
 use PHPUnit\Framework\TestCase;
 
-class BrandTest extends TestCase
+class CoinTest extends TestCase
 {
     public function shouldThrowAndAssert($should, $exceptionType, $assertions)
     {
@@ -18,46 +18,46 @@ class BrandTest extends TestCase
         }
     }
 
-    public function test_can_create_brand_code()
+    public function test_can_create_coin_code()
     {
-        $brand = Brand::at('ACME_CO');
+        $coin = Coin::at('USD');
 
-        $this->assertEquals('ACME_CO', $brand->code);
+        $this->assertEquals('USD', $coin->code);
     }
 
     public function test_code_cannot_be_empty()
     {
         $this->shouldThrowAndAssert(
-            fn () => Brand::at(''),
+            fn() => Coin::at(''),
             \RuntimeException::class,
-            fn($e) => $this->assertEquals(Brand::CODE_EMPTY, $e->getMessage())
+            fn($e) => $this->assertEquals(Coin::CODE_EMPTY, $e->getMessage())
         );
     }
 
     public function test_code_too_short_is_invalid()
     {
         $this->shouldThrowAndAssert(
-            fn() => Brand::at('A'),
+            fn() => Coin::at('U'),
             \RuntimeException::class,
-            fn($e) => $this->assertEquals(Brand::CODE_LENGTH, $e->getMessage())
+            fn($e) => $this->assertEquals(Coin::CODE_LENGTH, $e->getMessage())
         );
     }
 
     public function test_code_too_long_is_invalid()
     {
         $this->shouldThrowAndAssert(
-            fn() => Brand::at(str_repeat('A', 51)),
+            fn() => Coin::at(str_repeat('A', 11)),
             \RuntimeException::class,
-            fn($e) => $this->assertEquals(Brand::CODE_LENGTH, $e->getMessage())
+            fn($e) => $this->assertEquals(Coin::CODE_LENGTH, $e->getMessage())
         );
     }
 
     public function test_code_with_invalid_characters()
     {
         $this->shouldThrowAndAssert(
-            fn() => Brand::at('ACME@CO'),
+            fn() => Coin::at('US$'),
             \RuntimeException::class,
-            fn($e) => $this->assertEquals(Brand::CODE_INVALID_CHARS, $e->getMessage())
+            fn($e) => $this->assertEquals(Coin::CODE_INVALID_CHARS, $e->getMessage())
         );
     }
 }
