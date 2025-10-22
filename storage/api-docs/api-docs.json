@@ -154,6 +154,151 @@
                 }
             }
         },
+        "/api/coins": {
+            "get": {
+                "tags": [
+                    "Coins"
+                ],
+                "summary": "Get all coins",
+                "description": "Return a list of all coins.",
+                "operationId": "4f74eb24019b21075240d9c20f001125",
+                "responses": {
+                    "200": {
+                        "description": "Coin list.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "data": {
+                                            "type": "array",
+                                            "items": {
+                                                "$ref": "#/components/schemas/Coin"
+                                            }
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "Coins"
+                ],
+                "summary": "Create a new coin",
+                "description": "Create a new coin.",
+                "operationId": "e333f54412031f13ac35af2ee28efafa",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/Coin"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Coin created successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Coin"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad request"
+                    }
+                }
+            }
+        },
+        "/api/coins/{id}": {
+            "get": {
+                "tags": [
+                    "Coins"
+                ],
+                "summary": "Get a specific coin",
+                "description": "Return a specific coin by its ID.",
+                "operationId": "1058e0ab785c93a2b6e888988a91955a",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID of the coin",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "example": 1
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Coin found",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Coin"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Coin not found"
+                    }
+                }
+            },
+            "put": {
+                "tags": [
+                    "Coins"
+                ],
+                "summary": "Update a coin",
+                "description": "Update an existing coin by its ID.",
+                "operationId": "63bffab36554d31ee004876d4a533bd9",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID of the coin",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "example": 1
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/Coin"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Coin updated successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Coin"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Coin not found"
+                    }
+                }
+            }
+        },
         "/api/subbrands": {
             "get": {
                 "tags": [
@@ -461,6 +606,20 @@
                 },
                 "type": "object"
             },
+            "Coin": {
+                "title": "Coin",
+                "properties": {
+                    "id": {
+                        "type": "integer",
+                        "example": 1
+                    },
+                    "code": {
+                        "type": "string",
+                        "example": "USD"
+                    }
+                },
+                "type": "object"
+            },
             "SubBrand": {
                 "title": "SubBrand",
                 "properties": {
@@ -498,6 +657,10 @@
         {
             "name": "Brands",
             "description": "Brands"
+        },
+        {
+            "name": "Coins",
+            "description": "Coins"
         },
         {
             "name": "SubBrands",

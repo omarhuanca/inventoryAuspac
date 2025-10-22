@@ -6,11 +6,11 @@ use Illuminate\Database\Eloquent\Model;
 
 /**
  * @OA\Schema(
- *     schema="Brand",
+ *     schema="Coin",
  *     type="object",
- *     title="Brand",
+ *     title="Coin",
  *     @OA\Property(property="id", type="integer", example=1),
- *     @OA\Property(property="code", type="string", example="BS"),
+ *     @OA\Property(property="code", type="string", example="USD"),
  * )
  */
 class Coin extends Model
