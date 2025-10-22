@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\BrandController;
+use App\Http\Controllers\CoinController;
 use App\Http\Controllers\SubBrandController;
 use App\Http\Controllers\SupplierController;
 use Illuminate\Http\Request;
@@ -9,4 +10,5 @@ use Illuminate\Support\Facades\Route;
 Route::apiResource('/brands', BrandController::class);
 Route::apiResource('/subbrands', SubBrandController::class);
 Route::apiResource('/suppliers', SupplierController::class);
+Route::apiResource('/coins', CoinController::class);
 

@@ -19,7 +19,7 @@ class BrandRepository
 
     public function find(int $id)
     {
-        return $this->brand->findOrFail($id);
+        return $this->brand->find($id);
     }
 
     public function create(array $data)

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Exceptions\NotFoundException;
 use App\Http\Requests\StoreBrandRequest;
 use App\Http\Requests\UpdateBrandRequest;
 use App\Http\Resources\BrandResource;
@@ -41,7 +42,8 @@ class BrandController extends Controller
      *             type="object",
      *             @OA\Property(property="data", type="array", @OA\Items(ref="#/components/schemas/Brand"))
      *         )
-     *     )
+     *     ),
+     *     @OA\Response(response=500, description="Unexpected server error")
      * )
      */
     public function index()
@@ -69,10 +71,7 @@ class BrandController extends Controller
      *         description="Brand created successfully",
      *         @OA\JsonContent(ref="#/components/schemas/Brand")
      *     ),
-     *     @OA\Response(
-     *         response=400,
-     *         description="Bad request"
-     *     )
+     *     @OA\Response(response=422, description="Validation failed")
      * )
      */
     public function store(StoreBrandRequest $request)
@@ -106,7 +105,8 @@ class BrandController extends Controller
      *     @OA\Response(
      *         response=404,
      *         description="Brand not found"
-     *     )
+     *     ),
+     *     @OA\Response(response=500, description="Unexpected server error")
      * )
      */
     public function show(string $id)
@@ -114,6 +114,8 @@ class BrandController extends Controller
         try {
             $brand = $this->brandService->getBrandById($id);
             return ApiResponse::success('Brand found', 200, new BrandResource($brand));
+        } catch (NotFoundException $e) {
+            return ApiResponse::error($e->getMessage(), 404);
         } catch (\Exception $e) {
             return ApiResponse::error('Error obtaining the brand: ' . $e->getMessage(), 500);
         }
@@ -144,7 +146,9 @@ class BrandController extends Controller
      *     @OA\Response(
      *         response=404,
      *         description="Brand not found"
-     *     )
+     *     ),
+     *     @OA\Response(response=422, description="Validation failed"),
+     *     @OA\Response(response=500, description="Unexpected server error")
      * )
      */
     public function update(UpdateBrandRequest $request, string $id)
@@ -152,6 +156,8 @@ class BrandController extends Controller
         try {
             $brand = $this->brandService->updateBrand($id, $request->validated());
             return ApiResponse::success('Brand updated.', 200, new BrandResource($brand));
+        } catch (NotFoundException $e) {
+            return ApiResponse::error($e->getMessage(), 404);
         } catch (\RuntimeException $e) {
             return ApiResponse::error('Error when updating the brand: ' . $e->getMessage(), 422);
         } catch (\Exception $e) {

@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use App\Exceptions\NotFoundException;
 use App\Models\Supplier;
 use App\Repositories\SupplierRepository;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
@@ -25,7 +26,7 @@ class SupplierService
         $supplier = $this->supplierRepository->find($id);
 
         if (!$supplier) {
-            throw new \RuntimeException('Supplier not found.');
+            throw new NotFoundException('Supplier not found.');
         }
 
         return $supplier;
@@ -42,10 +43,10 @@ class SupplierService
 
     public function updateSupplier(int $id, array $data)
     {
-        try {
-            $supplier = $this->supplierRepository->find($id);
-        } catch (ModelNotFoundException $e) {
-            throw new \RuntimeException('Supplier not found.');
+        $supplier = $this->supplierRepository->find($id);
+
+        if (!$supplier) {
+            throw new NotFoundException('Supplier not found.');
         }
 
         if (isset($data['name'])) {

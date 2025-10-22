@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use App\Exceptions\NotFoundException;
 use App\Models\Brand;
 use App\Repositories\BrandRepository;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
@@ -25,7 +26,7 @@ class BrandService
         $brand = $this->brandRepository->find($id);
 
         if (!$brand) {
-            throw new \RuntimeException('Brand not found.');
+            throw new NotFoundException('Brand not found.');
         }
 
         return $brand;
@@ -42,10 +43,10 @@ class BrandService
 
     public function updateBrand(int $id, array $data)
     {
-        try {
-            $brand = $this->brandRepository->find($id);
-        } catch (ModelNotFoundException $e) {
-            throw new \RuntimeException('Brand not found.');
+        $brand = $this->brandRepository->find($id);
+
+        if (!$brand) {
+            throw new NotFoundException('Brand not found.');
         }
 
         if (isset($data['code'])) {

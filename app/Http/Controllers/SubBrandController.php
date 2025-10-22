@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Exceptions\NotFoundException;
 use App\Http\Requests\StoreSubBrandRequest;
 use App\Http\Requests\UpdateSubBrandRequest;
 use App\Http\Resources\SubBrandResource;
@@ -31,7 +32,8 @@ class SubBrandController extends Controller
      *             type="object",
      *             @OA\Property(property="data", type="array", @OA\Items(ref="#/components/schemas/SubBrand"))
      *         )
-     *     )
+     *     ),
+     *     @OA\Response(response=500, description="Unexpected server error")
      * )
      */
     public function index()
@@ -59,10 +61,7 @@ class SubBrandController extends Controller
      *         description="SubBrand created successfully",
      *         @OA\JsonContent(ref="#/components/schemas/SubBrand")
      *     ),
-     *     @OA\Response(
-     *         response=400,
-     *         description="Bad request"
-     *     )
+     *     @OA\Response(response=422, description="Validation failed")
      * )
      */
     public function store(StoreSubBrandRequest $request)
@@ -88,15 +87,9 @@ class SubBrandController extends Controller
      *         required=true,
      *         @OA\Schema(type="integer", example=1)
      *     ),
-     *     @OA\Response(
-     *         response=200,
-     *         description="SubBrand found",
-     *         @OA\JsonContent(ref="#/components/schemas/SubBrand")
-     *     ),
-     *     @OA\Response(
-     *         response=404,
-     *         description="SubBrand not found"
-     *     )
+     *     @OA\Response(response=200, description="SubBrand found", @OA\JsonContent(ref="#/components/schemas/SubBrand")),
+     *     @OA\Response(response=404, description="SubBrand not found"),
+     *     @OA\Response(response=500, description="Unexpected server error")
      * )
      */
     public function show(string $id)
@@ -104,8 +97,8 @@ class SubBrandController extends Controller
         try {
             $subBrand = $this->subBrandService->getSubBrandById($id);
             return ApiResponse::success('SubBrand found', 200, new SubBrandResource($subBrand));
-        } catch (\RuntimeException $e) {
-            return ApiResponse::error($e->getMessage(), 422);
+        } catch (NotFoundException $e) {
+            return ApiResponse::error($e->getMessage(), 404);
         } catch (\Exception $e) {
             return ApiResponse::error('Unexpected error: ' . $e->getMessage(), 500);
         }
@@ -136,7 +129,9 @@ class SubBrandController extends Controller
      *     @OA\Response(
      *         response=404,
      *         description="SubBrand not found"
-     *     )
+     *     ),
+     *     @OA\Response(response=422, description="Validation failed"),
+     *     @OA\Response(response=500, description="Unexpected server error")
      * )
      */
     public function update(UpdateSubBrandRequest $request, string $id)
@@ -144,6 +139,8 @@ class SubBrandController extends Controller
         try {
             $subBrand = $this->subBrandService->updateSubBrand($id, $request->validated());
             return ApiResponse::success('SubBrand updated.', 200, new SubBrandResource($subBrand));
+        } catch (NotFoundException $e) {
+            return ApiResponse::error($e->getMessage(), 404);
         } catch (\RuntimeException $e) {
             return ApiResponse::error('Error updating SubBrand: ' . $e->getMessage(), 422);
         } catch (\Exception $e) {
