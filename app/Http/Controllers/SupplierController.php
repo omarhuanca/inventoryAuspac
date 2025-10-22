@@ -32,7 +32,8 @@ class SupplierController extends Controller
      *             type="object",
      *             @OA\Property(property="data", type="array", @OA\Items(ref="#/components/schemas/Supplier"))
      *         )
-     *     )
+     *     ),
+     *     @OA\Response(response=500, description="Unexpected server error")
      * )
      */
     public function index()
@@ -60,10 +61,7 @@ class SupplierController extends Controller
      *         description="Supplier created successfully",
      *         @OA\JsonContent(ref="#/components/schemas/Supplier")
      *     ),
-     *     @OA\Response(
-     *         response=400,
-     *         description="Bad request"
-     *     )
+     *     @OA\Response(response=422, description="Validation failed")
      * )
      */
     public function store(StoreSupplierRequest $request)
@@ -97,7 +95,8 @@ class SupplierController extends Controller
      *     @OA\Response(
      *         response=404,
      *         description="Supplier not found"
-     *     )
+     *     ),
+     *     @OA\Response(response=500, description="Unexpected server error")
      * )
      */
     public function show(string $id)
@@ -137,7 +136,9 @@ class SupplierController extends Controller
      *     @OA\Response(
      *         response=404,
      *         description="Supplier not found"
-     *     )
+     *     ),
+     *     @OA\Response(response=422, description="Validation failed"),
+     *     @OA\Response(response=500, description="Unexpected server error")
      * )
      */
     public function update(UpdateSupplierRequest $request, string $id)

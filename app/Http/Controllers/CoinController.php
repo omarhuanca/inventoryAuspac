@@ -32,7 +32,8 @@ class CoinController extends Controller
      *             type="object",
      *             @OA\Property(property="data", type="array", @OA\Items(ref="#/components/schemas/Coin"))
      *         )
-     *     )
+     *     ),
+     *     @OA\Response(response=500, description="Unexpected server error")
      * )
      */
     public function index()
@@ -60,7 +61,7 @@ class CoinController extends Controller
      *         description="Coin created successfully",
      *         @OA\JsonContent(ref="#/components/schemas/Coin")
      *     ),
-     *     @OA\Response(response=400, description="Bad request")
+     *     @OA\Response(response=422, description="Validation failed")
      * )
      */
     public function store(StoreCoinRequest $request)
@@ -87,7 +88,8 @@ class CoinController extends Controller
      *         @OA\Schema(type="integer", example=1)
      *     ),
      *     @OA\Response(response=200, description="Coin found", @OA\JsonContent(ref="#/components/schemas/Coin")),
-     *     @OA\Response(response=404, description="Coin not found")
+     *     @OA\Response(response=404, description="Coin not found"),
+     *     @OA\Response(response=500, description="Unexpected server error")
      * )
      */
     public function show(string $id)
@@ -117,7 +119,9 @@ class CoinController extends Controller
      *     ),
      *     @OA\RequestBody(required=true, @OA\JsonContent(ref="#/components/schemas/Coin")),
      *     @OA\Response(response=200, description="Coin updated successfully", @OA\JsonContent(ref="#/components/schemas/Coin")),
-     *     @OA\Response(response=404, description="Coin not found")
+     *     @OA\Response(response=404, description="Coin not found"),
+     *     @OA\Response(response=422, description="Validation failed"),
+     *     @OA\Response(response=500, description="Unexpected server error")
      * )
      */
     public function update(UpdateCoinRequest $request, string $id)

@@ -42,7 +42,8 @@ class BrandController extends Controller
      *             type="object",
      *             @OA\Property(property="data", type="array", @OA\Items(ref="#/components/schemas/Brand"))
      *         )
-     *     )
+     *     ),
+     *     @OA\Response(response=500, description="Unexpected server error")
      * )
      */
     public function index()
@@ -70,10 +71,7 @@ class BrandController extends Controller
      *         description="Brand created successfully",
      *         @OA\JsonContent(ref="#/components/schemas/Brand")
      *     ),
-     *     @OA\Response(
-     *         response=400,
-     *         description="Bad request"
-     *     )
+     *     @OA\Response(response=422, description="Validation failed")
      * )
      */
     public function store(StoreBrandRequest $request)
@@ -107,7 +105,8 @@ class BrandController extends Controller
      *     @OA\Response(
      *         response=404,
      *         description="Brand not found"
-     *     )
+     *     ),
+     *     @OA\Response(response=500, description="Unexpected server error")
      * )
      */
     public function show(string $id)
@@ -147,7 +146,9 @@ class BrandController extends Controller
      *     @OA\Response(
      *         response=404,
      *         description="Brand not found"
-     *     )
+     *     ),
+     *     @OA\Response(response=422, description="Validation failed"),
+     *     @OA\Response(response=500, description="Unexpected server error")
      * )
      */
     public function update(UpdateBrandRequest $request, string $id)
