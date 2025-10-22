@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Exceptions\NotFoundException;
 use App\Http\Requests\StoreSubBrandRequest;
 use App\Http\Requests\UpdateSubBrandRequest;
 use App\Http\Resources\SubBrandResource;
@@ -104,6 +105,8 @@ class SubBrandController extends Controller
         try {
             $subBrand = $this->subBrandService->getSubBrandById($id);
             return ApiResponse::success('SubBrand found', 200, new SubBrandResource($subBrand));
+        } catch (NotFoundException $e) {
+            return ApiResponse::error($e->getMessage(), 404);
         } catch (\RuntimeException $e) {
             return ApiResponse::error($e->getMessage(), 422);
         } catch (\Exception $e) {
@@ -144,6 +147,8 @@ class SubBrandController extends Controller
         try {
             $subBrand = $this->subBrandService->updateSubBrand($id, $request->validated());
             return ApiResponse::success('SubBrand updated.', 200, new SubBrandResource($subBrand));
+        } catch (NotFoundException $e) {
+            return ApiResponse::error($e->getMessage(), 404);
         } catch (\RuntimeException $e) {
             return ApiResponse::error('Error updating SubBrand: ' . $e->getMessage(), 422);
         } catch (\Exception $e) {

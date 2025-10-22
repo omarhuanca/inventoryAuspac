@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Exceptions\NotFoundException;
 use App\Http\Requests\StoreSupplierRequest;
 use App\Http\Requests\UpdateSupplierRequest;
 use App\Http\Resources\SupplierResource;
@@ -104,6 +105,8 @@ class SupplierController extends Controller
         try {
             $supplier = $this->supplierService->getSupplierById($id);
             return ApiResponse::success('Supplier found.', 200, new SupplierResource($supplier));
+        } catch (NotFoundException $e) {
+            return ApiResponse::error($e->getMessage(), 404);
         } catch (\Exception $e) {
             return ApiResponse::error('Error obtaining supplier: ' . $e->getMessage(), 500);
         }
@@ -142,6 +145,8 @@ class SupplierController extends Controller
         try {
             $supplier = $this->supplierService->updateSupplier($id, $request->validated());
             return ApiResponse::success('Supplier updated.', 200, new SupplierResource($supplier));
+        } catch (NotFoundException $e) {
+            return ApiResponse::error($e->getMessage(), 404);
         } catch (\RuntimeException $e) {
             return ApiResponse::error('Error updating supplier: ' . $e->getMessage(), 422);
         } catch (\Exception $e) {

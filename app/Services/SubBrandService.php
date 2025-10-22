@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use App\Exceptions\NotFoundException;
 use App\Models\SubBrand;
 use App\Repositories\SubBrandRepository;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
@@ -23,11 +24,13 @@ class SubBrandService
 
     public function getSubBrandById(int $id)
     {
-        try {
-            return $this->subBrandRepository->find($id);
-        } catch (ModelNotFoundException $e) {
-            throw new \RuntimeException('SubBrand not found.');
+        $subBrand = $this->subBrandRepository->find($id);
+
+        if (!$subBrand) {
+            throw new NotFoundException('SubBrand not found.');
         }
+
+        return $subBrand;
     }
 
     public function createSubBrand(array $data)

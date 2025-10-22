@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Exceptions\NotFoundException;
 use App\Http\Requests\StoreBrandRequest;
 use App\Http\Requests\UpdateBrandRequest;
 use App\Http\Resources\BrandResource;
@@ -114,6 +115,8 @@ class BrandController extends Controller
         try {
             $brand = $this->brandService->getBrandById($id);
             return ApiResponse::success('Brand found', 200, new BrandResource($brand));
+        } catch (NotFoundException $e) {
+            return ApiResponse::error($e->getMessage(), 404);
         } catch (\Exception $e) {
             return ApiResponse::error('Error obtaining the brand: ' . $e->getMessage(), 500);
         }
@@ -152,6 +155,8 @@ class BrandController extends Controller
         try {
             $brand = $this->brandService->updateBrand($id, $request->validated());
             return ApiResponse::success('Brand updated.', 200, new BrandResource($brand));
+        } catch (NotFoundException $e) {
+            return ApiResponse::error($e->getMessage(), 404);
         } catch (\RuntimeException $e) {
             return ApiResponse::error('Error when updating the brand: ' . $e->getMessage(), 422);
         } catch (\Exception $e) {

@@ -20,7 +20,7 @@ class SupplierRepository
 
     public function find(int $id)
     {
-        return $this->supplier->findOrFail($id);
+        return $this->supplier->find($id);
     }
 
     public function create(array $data)

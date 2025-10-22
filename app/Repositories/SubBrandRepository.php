@@ -21,7 +21,7 @@ class SubBrandRepository
 
     public function find(int $id)
     {
-        return $this->subBrand->with('brand')->findOrFail($id);
+        return $this->subBrand->with('brand')->find($id);
     }
 
     public function create(array $data, Brand $brand)
