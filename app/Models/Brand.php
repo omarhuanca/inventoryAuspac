@@ -15,6 +15,7 @@ use Illuminate\Database\Eloquent\Model;
  */
 class Brand extends Model
 {
+    protected $table = 'brand';
     protected $fillable = ['code'];
 
     public static $codeEmpty = 'Brand code cannot be empty.';

@@ -3,8 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Exceptions\NotFoundException;
-use App\Http\Requests\StoreCoinRequest;
-use App\Http\Requests\UpdateCoinRequest;
+use App\Http\Requests\CoinRequest;
 use App\Http\Resources\CoinResource;
 use App\Http\Responses\ApiResponse;
 use App\Services\CoinService;
@@ -64,7 +63,7 @@ class CoinController extends Controller
      *     @OA\Response(response=422, description="Validation failed")
      * )
      */
-    public function store(StoreCoinRequest $request)
+    public function store(CoinRequest $request)
     {
         try {
             $coin = $this->coinService->createCoin($request->validated());
@@ -124,7 +123,7 @@ class CoinController extends Controller
      *     @OA\Response(response=500, description="Unexpected server error")
      * )
      */
-    public function update(UpdateCoinRequest $request, string $id)
+    public function update(CoinRequest $request, string $id)
     {
         try {
             $coin = $this->coinService->updateCoin($id, $request->validated());

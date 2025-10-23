@@ -4,7 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class UpdateSupplierRequest extends FormRequest
+class MeasureRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -22,7 +22,7 @@ class UpdateSupplierRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'name' => ['required', 'string', 'min:2', 'max:150', 'regex:/^[\p{L}0-9\s\-\_&.,]+$/u',],
+            'code' => 'required|string|min:1|max:10|regex:/^[A-Za-z]+$/',
         ];
     }
 }

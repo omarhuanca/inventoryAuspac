@@ -3,8 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Exceptions\NotFoundException;
-use App\Http\Requests\StoreBrandRequest;
-use App\Http\Requests\UpdateBrandRequest;
+use App\Http\Requests\BrandRequest;
 use App\Http\Resources\BrandResource;
 use App\Http\Responses\ApiResponse;
 use App\Services\BrandService;
@@ -74,7 +73,7 @@ class BrandController extends Controller
      *     @OA\Response(response=422, description="Validation failed")
      * )
      */
-    public function store(StoreBrandRequest $request)
+    public function store(BrandRequest $request)
     {
         try {
             $brand = $this->brandService->createBrand($request->validated());
@@ -151,7 +150,7 @@ class BrandController extends Controller
      *     @OA\Response(response=500, description="Unexpected server error")
      * )
      */
-    public function update(UpdateBrandRequest $request, string $id)
+    public function update(BrandRequest $request, string $id)
     {
         try {
             $brand = $this->brandService->updateBrand($id, $request->validated());

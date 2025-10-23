@@ -3,8 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Exceptions\NotFoundException;
-use App\Http\Requests\StoreMeasureRequest;
-use App\Http\Requests\UpdateMeasureRequest;
+use App\Http\Requests\MeasureRequest;
 use App\Http\Resources\MeasureResource;
 use App\Http\Responses\ApiResponse;
 use App\Services\MeasureService;
@@ -64,7 +63,7 @@ class MeasureController extends Controller
      *     @OA\Response(response=422, description="Validation failed")
      * )
      */
-    public function store(StoreMeasureRequest $request)
+    public function store(MeasureRequest $request)
     {
         try {
             $measure = $this->measureService->createMeasure($request->validated());
@@ -124,7 +123,7 @@ class MeasureController extends Controller
      *     @OA\Response(response=500, description="Unexpected server error")
      * )
      */
-    public function update(UpdateMeasureRequest $request, string $id)
+    public function update(MeasureRequest $request, string $id)
     {
         try {
             $measure = $this->measureService->updateMeasure($id, $request->validated());

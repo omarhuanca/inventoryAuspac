@@ -19,6 +19,7 @@ use Illuminate\Database\Eloquent\Model;
  */
 class SubBrand extends Model
 {
+    protected $table = 'sub_brand';
     protected $fillable = ['code', 'brand_id'];
 
     public static $codeEmpty = 'SubBrand code cannot be empty.';

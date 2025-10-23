@@ -15,6 +15,7 @@ use Illuminate\Database\Eloquent\Model;
  */
 class Coin extends Model
 {
+    protected $table = 'coin';
     protected $fillable = ['code'];
 
     public static $codeEmpty = 'Coin code cannot be empty.';

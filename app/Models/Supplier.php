@@ -15,6 +15,7 @@ use Illuminate\Database\Eloquent\Model;
  */
 class Supplier extends Model
 {
+    protected $table = 'supplier';
     protected $fillable = ['name'];
 
     public static $nameEmpty = 'Supplier name cannot be empty.';
