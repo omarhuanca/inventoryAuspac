@@ -47,7 +47,7 @@ class MeasureControllerTest extends TestCase
                 'error' => false,
             ]);
 
-        $this->assertDatabaseHas('measures', ['code' => 'KG']);
+        $this->assertDatabaseHas('measure', ['code' => 'KG']);
     }
 
     public function test_code_must_be_required()
@@ -112,7 +112,7 @@ class MeasureControllerTest extends TestCase
                 'error' => true,
             ]);
 
-        $this->assertDatabaseCount('measures', 1);
+        $this->assertDatabaseCount('measure', 1);
     }
 
     public function test_can_show_a_measure_by_id()
@@ -127,7 +127,7 @@ class MeasureControllerTest extends TestCase
                 'error' => false,
             ])
             ->assertJsonPath('data.code', 'UNIT');
-        $this->assertDatabaseHas('measures', ['code' => 'UNIT',]);
+        $this->assertDatabaseHas('measure', ['code' => 'UNIT',]);
     }
 
     public function test_returns_404_when_showing_non_existent_measure()
@@ -156,7 +156,7 @@ class MeasureControllerTest extends TestCase
                 'error' => false,
             ]);
 
-        $this->assertDatabaseHas('measures', ['code' => 'LT']);
+        $this->assertDatabaseHas('measure', ['code' => 'LT']);
     }
 
     public function test_cannot_update_to_duplicate_code()
@@ -173,8 +173,8 @@ class MeasureControllerTest extends TestCase
                 'error' => true,
             ]);
 
-        $this->assertDatabaseHas('measures', ['code' => 'LT']);
-        $this->assertDatabaseCount('measures', 2);
+        $this->assertDatabaseHas('measure', ['code' => 'LT']);
+        $this->assertDatabaseCount('measure', 2);
     }
 
     public function test_returns_404_when_updating_non_existent_measure()

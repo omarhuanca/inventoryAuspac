@@ -17,9 +17,9 @@ class Coin extends Model
 {
     protected $fillable = ['code'];
 
-    public const CODE_EMPTY = 'Coin code cannot be empty.';
-    public const CODE_LENGTH = 'Coin code must be between 2 and 10 characters long.';
-    public const CODE_INVALID_CHARS = 'Coin code contains invalid characters. Allowed: uppercase letters only.';
+    public static $codeEmpty = 'Coin code cannot be empty.';
+    public static $codeLength = 'Coin code must be between 2 and 10 characters long.';
+    public static $codeInvalidChars = 'Coin code contains invalid characters. Allowed: uppercase letters only.';
 
     public function __construct(array $attributes = [])
     {
@@ -29,15 +29,15 @@ class Coin extends Model
     public static function at(string $code): Coin
     {
         if ($code === '') {
-            throw new \RuntimeException(self::CODE_EMPTY);
+            throw new \RuntimeException(self::$codeEmpty);
         }
 
         if (mb_strlen($code) < 2 || mb_strlen($code) > 10) {
-            throw new \RuntimeException(self::CODE_LENGTH);
+            throw new \RuntimeException(self::$codeLength);
         }
 
         if (!preg_match('/^[A-Z]+$/', $code)) {
-            throw new \RuntimeException(self::CODE_INVALID_CHARS);
+            throw new \RuntimeException(self::$codeInvalidChars);
         }
 
         return new Coin([

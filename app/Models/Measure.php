@@ -15,11 +15,12 @@ use Illuminate\Database\Eloquent\Model;
  */
 class Measure extends Model
 {
+    protected $table = 'measure';
     protected $fillable = ['code'];
 
-    public const CODE_EMPTY = 'Measure code cannot be empty.';
-    public const CODE_LENGTH = 'Measure code must be between 1 and 10 characters long.';
-    public const CODE_INVALID_CHARS = 'Measure code contains invalid characters. Allowed: uppercase letters only.';
+    public static $codeEmpty = 'Measure code cannot be empty.';
+    public static $codeLength = 'Measure code must be between 1 and 10 characters long.';
+    public static $codeInvalidChars = 'Measure code contains invalid characters. Allowed: uppercase letters only.';
 
     public function __construct(array $attributes = [])
     {
@@ -29,15 +30,15 @@ class Measure extends Model
     public static function at(string $code): Measure
     {
         if ($code === '') {
-            throw new \RuntimeException(self::CODE_EMPTY);
+            throw new \RuntimeException(self::$codeEmpty);
         }
 
         if (mb_strlen($code) < 1 || mb_strlen($code) > 10) {
-            throw new \RuntimeException(self::CODE_LENGTH);
+            throw new \RuntimeException(self::$codeLength);
         }
 
         if (!preg_match('/^[A-Za-z]+$/', $code)) {
-            throw new \RuntimeException(self::CODE_INVALID_CHARS);
+            throw new \RuntimeException(self::$codeInvalidChars);
         }
 
         return new Measure([

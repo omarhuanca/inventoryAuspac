@@ -29,7 +29,7 @@ class MeasureTest extends TestCase
         $this->shouldThrowAndAssert(
             fn() => Measure::at(''),
             \RuntimeException::class,
-            fn($e) => $this->assertEquals(Measure::CODE_EMPTY, $e->getMessage())
+            fn($e) => $this->assertEquals(Measure::$codeEmpty, $e->getMessage())
         );
     }
 
@@ -38,7 +38,7 @@ class MeasureTest extends TestCase
         $this->shouldThrowAndAssert(
             fn() => Measure::at(str_repeat('L', 11)),
             \RuntimeException::class,
-            fn($e) => $this->assertEquals(Measure::CODE_LENGTH, $e->getMessage())
+            fn($e) => $this->assertEquals(Measure::$codeLength, $e->getMessage())
         );
     }
 
@@ -47,7 +47,7 @@ class MeasureTest extends TestCase
         $this->shouldThrowAndAssert(
             fn() => Measure::at('UNIT@'),
             \RuntimeException::class,
-            fn($e) => $this->assertEquals(Measure::CODE_INVALID_CHARS, $e->getMessage())
+            fn($e) => $this->assertEquals(Measure::$codeInvalidChars, $e->getMessage())
         );
     }
 }

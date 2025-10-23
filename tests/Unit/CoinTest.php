@@ -30,7 +30,7 @@ class CoinTest extends TestCase
         $this->shouldThrowAndAssert(
             fn() => Coin::at(''),
             \RuntimeException::class,
-            fn($e) => $this->assertEquals(Coin::CODE_EMPTY, $e->getMessage())
+            fn($e) => $this->assertEquals(Coin::$codeEmpty, $e->getMessage())
         );
     }
 
@@ -39,7 +39,7 @@ class CoinTest extends TestCase
         $this->shouldThrowAndAssert(
             fn() => Coin::at('U'),
             \RuntimeException::class,
-            fn($e) => $this->assertEquals(Coin::CODE_LENGTH, $e->getMessage())
+            fn($e) => $this->assertEquals(Coin::$codeLength, $e->getMessage())
         );
     }
 
@@ -48,7 +48,7 @@ class CoinTest extends TestCase
         $this->shouldThrowAndAssert(
             fn() => Coin::at(str_repeat('A', 11)),
             \RuntimeException::class,
-            fn($e) => $this->assertEquals(Coin::CODE_LENGTH, $e->getMessage())
+            fn($e) => $this->assertEquals(Coin::$codeLength, $e->getMessage())
         );
     }
 
@@ -57,7 +57,7 @@ class CoinTest extends TestCase
         $this->shouldThrowAndAssert(
             fn() => Coin::at('US$'),
             \RuntimeException::class,
-            fn($e) => $this->assertEquals(Coin::CODE_INVALID_CHARS, $e->getMessage())
+            fn($e) => $this->assertEquals(Coin::$codeInvalidChars, $e->getMessage())
         );
     }
 }

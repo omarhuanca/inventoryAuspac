@@ -11,7 +11,7 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('measures', function (Blueprint $table) {
+        Schema::create('measure', function (Blueprint $table) {
             $table->id();
             $table->string('code');
             $table->timestamps();
@@ -23,6 +23,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('measures');
+        Schema::dropIfExists('measure');
     }
 };

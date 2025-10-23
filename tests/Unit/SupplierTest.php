@@ -29,7 +29,7 @@ class SupplierTest extends TestCase
         $this->shouldThrowAndAssert(
             fn() => Supplier::at(''),
             \RuntimeException::class,
-            fn($e) => $this->assertEquals(Supplier::NAME_EMPTY, $e->getMessage())
+            fn($e) => $this->assertEquals(Supplier::$nameEmpty, $e->getMessage())
         );
     }
 
@@ -38,7 +38,7 @@ class SupplierTest extends TestCase
         $this->shouldThrowAndAssert(
             fn() => Supplier::at('A'),
             \RuntimeException::class,
-            fn($e) => $this->assertEquals(Supplier::NAME_LENGTH, $e->getMessage())
+            fn($e) => $this->assertEquals(Supplier::$nameLength, $e->getMessage())
         );
     }
 
@@ -47,7 +47,7 @@ class SupplierTest extends TestCase
         $this->shouldThrowAndAssert(
             fn() => Supplier::at(str_repeat('A', 151)),
             \RuntimeException::class,
-            fn($e) => $this->assertEquals(Supplier::NAME_LENGTH, $e->getMessage())
+            fn($e) => $this->assertEquals(Supplier::$nameLength, $e->getMessage())
         );
     }
 
@@ -56,7 +56,7 @@ class SupplierTest extends TestCase
         $this->shouldThrowAndAssert(
             fn() => Supplier::at('Supplier@123'),
             \RuntimeException::class,
-            fn($e) => $this->assertEquals(Supplier::NAME_INVALID, $e->getMessage())
+            fn($e) => $this->assertEquals(Supplier::$nameInvalid, $e->getMessage())
         );
     }
 }
