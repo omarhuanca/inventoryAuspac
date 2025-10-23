@@ -4,7 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class StoreSupplierRequest extends FormRequest
+class SubBrandRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -22,7 +22,10 @@ class StoreSupplierRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'name' => ['required', 'string', 'min:2', 'max:150', 'regex:/^[\p{L}0-9\s\-\_&.,]+$/u'],
+            'code' => 'required|string|min:2|max:50|regex:/^[A-Za-z0-9_-]+$/',
+            'brand' => 'required|array',
+            'brand.id' => 'required|exists:brand,id',
+            'brand.code' => 'required|string',
         ];
     }
 }

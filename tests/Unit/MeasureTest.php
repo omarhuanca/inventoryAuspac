@@ -2,10 +2,10 @@
 
 namespace Tests\Unit;
 
-use App\Models\Coin;
+use App\Models\Measure;
 use PHPUnit\Framework\TestCase;
 
-class CoinTest extends TestCase
+class MeasureTest extends TestCase
 {
     public function shouldThrowAndAssert($should, $exceptionType, $assertions)
     {
@@ -18,46 +18,36 @@ class CoinTest extends TestCase
         }
     }
 
-    public function test_can_create_coin_code()
+    public function test_can_create_measure_code()
     {
-        $coin = Coin::at('USD');
-
-        $this->assertEquals('USD', $coin->code);
+        $measure = Measure::at('UNIT');
+        $this->assertEquals('UNIT', $measure->code);
     }
 
     public function test_code_cannot_be_empty()
     {
         $this->shouldThrowAndAssert(
-            fn() => Coin::at(''),
+            fn() => Measure::at(''),
             \RuntimeException::class,
-            fn($e) => $this->assertEquals(Coin::$codeEmpty, $e->getMessage())
-        );
-    }
-
-    public function test_code_too_short_is_invalid()
-    {
-        $this->shouldThrowAndAssert(
-            fn() => Coin::at('U'),
-            \RuntimeException::class,
-            fn($e) => $this->assertEquals(Coin::$codeLength, $e->getMessage())
+            fn($e) => $this->assertEquals(Measure::$codeEmpty, $e->getMessage())
         );
     }
 
     public function test_code_too_long_is_invalid()
     {
         $this->shouldThrowAndAssert(
-            fn() => Coin::at(str_repeat('A', 11)),
+            fn() => Measure::at(str_repeat('L', 11)),
             \RuntimeException::class,
-            fn($e) => $this->assertEquals(Coin::$codeLength, $e->getMessage())
+            fn($e) => $this->assertEquals(Measure::$codeLength, $e->getMessage())
         );
     }
 
     public function test_code_with_invalid_characters()
     {
         $this->shouldThrowAndAssert(
-            fn() => Coin::at('US$'),
+            fn() => Measure::at('UNIT@'),
             \RuntimeException::class,
-            fn($e) => $this->assertEquals(Coin::$codeInvalidChars, $e->getMessage())
+            fn($e) => $this->assertEquals(Measure::$codeInvalidChars, $e->getMessage())
         );
     }
 }

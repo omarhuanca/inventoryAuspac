@@ -3,8 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Exceptions\NotFoundException;
-use App\Http\Requests\StoreSubBrandRequest;
-use App\Http\Requests\UpdateSubBrandRequest;
+use App\Http\Requests\SubBrandRequest;
 use App\Http\Resources\SubBrandResource;
 use App\Http\Responses\ApiResponse;
 use App\Services\SubBrandService;
@@ -64,7 +63,7 @@ class SubBrandController extends Controller
      *     @OA\Response(response=422, description="Validation failed")
      * )
      */
-    public function store(StoreSubBrandRequest $request)
+    public function store(SubBrandRequest $request)
     {
         try {
             $subBrand = $this->subBrandService->createSubBrand($request->validated());
@@ -134,7 +133,7 @@ class SubBrandController extends Controller
      *     @OA\Response(response=500, description="Unexpected server error")
      * )
      */
-    public function update(UpdateSubBrandRequest $request, string $id)
+    public function update(SubBrandRequest $request, string $id)
     {
         try {
             $subBrand = $this->subBrandService->updateSubBrand($id, $request->validated());

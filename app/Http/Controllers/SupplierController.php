@@ -3,8 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Exceptions\NotFoundException;
-use App\Http\Requests\StoreSupplierRequest;
-use App\Http\Requests\UpdateSupplierRequest;
+use App\Http\Requests\SupplierRequest;
 use App\Http\Resources\SupplierResource;
 use App\Http\Responses\ApiResponse;
 use App\Services\SupplierService;
@@ -64,7 +63,7 @@ class SupplierController extends Controller
      *     @OA\Response(response=422, description="Validation failed")
      * )
      */
-    public function store(StoreSupplierRequest $request)
+    public function store(SupplierRequest $request)
     {
         try {
             $supplier = $this->supplierService->createSupplier($request->validated());
@@ -141,7 +140,7 @@ class SupplierController extends Controller
      *     @OA\Response(response=500, description="Unexpected server error")
      * )
      */
-    public function update(UpdateSupplierRequest $request, string $id)
+    public function update(SupplierRequest $request, string $id)
     {
         try {
             $supplier = $this->supplierService->updateSupplier($id, $request->validated());

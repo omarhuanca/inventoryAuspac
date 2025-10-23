@@ -66,7 +66,7 @@ class SubBrandService
                 ->exists();
 
             if ($exists) {
-                throw new \RuntimeException('SubBrand code already exists for this Brand.');
+                throw new \RuntimeException('SubBrand code already exists.');
             }
         }
 
