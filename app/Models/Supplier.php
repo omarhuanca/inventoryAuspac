@@ -26,21 +26,25 @@ class Supplier extends Model
     {
         parent::__construct($attributes);
     }
-
-        public static function at(string $name): Supplier
-        {
-            if ($name === '') {
-                throw new \RuntimeException(self::$nameEmpty);
-            }
-
-            if (mb_strlen($name) < 2 || mb_strlen($name) > 150) {
-                throw new \RuntimeException(self::$nameLength);
-            }
-
-            if (!preg_match('/^[\p{L}0-9\s\-\_&.,]+$/u', $name)) {
-                throw new \RuntimeException(self::$nameInvalid);
-            }
-
-            return new Supplier(['name' => trim($name)]);
+    public static function at(string $name): Supplier
+    {
+        if ($name === '') {
+            throw new \RuntimeException(self::$nameEmpty);
         }
+
+        if (mb_strlen($name) < 2 || mb_strlen($name) > 150) {
+            throw new \RuntimeException(self::$nameLength);
+        }
+
+        if (!preg_match('/^[\p{L}0-9\s\-\_&.,]+$/u', $name)) {
+            throw new \RuntimeException(self::$nameInvalid);
+        }
+
+        return new Supplier(['name' => trim($name)]);
+    }
+
+    public function products()
+    {
+        return $this->hasMany(Product::class);
+    }
 }

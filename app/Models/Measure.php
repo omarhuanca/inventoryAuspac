@@ -45,4 +45,9 @@ class Measure extends Model
             'code' => trim(strtoupper($code)),
         ]);
     }
+
+    public function products()
+    {
+        return $this->hasMany(Product::class);
+    }
 }
