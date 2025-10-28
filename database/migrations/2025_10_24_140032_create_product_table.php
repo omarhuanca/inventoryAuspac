@@ -14,8 +14,7 @@ return new class extends Migration
         Schema::create('product', function (Blueprint $table) {
             $table->id();
             $table->string('code');
-            $table->decimal('supplier_cost', 10, 2);
-            $table->foreignId('supplier_cost_price_id')->constrained('coin')->onUpdate('cascade')->onDelete('restrict');
+            $table->decimal('supplier_cost_price', 10, 2);
             $table->foreignId('supplier_coin_id')->constrained('coin')->onUpdate('cascade')->onDelete('restrict');
             $table->decimal('landing_cost_price', 10, 2);
             $table->foreignId('landing_coin_id')->constrained('coin')->onUpdate('cascade')->onDelete('restrict');

@@ -1,0 +1,86 @@
+<?php
+
+namespace App\Services;
+
+use App\Exceptions\NotFoundException;
+use App\Models\Product;
+use App\Repositories\ProductRepository;
+
+class ProductService
+{
+    private ProductRepository $productRepository;
+    private CoinService $coinService;
+    private MeasureService $measureService;
+    private SubBrandService $subBrandService;
+    private SupplierService $supplierService;
+
+    public function __construct(
+        ProductRepository $productRepository,
+        CoinService $coinService,
+        MeasureService $measureService,
+        SubBrandService $subBrandService,
+        SupplierService $supplierService
+    ) {
+        $this->productRepository = $productRepository;
+        $this->coinService = $coinService;
+        $this->measureService = $measureService;
+        $this->subBrandService = $subBrandService;
+        $this->supplierService = $supplierService;
+    }
+
+    public function getAllProducts()
+    {
+        return $this->productRepository->getAll();
+    }
+
+    public function getProductById(int $id)
+    {
+        $product = $this->productRepository->find($id);
+
+        if (!$product) {
+            throw new NotFoundException('Product not found.');
+        }
+
+        return $product;
+    }
+
+    public function createProduct(array $data)
+    {
+        $supplierCoin = $this->coinService->getCoinById($data['supplier_coin']['id']);
+        $landingCoin = $this->coinService->getCoinById($data['landing_coin']['id']);
+        $measure = $this->measureService->getMeasureById($data['measure']['id']);
+        $subBrand = $this->subBrandService->getSubBrandById($data['sub_brand']['id']);
+        $supplier = $this->supplierService->getSupplierById($data['supplier']['id']);
+
+        $exists = Product::whereRaw('LOWER(code) = ?', [strtolower($data['code'])])->exists();
+        if ($exists) {
+            throw new \RuntimeException('Product code already exists.');
+        }
+
+        return $this->productRepository->create(
+            $data, $supplierCoin, $landingCoin,
+            $measure, $subBrand, $supplier
+        );
+    }
+
+    public function updateProduct(int $id, array $data)
+    {
+        $product = $this->getProductById($id);
+
+        $supplierCoin = $this->coinService->getCoinById($data['supplier_coin']['id']);
+        $landingCoin = $this->coinService->getCoinById($data['landing_coin']['id']);
+        $measure = $this->measureService->getMeasureById($data['measure']['id']);
+        $subBrand = $this->subBrandService->getSubBrandById($data['sub_brand']['id']);
+        $supplier = $this->supplierService->getSupplierById($data['supplier']['id']);
+
+        $exists = Product::whereRaw('LOWER(code) = ?', [strtolower($data['code'])])
+            ->where('id', '!=', $id)
+            ->exists();
+
+        if ($exists) {
+            throw new \RuntimeException('Product code already exists.');
+        }
+
+        return $this->productRepository->update($product, $data, $supplierCoin, $landingCoin, $measure, $subBrand, $supplier);
+    }
+}

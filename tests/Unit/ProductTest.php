@@ -17,7 +17,7 @@ class ProductTest extends TestCase
         try {
             $should->__invoke();
             $this->fail();
-        } catch (\Exception $exception) {
+        } catch (\Throwable $exception) {
             $this->assertEquals($exceptionType, get_class($exception));
             $assertions->__invoke($exception);
         }
@@ -31,13 +31,12 @@ class ProductTest extends TestCase
         $supplier = Supplier::at('Supplier01');
 
         $product = Product::at(
-            'P001', 100, $coin, $coin, 150, $coin, 200, 180,
+            'P001', 100, $coin, 150, $coin, 200, 180,
             50, $measure, 'SER001', '10x10x10', 5, $subBrand, $supplier
         );
 
         $this->assertEquals('P001', $product->code);
-        $this->assertEquals(100, $product->supplier_cost);
-        $this->assertEquals($coin->id, $product->supplier_cost_price_id);
+        $this->assertEquals(100, $product->supplier_cost_price);
         $this->assertEquals($coin->id, $product->supplier_coin_id);
         $this->assertEquals(150, $product->landing_cost_price);
         $this->assertEquals($coin->id, $product->landing_coin_id);
@@ -56,7 +55,7 @@ class ProductTest extends TestCase
     {
         $this->shouldThrowAndAssert(
             fn () => Product::at(
-                '', 100, Coin::at('USD'), Coin::at('USD'),
+                '', 100, Coin::at('USD'),
                 150, Coin::at('USD'), 200, 180, 50,
                 Measure::at('UNIT'), 'SER001', '10x10x10', 5,
                 SubBrand::at('ACME_ECO', Brand::at('ACME')), Supplier::at('Supplier01')
@@ -70,7 +69,7 @@ class ProductTest extends TestCase
     {
         $this->shouldThrowAndAssert(
             fn() => Product::at(
-                'P', 100, Coin::at('USD'), Coin::at('USD'),
+                'P', 100, Coin::at('USD'),
                 150, Coin::at('USD'), 200, 180, 50,
                 Measure::at('UNIT'), 'SER001', '10x10x10', 5,
                 SubBrand::at('ACME_ECO', Brand::at('ACME')), Supplier::at('Supplier01')
@@ -84,7 +83,7 @@ class ProductTest extends TestCase
     {
         $this->shouldThrowAndAssert(
             fn() => Product::at(
-                str_repeat('P', 51), 100, Coin::at('USD'), Coin::at('USD'),
+                str_repeat('P', 51), 100, Coin::at('USD'),
                 150, Coin::at('USD'), 200, 180, 50,
                 Measure::at('UNIT'), 'SER001', '10x10x10', 5,
                 SubBrand::at('ACME_ECO', Brand::at('ACME')), Supplier::at('Supplier01')
@@ -98,7 +97,7 @@ class ProductTest extends TestCase
     {
         $this->shouldThrowAndAssert(
             fn() => Product::at(
-                'P001@01', 100, Coin::at('USD'), Coin::at('USD'),
+                'P001@01', 100, Coin::at('USD'),
                 150, Coin::at('USD'), 200, 180, 50,
                 Measure::at('UNIT'), 'SER001', '10x10x10', 5,
                 SubBrand::at('ACME_ECO', Brand::at('ACME')), Supplier::at('Supplier01')
@@ -112,13 +111,13 @@ class ProductTest extends TestCase
     {
         $this->shouldThrowAndAssert(
             fn() => Product::at(
-                'P001', -1, Coin::at('USD'), Coin::at('USD'),
+                'P001', -1, Coin::at('USD'),
                 150, Coin::at('USD'), 200, 180, 50,
                 Measure::at('UNIT'), 'SER001', '10x10x10', 5,
                 SubBrand::at('ACME_ECO', Brand::at('ACME')), Supplier::at('Supplier01')
             ),
             \RuntimeException::class,
-            fn($e) => $this->assertEquals(Product::$costInvalid, $e->getMessage())
+            fn($e) => $this->assertEquals(Product::$supplierCostPriceInvalid, $e->getMessage())
         );
     }
 
@@ -126,13 +125,13 @@ class ProductTest extends TestCase
     {
         $this->shouldThrowAndAssert(
             fn() => Product::at(
-                'P001', 100, Coin::at('USD'), Coin::at('USD'),
+                'P001', 100, Coin::at('USD'),
                 -150, Coin::at('USD'), 200, 180, 50,
                 Measure::at('UNIT'), 'SER001', '10x10x10', 5,
                 SubBrand::at('ACME_ECO', Brand::at('ACME')), Supplier::at('Supplier01')
             ),
             \RuntimeException::class,
-            fn($e) => $this->assertEquals(Product::$landingInvalid, $e->getMessage())
+            fn($e) => $this->assertEquals(Product::$landingCostPriceInvalid, $e->getMessage())
         );
     }
 
@@ -140,7 +139,7 @@ class ProductTest extends TestCase
     {
         $this->shouldThrowAndAssert(
             fn() => Product::at(
-                'P001', 100, Coin::at('USD'), Coin::at('USD'),
+                'P001', 100, Coin::at('USD'),
                 150, Coin::at('USD'), -1, 180, 50,
                 Measure::at('UNIT'), 'SER001', '10x10x10', 5,
                 SubBrand::at('ACME_ECO', Brand::at('ACME')), Supplier::at('Supplier01')
@@ -154,7 +153,7 @@ class ProductTest extends TestCase
     {
         $this->shouldThrowAndAssert(
             fn() => Product::at(
-                'P001', 100, Coin::at('USD'), Coin::at('USD'),
+                'P001', 100, Coin::at('USD'),
                 150, Coin::at('USD'), 200, 250, 50,
                 Measure::at('UNIT'), 'SER001', '10x10x10', 5,
                 SubBrand::at('ACME_ECO', Brand::at('ACME')), Supplier::at('Supplier01')
@@ -168,7 +167,7 @@ class ProductTest extends TestCase
     {
         $this->shouldThrowAndAssert(
             fn() => Product::at(
-                'P001', 100, Coin::at('USD'), Coin::at('USD'),
+                'P001', 100, Coin::at('USD'),
                 150, Coin::at('USD'), 200, 180, -50,
                 Measure::at('UNIT'), 'SER001', '10x10x10', 5,
                 SubBrand::at('ACME_ECO', Brand::at('ACME')), Supplier::at('Supplier01')
@@ -182,7 +181,7 @@ class ProductTest extends TestCase
     {
         $this->shouldThrowAndAssert(
             fn () => Product::at(
-                'P001', 100, Coin::at('USD'), Coin::at('USD'),
+                'P001', 100, Coin::at('USD'),
                 150, Coin::at('USD'), 200, 180, 50,
                 Measure::at('UNIT'), '', '', 5,
                 SubBrand::at('ACME_ECO', Brand::at('ACME')), Supplier::at('Supplier01')
@@ -196,7 +195,7 @@ class ProductTest extends TestCase
     {
         $this->shouldThrowAndAssert(
             fn() => Product::at(
-                'P001', 100, Coin::at('USD'), Coin::at('USD'),
+                'P001', 100, Coin::at('USD'),
                 150, Coin::at('USD'), 200, 180, 50,
                 Measure::at('UNIT'), 'SER001', str_repeat('A', 51), 5,
                 SubBrand::at('ACME_ECO', Brand::at('ACME')), Supplier::at('Supplier01')
@@ -210,7 +209,7 @@ class ProductTest extends TestCase
     {
         $this->shouldThrowAndAssert(
             fn() => Product::at(
-                'P001', 100, Coin::at('USD'), Coin::at('USD'),
+                'P001', 100, Coin::at('USD'),
                 150, Coin::at('USD'), 200, 180, 50,
                 Measure::at('UNIT'), 'SER001', '10x10x10', -5,
                 SubBrand::at('ACME_ECO', Brand::at('ACME')), Supplier::at('Supplier01')
@@ -224,7 +223,7 @@ class ProductTest extends TestCase
     {
         $this->shouldThrowAndAssert(
             fn () => Product::at(
-                'P001', 100, Coin::at('USD'), Coin::at('USD'),
+                'P001', 100, Coin::at('USD'),
                 150, Coin::at('USD'), 200, 180, 50,
                 Measure::at('UNIT'), '', '10x10x10', 5,
                 SubBrand::at('ACME_ECO', Brand::at('ACME')), Supplier::at('Supplier01')
@@ -238,7 +237,7 @@ class ProductTest extends TestCase
     {
         $this->shouldThrowAndAssert(
             fn() => Product::at(
-                'P001', 100, Coin::at('USD'), Coin::at('USD'),
+                'P001', 100, Coin::at('USD'),
                 150, Coin::at('USD'), 200, 180, 50,
                 Measure::at('UNIT'), str_repeat('S', 101), '10x10x10', 5,
                 SubBrand::at('ACME_ECO', Brand::at('ACME')), Supplier::at('Supplier01')
@@ -248,31 +247,17 @@ class ProductTest extends TestCase
         );
     }
 
-    public function test_supplier_cost_price_must_be_valid()
-    {
-        $this->shouldThrowAndAssert(
-            fn() => Product::at(
-                'P001', 100, null, Coin::at('USD'),
-                150, Coin::at('USD'), 200, 180, 50,
-                Measure::at('UNIT'), 'SER001', '10x10x10', 5,
-                SubBrand::at('ACME_ECO', Brand::at('ACME')), Supplier::at('Supplier01')
-            ),
-            \RuntimeException::class,
-            fn($e) => $this->assertEquals(Product::$relationInvalid, $e->getMessage())
-        );
-    }
-
     public function test_supplier_coin_must_be_valid()
     {
         $this->shouldThrowAndAssert(
             fn() => Product::at(
-                'P001', 100, Coin::at('USD'), null,
+                'P001', 100, null,
                 150, Coin::at('USD'), 200, 180, 50,
                 Measure::at('UNIT'), 'SER001', '10x10x10', 5,
                 SubBrand::at('ACME_ECO', Brand::at('ACME')), Supplier::at('Supplier01')
             ),
-            \RuntimeException::class,
-            fn($e) => $this->assertEquals(Product::$relationInvalid, $e->getMessage())
+            \TypeError::class,
+            fn($e) => $this->assertStringContainsString('must be of type', $e->getMessage())
         );
     }
 
@@ -280,13 +265,13 @@ class ProductTest extends TestCase
     {
         $this->shouldThrowAndAssert(
             fn() => Product::at(
-                'P001', 100, Coin::at('USD'), Coin::at('USD'),
+                'P001', 100, Coin::at('USD'),
                 150, null, 200, 180, 50,
                 Measure::at('UNIT'), 'SER001', '10x10x10', 5,
                 SubBrand::at('ACME_ECO', Brand::at('ACME')), Supplier::at('Supplier01')
             ),
-            \RuntimeException::class,
-            fn($e) => $this->assertEquals(Product::$relationInvalid, $e->getMessage())
+            \TypeError::class,
+            fn($e) => $this->assertStringContainsString('must be of type', $e->getMessage())
         );
     }
 
@@ -294,13 +279,13 @@ class ProductTest extends TestCase
     {
         $this->shouldThrowAndAssert(
             fn() => Product::at(
-                'P001', 100, Coin::at('USD'), Coin::at('USD'),
+                'P001', 100, Coin::at('USD'),
                 150, Coin::at('USD'), 200, 180, 50,
                 null, 'SER001', '10x10x10', 5,
                 SubBrand::at('ACME_ECO', Brand::at('ACME')), Supplier::at('Supplier01')
             ),
-            \RuntimeException::class,
-            fn($e) => $this->assertEquals(Product::$relationInvalid, $e->getMessage())
+            \TypeError::class,
+            fn($e) => $this->assertStringContainsString('must be of type', $e->getMessage())
         );
     }
 
@@ -308,13 +293,13 @@ class ProductTest extends TestCase
     {
         $this->shouldThrowAndAssert(
             fn() => Product::at(
-                'P001', 100, Coin::at('USD'), Coin::at('USD'),
+                'P001', 100, Coin::at('USD'),
                 150, Coin::at('USD'), 200, 180, 50,
                 Measure::at('UNIT'), 'SER001', '10x10x10', 5,
                 null, Supplier::at('Supplier01')
             ),
-            \RuntimeException::class,
-            fn($e) => $this->assertEquals(Product::$relationInvalid, $e->getMessage())
+            \TypeError::class,
+            fn($e) => $this->assertStringContainsString('must be of type', $e->getMessage())
         );
     }
 
@@ -322,13 +307,13 @@ class ProductTest extends TestCase
     {
         $this->shouldThrowAndAssert(
             fn() => Product::at(
-                'P001', 100, Coin::at('USD'), Coin::at('USD'),
+                'P001', 100, Coin::at('USD'),
                 150, Coin::at('USD'), 200, 180, 50,
                 Measure::at('UNIT'), 'SER001', '10x10x10', 5,
                 SubBrand::at('ACME_ECO', Brand::at('ACME')), null
             ),
-            \RuntimeException::class,
-            fn($e) => $this->assertEquals(Product::$relationInvalid, $e->getMessage())
+            \TypeError::class,
+            fn($e) => $this->assertStringContainsString('must be of type', $e->getMessage())
         );
     }
 

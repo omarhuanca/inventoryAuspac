@@ -50,7 +50,7 @@ class SubBrandService
 
     public function updateSubBrand(int $id, array $data)
     {
-        $subBrand = $this->getSubBrandById($id);
+        $subBrand = $this->subBrandRepository->find($id);
 
         $brand = null;
         if (isset($data['brand'])) {
