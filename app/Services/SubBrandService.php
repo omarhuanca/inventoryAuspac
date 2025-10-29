@@ -37,12 +37,10 @@ class SubBrandService
     {
         $brand = $this->brandService->getBrandById($data['brand']['id']);
 
-        $exists = SubBrand::where('brand_id', $brand->id)
-            ->whereRaw('LOWER(code) = ?', [strtolower($data['code'])])
-            ->exists();
+        $exists = SubBrand::whereRaw('LOWER(code) = ?', [strtolower($data['code'])])->exists();
 
         if ($exists) {
-            throw new \RuntimeException('SubBrand code already exists for this Brand.');
+            throw new \RuntimeException('SubBrand code already exists.');
         }
 
         return $this->subBrandRepository->create($data, $brand);
@@ -52,16 +50,10 @@ class SubBrandService
     {
         $subBrand = $this->getSubBrandById($id);
 
-        $brand = null;
-        if (isset($data['brand'])) {
-            $brand = $this->brandService->getBrandById($data['brand']['id']);
-
-        }
+        $brand = $this->brandService->getBrandById($data['brand']['id']);
 
         if (isset($data['code'])) {
-            $brandToUse = $brand ?? $subBrand->brand;
-            $exists = SubBrand::where('brand_id', $brandToUse->id)
-                ->whereRaw('LOWER(code) = ?', [strtolower($data['code'])])
+            $exists = SubBrand::whereRaw('LOWER(code) = ?', [strtolower($data['code'])])
                 ->where('id', '!=', $id)
                 ->exists();
 

@@ -2,7 +2,9 @@
 
 namespace App\Http\Requests;
 
+use App\Http\Responses\ApiResponse;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Http\Exceptions\HttpResponseException;
 
 class CoinRequest extends FormRequest
 {
@@ -24,5 +26,12 @@ class CoinRequest extends FormRequest
         return [
             'code' => 'required|string|min:2|max:10|regex:/^[A-Z]+$/',
         ];
+    }
+
+    protected function failedValidation(\Illuminate\Contracts\Validation\Validator $validator)
+    {
+        throw new HttpResponseException(
+            ApiResponse::error('Validation error.', 422, $validator->errors()->all())
+        );
     }
 }

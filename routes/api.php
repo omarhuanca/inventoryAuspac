@@ -3,6 +3,7 @@
 use App\Http\Controllers\BrandController;
 use App\Http\Controllers\CoinController;
 use App\Http\Controllers\MeasureController;
+use App\Http\Controllers\ProductController;
 use App\Http\Controllers\SubBrandController;
 use App\Http\Controllers\SupplierController;
 use Illuminate\Http\Request;
@@ -13,4 +14,5 @@ Route::apiResource('/subbrands', SubBrandController::class);
 Route::apiResource('/suppliers', SupplierController::class);
 Route::apiResource('/coins', CoinController::class);
 Route::apiResource('/measures', MeasureController::class);
+Route::apiResource('/products', ProductController::class);
 

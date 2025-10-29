@@ -31,19 +31,14 @@ class SubBrandRepository
         return $subBrand->load('brand');
     }
 
-    public function update(SubBrand $subBrand, array $data, ?Brand $brand = null)
+    public function update(SubBrand $subBrand, array $data, Brand $brand)
     {
-        $brandToUse = $brand ?? $subBrand->brand;
-
         if (isset($data['code'])) {
-            $this->subBrand::at($data['code'], $brandToUse);
-            $subBrand->code = $data['code'];
+            $this->subBrand::at($data['code'], $brand);
+            $subBrand->code = trim($data['code']);
         }
 
-        if ($brand) {
-            $subBrand->brand_id = $brand->id;
-        }
-
+        $subBrand->brand_id = $brand->id;
         $subBrand->save();
         return $subBrand->load('brand');
     }

@@ -25,14 +25,13 @@ class SubBrand extends Model
     public static $codeEmpty = 'SubBrand code cannot be empty.';
     public static $codeLength = 'SubBrand code must be between 2 and 50 characters long.';
     public static $codeInvalid = 'SubBrand code contains invalid characters. Allowed: letters, numbers, hyphen and underscore.';
-    public static $brandInvalid = 'SubBrand must be associated with a valid Brand instance.';
 
     public function __construct(array $attributes = [])
     {
         parent::__construct($attributes);
     }
 
-    public static function at(string $code, ?Brand $brand)
+    public static function at(string $code, Brand $brand)
     {
         if ($code === '') {
             throw new \RuntimeException(self::$codeEmpty);
@@ -46,10 +45,6 @@ class SubBrand extends Model
             throw new \RuntimeException(self::$codeInvalid);
         }
 
-        if (!$brand instanceof Brand) {
-            throw new \RuntimeException(self::$brandInvalid);
-        }
-
         return new SubBrand([
             'code' => trim($code),
             'brand_id' => $brand->id,
@@ -59,5 +54,10 @@ class SubBrand extends Model
     public function brand()
     {
         return $this->belongsTo(Brand::class);
+    }
+
+    public function products()
+    {
+        return $this->hasMany(Product::class);
     }
 }

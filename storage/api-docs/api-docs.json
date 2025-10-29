@@ -480,6 +480,166 @@
                 }
             }
         },
+        "/api/products": {
+            "get": {
+                "tags": [
+                    "Products"
+                ],
+                "summary": "Get all products",
+                "description": "Return a list of all products, including pricing, stock, and related entities.",
+                "operationId": "1bfaa78d1c2c3848ab8165c5dadcad3e",
+                "responses": {
+                    "200": {
+                        "description": "Product list retrieved successfully.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "data": {
+                                            "type": "array",
+                                            "items": {
+                                                "$ref": "#/components/schemas/Product"
+                                            }
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Unexpected server error"
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "Products"
+                ],
+                "summary": "Create a new product",
+                "description": "Create a new product associated with a sub-brand, supplier, coins, and measure.",
+                "operationId": "e8185e307706e2cd84bbcf5171e2f09d",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/Product"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Product created successfully.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Product"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Validation failed"
+                    },
+                    "500": {
+                        "description": "Unexpected server error"
+                    }
+                }
+            }
+        },
+        "/api/products/{id}": {
+            "get": {
+                "tags": [
+                    "Products"
+                ],
+                "summary": "Get a specific product",
+                "description": "Return a specific product by its ID, including all related entities.",
+                "operationId": "7ab21ddb713501f3d4c2914892c02a21",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID of the product",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "example": 1
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Product found",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Product"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Product not found"
+                    },
+                    "500": {
+                        "description": "Unexpected server error"
+                    }
+                }
+            },
+            "put": {
+                "tags": [
+                    "Products"
+                ],
+                "summary": "Update a product",
+                "description": "Update an existing product by its ID, validating uniqueness and all constraints.",
+                "operationId": "6a7e11900844cd85cff66e662b82bd4c",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID of the product",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "example": 1
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/Product"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Product updated successfully.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Product"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Product not found"
+                    },
+                    "422": {
+                        "description": "Validation failed"
+                    },
+                    "500": {
+                        "description": "Unexpected server error"
+                    }
+                }
+            }
+        },
         "/api/subbrands": {
             "get": {
                 "tags": [
@@ -839,6 +999,72 @@
                 },
                 "type": "object"
             },
+            "Product": {
+                "title": "Product",
+                "description": "Represents a product with its pricing, dimensions, and associations.",
+                "properties": {
+                    "id": {
+                        "type": "integer",
+                        "example": 1
+                    },
+                    "code": {
+                        "type": "string",
+                        "example": "P001"
+                    },
+                    "supplier_cost_price": {
+                        "type": "number",
+                        "format": "float",
+                        "example": 100.5
+                    },
+                    "supplier_coin": {
+                        "$ref": "#/components/schemas/Coin"
+                    },
+                    "landing_cost_price": {
+                        "type": "number",
+                        "format": "float",
+                        "example": 120.75
+                    },
+                    "landing_coin": {
+                        "$ref": "#/components/schemas/Coin"
+                    },
+                    "retail_price": {
+                        "type": "number",
+                        "format": "float",
+                        "example": 200
+                    },
+                    "promotional_price": {
+                        "type": "number",
+                        "format": "float",
+                        "example": 180
+                    },
+                    "stock": {
+                        "type": "integer",
+                        "example": 50
+                    },
+                    "measure": {
+                        "$ref": "#/components/schemas/Measure"
+                    },
+                    "serial_tracking": {
+                        "type": "string",
+                        "example": "SER001"
+                    },
+                    "dimension_size": {
+                        "type": "string",
+                        "example": "10x10x10"
+                    },
+                    "dimension_weight": {
+                        "type": "integer",
+                        "example": 5
+                    },
+                    "sub_brand": {
+                        "$ref": "#/components/schemas/SubBrand"
+                    },
+                    "supplier": {
+                        "$ref": "#/components/schemas/Supplier"
+                    }
+                },
+                "type": "object"
+            },
             "SubBrand": {
                 "title": "SubBrand",
                 "properties": {
@@ -884,6 +1110,10 @@
         {
             "name": "Measures",
             "description": "Measures"
+        },
+        {
+            "name": "Products",
+            "description": "Products"
         },
         {
             "name": "SubBrands",

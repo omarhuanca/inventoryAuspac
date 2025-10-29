@@ -13,7 +13,7 @@ class SubBrandTest extends TestCase
         try {
             $should->__invoke();
             $this->fail();
-        } catch (\Exception $exception) {
+        } catch (\Throwable $exception) {
             $this->assertEquals($exceptionType, get_class($exception));
             $assertions->__invoke($exception);
         }
@@ -72,13 +72,12 @@ class SubBrandTest extends TestCase
         );
     }
 
-    public function test_brand_must_be_valid_instance()
+    public function test_measure_must_be_valid()
     {
         $this->shouldThrowAndAssert(
             fn() => SubBrand::at('ACME_ECO', null),
-            \RuntimeException::class,
-            fn($e) => $this->assertEquals(SubBrand::$brandInvalid, $e->getMessage()
-            )
+            \TypeError::class,
+            fn($e) => $this->assertStringContainsString('must be of type', $e->getMessage())
         );
     }
 }

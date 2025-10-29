@@ -45,4 +45,19 @@ class Coin extends Model
             'code' => trim(strtoupper($code)),
         ]);
     }
+
+    public function supplierCostPriceProducts()
+    {
+        return $this->hasMany(Product::class, 'supplier_cost_price_id');
+    }
+
+    public function supplierCoinProducts()
+    {
+        return $this->hasMany(Product::class, 'supplier_coin_id');
+    }
+
+    public function landingCoinProducts()
+    {
+        return $this->hasMany(Product::class, 'landing_coin_id');
+    }
 }

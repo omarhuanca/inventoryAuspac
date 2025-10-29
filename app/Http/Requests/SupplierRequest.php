@@ -2,7 +2,9 @@
 
 namespace App\Http\Requests;
 
+use App\Http\Responses\ApiResponse;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Http\Exceptions\HttpResponseException;
 
 class SupplierRequest extends FormRequest
 {
@@ -24,5 +26,12 @@ class SupplierRequest extends FormRequest
         return [
             'name' => ['required', 'string', 'min:2', 'max:150', 'regex:/^[\p{L}0-9\s\-\_&.,]+$/u'],
         ];
+    }
+
+    protected function failedValidation(\Illuminate\Contracts\Validation\Validator $validator)
+    {
+        throw new HttpResponseException(
+            ApiResponse::error('Validation error.', 422, $validator->errors()->all())
+        );
     }
 }
