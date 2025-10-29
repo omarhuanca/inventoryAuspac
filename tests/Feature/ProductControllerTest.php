@@ -31,53 +31,51 @@ class ProductControllerTest extends TestCase
         $this->measureService = app(MeasureService::class);
         $this->subBrandService = app(SubBrandService::class);
         $this->supplierService = app(SupplierService::class);
+
+        $this->coin = $this->coinService->createCoin(['code' => 'USD']);
+        $this->measure = $this->measureService->createMeasure(['code' => 'UNIT']);
+        $this->brand = app(BrandService::class)->createBrand(['code' => 'ACME']);
+        $this->subBrand = $this->subBrandService->createSubBrand([
+            'code' => 'ACME_ECO',
+            'brand' => ['id' => $this->brand->id],
+        ]);
+        $this->supplier = $this->supplierService->createSupplier(['name' => 'Supplier01']);
     }
 
     public function test_can_list_products()
     {
-        $coin = $this->coinService->createCoin(['code' => 'USD']);
-        $measure = $this->measureService->createMeasure(['code' => 'UNIT']);
-
-        $brand = app(BrandService::class)->createBrand(['code' => 'ACME']);
-        $subBrand = $this->subBrandService->createSubBrand([
-            'code' => 'ACME_ECO',
-            'brand' => ['id' => $brand->id],
-        ]);
-
-        $supplier = $this->supplierService->createSupplier(['name' => 'Supplier01']);
-
         $this->productService->createProduct([
             'code' => 'P001',
             'supplier_cost_price' => 150,
-            'supplier_coin' => ['id' => $coin->id],
+            'supplier_coin' => ['id' => $this->coin->id],
             'landing_cost_price' => 200,
-            'landing_coin' => ['id' => $coin->id],
+            'landing_coin' => ['id' => $this->coin->id],
             'retail_price' => 250,
             'promotional_price' => 230,
             'stock' => 100,
-            'measure' => ['id' => $measure->id],
+            'measure' => ['id' => $this->measure->id],
             'serial_tracking' => 'SER001',
             'dimension_size' => '10x10x10',
             'dimension_weight' => 5,
-            'sub_brand' => ['id' => $subBrand->id],
-            'supplier' => ['id' => $supplier->id],
+            'sub_brand' => ['id' => $this->subBrand->id],
+            'supplier' => ['id' => $this->supplier->id],
         ]);
 
         $this->productService->createProduct([
             'code' => 'P002',
             'supplier_cost_price' => 200,
-            'supplier_coin' => ['id' => $coin->id],
+            'supplier_coin' => ['id' => $this->coin->id],
             'landing_cost_price' => 220,
-            'landing_coin' => ['id' => $coin->id],
+            'landing_coin' => ['id' => $this->coin->id],
             'retail_price' => 250,
             'promotional_price' => 240,
             'stock' => 5,
-            'measure' => ['id' => $measure->id],
+            'measure' => ['id' => $this->measure->id],
             'serial_tracking' => 'SER002',
             'dimension_size' => '5x5x5',
             'dimension_weight' => 2,
-            'sub_brand' => ['id' => $subBrand->id],
-            'supplier' => ['id' => $supplier->id],
+            'sub_brand' => ['id' => $this->subBrand->id],
+            'supplier' => ['id' => $this->supplier->id],
         ]);
 
         $response = $this->getJson('/api/products');
@@ -92,32 +90,21 @@ class ProductControllerTest extends TestCase
 
     public function test_can_create_a_product()
     {
-        $coin = $this->coinService->createCoin(['code' => 'USD']);
-        $measure = $this->measureService->createMeasure(['code' => 'KG']);
-
-        $brand = app(BrandService::class)->createBrand(['code' => 'ACME']);
-        $subBrand = $this->subBrandService->createSubBrand([
-            'code' => 'SUB_ACME_1',
-            'brand' => ['id' => $brand->id],
-        ]);
-
-        $supplier = $this->supplierService->createSupplier(['name' => 'Supplier 1']);
-
         $data = [
             'code' => 'P001',
             'supplier_cost_price' => 100,
-            'supplier_coin' => ['id' => $coin->id],
+            'supplier_coin' => ['id' => $this->coin->id],
             'landing_cost_price' => 120,
-            'landing_coin' => ['id' => $coin->id],
+            'landing_coin' => ['id' => $this->coin->id],
             'retail_price' => 150,
             'promotional_price' => 140,
             'stock' => 10,
-            'measure' => ['id' => $measure->id],
+            'measure' => ['id' => $this->measure->id],
             'serial_tracking' => 'SER001',
             'dimension_size' => '10x10x10',
             'dimension_weight' => 5,
-            'sub_brand' => ['id' => $subBrand->id],
-            'supplier' => ['id' => $supplier->id],
+            'sub_brand' => ['id' => $this->subBrand->id],
+            'supplier' => ['id' => $this->supplier->id],
         ];
 
         $response = $this->postJson('/api/products', $data);
@@ -134,32 +121,21 @@ class ProductControllerTest extends TestCase
 
     public function test_code_must_be_required()
     {
-        $coin = $this->coinService->createCoin(['code' => 'AUD']);
-        $measure = $this->measureService->createMeasure(['code' => 'UNIT']);
-
-        $brand = app(BrandService::class)->createBrand(['code' => 'ACME']);
-        $subBrand = $this->subBrandService->createSubBrand([
-            'code' => 'ACME_ECO',
-            'brand' => ['id' => $brand->id],
-        ]);
-
-        $supplier = $this->supplierService->createSupplier(['name' => 'Supplier01']);
-
         $data = [
             'code' => '',
             'supplier_cost_price' => 100,
-            'supplier_coin' => ['id' => $coin->id],
+            'supplier_coin' => ['id' => $this->coin->id],
             'landing_cost_price' => 120,
-            'landing_coin' => ['id' => $coin->id],
+            'landing_coin' => ['id' => $this->coin->id],
             'retail_price' => 150,
             'promotional_price' => 140,
             'stock' => 10,
-            'measure' => ['id' => $measure->id],
+            'measure' => ['id' => $this->measure->id],
             'serial_tracking' => 'SER001',
             'dimension_size' => '10x10x10',
             'dimension_weight' => 5,
-            'sub_brand' => ['id' => $subBrand->id],
-            'supplier' => ['id' => $supplier->id],
+            'sub_brand' => ['id' => $this->subBrand->id],
+            'supplier' => ['id' => $this->supplier->id],
         ];
 
         $response = $this->postJson('/api/products', $data);
@@ -171,30 +147,21 @@ class ProductControllerTest extends TestCase
 
     public function test_code_must_be_string()
     {
-        $coin = $this->coinService->createCoin(['code' => 'AUD']);
-        $measure = $this->measureService->createMeasure(['code' => 'UNIT']);
-        $brand = app(BrandService::class)->createBrand(['code' => 'ACME']);
-        $subBrand = $this->subBrandService->createSubBrand([
-            'code' => 'ACME_ECO',
-            'brand' => ['id' => $brand->id],
-        ]);
-        $supplier = $this->supplierService->createSupplier(['name' => 'Supplier01']);
-
         $data = [
             'code' => 12345,
             'supplier_cost_price' => 100,
-            'supplier_coin' => ['id' => $coin->id],
+            'supplier_coin' => ['id' => $this->coin->id],
             'landing_cost_price' => 120,
-            'landing_coin' => ['id' => $coin->id],
+            'landing_coin' => ['id' => $this->coin->id],
             'retail_price' => 150,
             'promotional_price' => 140,
             'stock' => 10,
-            'measure' => ['id' => $measure->id],
+            'measure' => ['id' => $this->measure->id],
             'serial_tracking' => 'SER001',
             'dimension_size' => '10x10x10',
             'dimension_weight' => 5,
-            'sub_brand' => ['id' => $subBrand->id],
-            'supplier' => ['id' => $supplier->id],
+            'sub_brand' => ['id' => $this->subBrand->id],
+            'supplier' => ['id' => $this->supplier->id],
         ];
 
         $response = $this->postJson('/api/products', $data);
@@ -206,30 +173,21 @@ class ProductControllerTest extends TestCase
 
     public function test_code_min_length()
     {
-        $coin = $this->coinService->createCoin(['code' => 'AUD']);
-        $measure = $this->measureService->createMeasure(['code' => 'UNIT']);
-        $brand = app(BrandService::class)->createBrand(['code' => 'ACME']);
-        $subBrand = $this->subBrandService->createSubBrand([
-            'code' => 'ACME_ECO',
-            'brand' => ['id' => $brand->id],
-        ]);
-        $supplier = $this->supplierService->createSupplier(['name' => 'Supplier01']);
-
         $data = [
             'code' => 'A',
             'supplier_cost_price' => 100,
-            'supplier_coin' => ['id' => $coin->id],
+            'supplier_coin' => ['id' => $this->coin->id],
             'landing_cost_price' => 120,
-            'landing_coin' => ['id' => $coin->id],
+            'landing_coin' => ['id' => $this->coin->id],
             'retail_price' => 150,
             'promotional_price' => 140,
             'stock' => 10,
-            'measure' => ['id' => $measure->id],
+            'measure' => ['id' => $this->measure->id],
             'serial_tracking' => 'SER001',
             'dimension_size' => '10x10x10',
             'dimension_weight' => 5,
-            'sub_brand' => ['id' => $subBrand->id],
-            'supplier' => ['id' => $supplier->id],
+            'sub_brand' => ['id' => $this->subBrand->id],
+            'supplier' => ['id' => $this->supplier->id],
         ];
 
         $response = $this->postJson('/api/products', $data);
@@ -240,30 +198,21 @@ class ProductControllerTest extends TestCase
 
     public function test_code_max_length()
     {
-        $coin = $this->coinService->createCoin(['code' => 'AUD']);
-        $measure = $this->measureService->createMeasure(['code' => 'UNIT']);
-        $brand = app(BrandService::class)->createBrand(['code' => 'ACME']);
-        $subBrand = $this->subBrandService->createSubBrand([
-            'code' => 'ACME_ECO',
-            'brand' => ['id' => $brand->id],
-        ]);
-        $supplier = $this->supplierService->createSupplier(['name' => 'Supplier01']);
-
         $data = [
             'code' => str_repeat('A', 51),
             'supplier_cost_price' => 100,
-            'supplier_coin' => ['id' => $coin->id],
+            'supplier_coin' => ['id' => $this->coin->id],
             'landing_cost_price' => 120,
-            'landing_coin' => ['id' => $coin->id],
+            'landing_coin' => ['id' => $this->coin->id],
             'retail_price' => 150,
             'promotional_price' => 140,
             'stock' => 10,
-            'measure' => ['id' => $measure->id],
+            'measure' => ['id' => $this->measure->id],
             'serial_tracking' => 'SER001',
             'dimension_size' => '10x10x10',
             'dimension_weight' => 5,
-            'sub_brand' => ['id' => $subBrand->id],
-            'supplier' => ['id' => $supplier->id],
+            'sub_brand' => ['id' => $this->subBrand->id],
+            'supplier' => ['id' => $this->supplier->id],
         ];
 
         $response = $this->postJson('/api/products', $data);
@@ -274,30 +223,21 @@ class ProductControllerTest extends TestCase
 
     public function test_code_regex_validation()
     {
-        $coin = $this->coinService->createCoin(['code' => 'AUD']);
-        $measure = $this->measureService->createMeasure(['code' => 'UNIT']);
-        $brand = app(BrandService::class)->createBrand(['code' => 'ACME']);
-        $subBrand = $this->subBrandService->createSubBrand([
-            'code' => 'ACME_ECO',
-            'brand' => ['id' => $brand->id],
-        ]);
-        $supplier = $this->supplierService->createSupplier(['name' => 'Supplier01']);
-
         $data = [
             'code' => 'INVALID!',
             'supplier_cost_price' => 100,
-            'supplier_coin' => ['id' => $coin->id],
+            'supplier_coin' => ['id' => $this->coin->id],
             'landing_cost_price' => 120,
-            'landing_coin' => ['id' => $coin->id],
+            'landing_coin' => ['id' => $this->coin->id],
             'retail_price' => 150,
             'promotional_price' => 140,
             'stock' => 10,
-            'measure' => ['id' => $measure->id],
+            'measure' => ['id' => $this->measure->id],
             'serial_tracking' => 'SER001',
             'dimension_size' => '10x10x10',
             'dimension_weight' => 5,
-            'sub_brand' => ['id' => $subBrand->id],
-            'supplier' => ['id' => $supplier->id],
+            'sub_brand' => ['id' => $this->subBrand->id],
+            'supplier' => ['id' => $this->supplier->id],
         ];
 
         $response = $this->postJson('/api/products', $data);
@@ -308,32 +248,21 @@ class ProductControllerTest extends TestCase
 
     public function test_cannot_create_duplicate_product_code()
     {
-        $coin = $this->coinService->createCoin(['code' => 'USD']);
-        $measure = $this->measureService->createMeasure(['code' => 'KG']);
-
-        $brand = app(BrandService::class)->createBrand(['code' => 'ACME']);
-        $subBrand = $this->subBrandService->createSubBrand([
-            'code' => 'SUB_ACME_1',
-            'brand' => ['id' => $brand->id],
-        ]);
-
-        $supplier = $this->supplierService->createSupplier(['name' => 'Supplier 1']);
-
         $data = [
             'code' => 'PROD_DUP',
             'supplier_cost_price' => 100,
-            'supplier_coin' => ['id' => $coin->id],
+            'supplier_coin' => ['id' => $this->coin->id],
             'landing_cost_price' => 120,
-            'landing_coin' => ['id' => $coin->id],
+            'landing_coin' => ['id' => $this->coin->id],
             'retail_price' => 150,
             'promotional_price' => 140,
             'stock' => 10,
-            'measure' => ['id' => $measure->id],
+            'measure' => ['id' => $this->measure->id],
             'serial_tracking' => 'ABC123',
             'dimension_size' => '10x10x10',
             'dimension_weight' => 5,
-            'sub_brand' => ['id' => $subBrand->id],
-            'supplier' => ['id' => $supplier->id],
+            'sub_brand' => ['id' => $this->subBrand->id],
+            'supplier' => ['id' => $this->supplier->id],
         ];
 
         $this->postJson('/api/products', $data)
@@ -349,27 +278,21 @@ class ProductControllerTest extends TestCase
 
     public function test_supplier_cost_price_must_be_required()
     {
-        $coin = $this->coinService->createCoin(['code' => 'AUD']);
-        $measure = $this->measureService->createMeasure(['code' => 'UNIT']);
-        $brand = app(BrandService::class)->createBrand(['code' => 'ACME']);
-        $subBrand = $this->subBrandService->createSubBrand(['code' => 'ACME_ECO','brand' => ['id' => $brand->id]]);
-        $supplier = $this->supplierService->createSupplier(['name' => 'Supplier01']);
-
         $data = [
             'code' => 'P001',
             'supplier_cost_price' => null,
-            'supplier_coin' => ['id' => $coin->id],
+            'supplier_coin' => ['id' => $this->coin->id],
             'landing_cost_price' => 120,
-            'landing_coin' => ['id' => $coin->id],
+            'landing_coin' => ['id' => $this->coin->id],
             'retail_price' => 150,
             'promotional_price' => 140,
             'stock' => 10,
-            'measure' => ['id' => $measure->id],
+            'measure' => ['id' => $this->measure->id],
             'serial_tracking' => 'SER001',
             'dimension_size' => '10x10x10',
             'dimension_weight' => 5,
-            'sub_brand' => ['id' => $subBrand->id],
-            'supplier' => ['id' => $supplier->id],
+            'sub_brand' => ['id' => $this->subBrand->id],
+            'supplier' => ['id' => $this->supplier->id],
         ];
 
         $response = $this->postJson('/api/products', $data);
@@ -381,27 +304,21 @@ class ProductControllerTest extends TestCase
 
     public function test_supplier_cost_price_must_be_numeric_invalid_string()
     {
-        $coin = $this->coinService->createCoin(['code' => 'AUD']);
-        $measure = $this->measureService->createMeasure(['code' => 'UNIT']);
-        $brand = app(BrandService::class)->createBrand(['code' => 'ACME']);
-        $subBrand = $this->subBrandService->createSubBrand(['code' => 'ACME_ECO','brand' => ['id' => $brand->id]]);
-        $supplier = $this->supplierService->createSupplier(['name' => 'Supplier01']);
-
         $data = [
             'code' => 'P001',
             'supplier_cost_price' => 'abc',
-            'supplier_coin' => ['id' => $coin->id],
+            'supplier_coin' => ['id' => $this->coin->id],
             'landing_cost_price' => 120,
-            'landing_coin' => ['id' => $coin->id],
+            'landing_coin' => ['id' => $this->coin->id],
             'retail_price' => 150,
             'promotional_price' => 140,
             'stock' => 10,
-            'measure' => ['id' => $measure->id],
+            'measure' => ['id' => $this->measure->id],
             'serial_tracking' => 'SER001',
             'dimension_size' => '10x10x10',
             'dimension_weight' => 5,
-            'sub_brand' => ['id' => $subBrand->id],
-            'supplier' => ['id' => $supplier->id],
+            'sub_brand' => ['id' => $this->subBrand->id],
+            'supplier' => ['id' => $this->supplier->id],
         ];
 
         $response = $this->postJson('/api/products', $data);
@@ -410,27 +327,21 @@ class ProductControllerTest extends TestCase
 
     public function test_supplier_cost_price_must_be_min_0_invalid_negative()
     {
-        $coin = $this->coinService->createCoin(['code' => 'AUD']);
-        $measure = $this->measureService->createMeasure(['code' => 'UNIT']);
-        $brand = app(BrandService::class)->createBrand(['code' => 'ACME']);
-        $subBrand = $this->subBrandService->createSubBrand(['code' => 'ACME_ECO','brand' => ['id' => $brand->id]]);
-        $supplier = $this->supplierService->createSupplier(['name' => 'Supplier01']);
-
         $data = [
             'code' => 'P001',
             'supplier_cost_price' => -10,
-            'supplier_coin' => ['id' => $coin->id],
+            'supplier_coin' => ['id' => $this->coin->id],
             'landing_cost_price' => 120,
-            'landing_coin' => ['id' => $coin->id],
+            'landing_coin' => ['id' => $this->coin->id],
             'retail_price' => 150,
             'promotional_price' => 140,
             'stock' => 10,
-            'measure' => ['id' => $measure->id],
+            'measure' => ['id' => $this->measure->id],
             'serial_tracking' => 'SER001',
             'dimension_size' => '10x10x10',
             'dimension_weight' => 5,
-            'sub_brand' => ['id' => $subBrand->id],
-            'supplier' => ['id' => $supplier->id],
+            'sub_brand' => ['id' => $this->subBrand->id],
+            'supplier' => ['id' => $this->supplier->id],
         ];
 
         $response = $this->postJson('/api/products', $data);
@@ -439,27 +350,21 @@ class ProductControllerTest extends TestCase
 
     public function test_landing_cost_price_must_be_required()
     {
-        $coin = $this->coinService->createCoin(['code' => 'AUD']);
-        $measure = $this->measureService->createMeasure(['code' => 'UNIT']);
-        $brand = app(BrandService::class)->createBrand(['code' => 'ACME']);
-        $subBrand = $this->subBrandService->createSubBrand(['code' => 'ACME_ECO','brand' => ['id' => $brand->id]]);
-        $supplier = $this->supplierService->createSupplier(['name' => 'Supplier01']);
-
         $data = [
             'code' => 'P001',
             'supplier_cost_price' => 100,
-            'supplier_coin' => ['id' => $coin->id],
+            'supplier_coin' => ['id' => $this->coin->id],
             'landing_cost_price' => null,
-            'landing_coin' => ['id' => $coin->id],
+            'landing_coin' => ['id' => $this->coin->id],
             'retail_price' => 150,
             'promotional_price' => 140,
             'stock' => 10,
-            'measure' => ['id' => $measure->id],
+            'measure' => ['id' => $this->measure->id],
             'serial_tracking' => 'SER001',
             'dimension_size' => '10x10x10',
             'dimension_weight' => 5,
-            'sub_brand' => ['id' => $subBrand->id],
-            'supplier' => ['id' => $supplier->id],
+            'sub_brand' => ['id' => $this->subBrand->id],
+            'supplier' => ['id' => $this->supplier->id],
         ];
 
         $response = $this->postJson('/api/products', $data);
@@ -470,27 +375,21 @@ class ProductControllerTest extends TestCase
 
     public function test_landing_cost_price_must_be_numeric_invalid_string()
     {
-        $coin = $this->coinService->createCoin(['code' => 'AUD']);
-        $measure = $this->measureService->createMeasure(['code' => 'UNIT']);
-        $brand = app(BrandService::class)->createBrand(['code' => 'ACME']);
-        $subBrand = $this->subBrandService->createSubBrand(['code' => 'ACME_ECO','brand' => ['id' => $brand->id]]);
-        $supplier = $this->supplierService->createSupplier(['name' => 'Supplier01']);
-
         $data = [
             'code' => 'P001',
             'supplier_cost_price' => 100,
-            'supplier_coin' => ['id' => $coin->id],
+            'supplier_coin' => ['id' => $this->coin->id],
             'landing_cost_price' => 'abc',
-            'landing_coin' => ['id' => $coin->id],
+            'landing_coin' => ['id' => $this->coin->id],
             'retail_price' => 150,
             'promotional_price' => 140,
             'stock' => 10,
-            'measure' => ['id' => $measure->id],
+            'measure' => ['id' => $this->measure->id],
             'serial_tracking' => 'SER001',
             'dimension_size' => '10x10x10',
             'dimension_weight' => 5,
-            'sub_brand' => ['id' => $subBrand->id],
-            'supplier' => ['id' => $supplier->id],
+            'sub_brand' => ['id' => $this->subBrand->id],
+            'supplier' => ['id' => $this->supplier->id],
         ];
 
         $response = $this->postJson('/api/products', $data);
@@ -501,27 +400,21 @@ class ProductControllerTest extends TestCase
 
     public function test_landing_cost_price_must_be_min_0_invalid_negative()
     {
-        $coin = $this->coinService->createCoin(['code' => 'AUD']);
-        $measure = $this->measureService->createMeasure(['code' => 'UNIT']);
-        $brand = app(BrandService::class)->createBrand(['code' => 'ACME']);
-        $subBrand = $this->subBrandService->createSubBrand(['code' => 'ACME_ECO','brand' => ['id' => $brand->id]]);
-        $supplier = $this->supplierService->createSupplier(['name' => 'Supplier01']);
-
         $data = [
             'code' => 'P001',
             'supplier_cost_price' => 100,
-            'supplier_coin' => ['id' => $coin->id],
+            'supplier_coin' => ['id' => $this->coin->id],
             'landing_cost_price' => -1,
-            'landing_coin' => ['id' => $coin->id],
+            'landing_coin' => ['id' => $this->coin->id],
             'retail_price' => 150,
             'promotional_price' => 140,
             'stock' => 10,
-            'measure' => ['id' => $measure->id],
+            'measure' => ['id' => $this->measure->id],
             'serial_tracking' => 'SER001',
             'dimension_size' => '10x10x10',
             'dimension_weight' => 5,
-            'sub_brand' => ['id' => $subBrand->id],
-            'supplier' => ['id' => $supplier->id],
+            'sub_brand' => ['id' => $this->subBrand->id],
+            'supplier' => ['id' => $this->supplier->id],
         ];
 
         $response = $this->postJson('/api/products', $data);
@@ -532,27 +425,21 @@ class ProductControllerTest extends TestCase
 
     public function test_retail_price_must_be_required()
     {
-        $coin = $this->coinService->createCoin(['code' => 'AUD']);
-        $measure = $this->measureService->createMeasure(['code' => 'UNIT']);
-        $brand = app(BrandService::class)->createBrand(['code' => 'ACME']);
-        $subBrand = $this->subBrandService->createSubBrand(['code' => 'ACME_ECO','brand' => ['id' => $brand->id]]);
-        $supplier = $this->supplierService->createSupplier(['name' => 'Supplier01']);
-
         $data = [
             'code' => 'P001',
             'supplier_cost_price' => 100,
-            'supplier_coin' => ['id' => $coin->id],
+            'supplier_coin' => ['id' => $this->coin->id],
             'landing_cost_price' => 120,
-            'landing_coin' => ['id' => $coin->id],
+            'landing_coin' => ['id' => $this->coin->id],
             'retail_price' => null,
             'promotional_price' => 100,
             'stock' => 10,
-            'measure' => ['id' => $measure->id],
+            'measure' => ['id' => $this->measure->id],
             'serial_tracking' => 'SER001',
             'dimension_size' => '10x10x10',
             'dimension_weight' => 5,
-            'sub_brand' => ['id' => $subBrand->id],
-            'supplier' => ['id' => $supplier->id],
+            'sub_brand' => ['id' => $this->subBrand->id],
+            'supplier' => ['id' => $this->supplier->id],
         ];
 
         $response = $this->postJson('/api/products', $data);
@@ -563,27 +450,21 @@ class ProductControllerTest extends TestCase
 
     public function test_retail_price_must_be_numeric_invalid_string()
     {
-        $coin = $this->coinService->createCoin(['code' => 'AUD']);
-        $measure = $this->measureService->createMeasure(['code' => 'UNIT']);
-        $brand = app(BrandService::class)->createBrand(['code' => 'ACME']);
-        $subBrand = $this->subBrandService->createSubBrand(['code' => 'ACME_ECO','brand' => ['id' => $brand->id]]);
-        $supplier = $this->supplierService->createSupplier(['name' => 'Supplier01']);
-
         $data = [
             'code' => 'P001',
             'supplier_cost_price' => 100,
-            'supplier_coin' => ['id' => $coin->id],
+            'supplier_coin' => ['id' => $this->coin->id],
             'landing_cost_price' => 120,
-            'landing_coin' => ['id' => $coin->id],
+            'landing_coin' => ['id' => $this->coin->id],
             'retail_price' => 'abc',
             'promotional_price' => 140,
             'stock' => 10,
-            'measure' => ['id' => $measure->id],
+            'measure' => ['id' => $this->measure->id],
             'serial_tracking' => 'SER001',
             'dimension_size' => '10x10x10',
             'dimension_weight' => 5,
-            'sub_brand' => ['id' => $subBrand->id],
-            'supplier' => ['id' => $supplier->id],
+            'sub_brand' => ['id' => $this->subBrand->id],
+            'supplier' => ['id' => $this->supplier->id],
         ];
 
         $response = $this->postJson('/api/products', $data);
@@ -594,27 +475,21 @@ class ProductControllerTest extends TestCase
 
     public function test_retail_price_must_be_min_0_invalid_negative()
     {
-        $coin = $this->coinService->createCoin(['code' => 'AUD']);
-        $measure = $this->measureService->createMeasure(['code' => 'UNIT']);
-        $brand = app(BrandService::class)->createBrand(['code' => 'ACME']);
-        $subBrand = $this->subBrandService->createSubBrand(['code' => 'ACME_ECO','brand' => ['id' => $brand->id]]);
-        $supplier = $this->supplierService->createSupplier(['name' => 'Supplier01']);
-
         $data = [
             'code' => 'P001',
             'supplier_cost_price' => 100,
-            'supplier_coin' => ['id' => $coin->id],
+            'supplier_coin' => ['id' => $this->coin->id],
             'landing_cost_price' => 120,
-            'landing_coin' => ['id' => $coin->id],
+            'landing_coin' => ['id' => $this->coin->id],
             'retail_price' => -1,
             'promotional_price' => 140,
             'stock' => 10,
-            'measure' => ['id' => $measure->id],
+            'measure' => ['id' => $this->measure->id],
             'serial_tracking' => 'SER001',
             'dimension_size' => '10x10x10',
             'dimension_weight' => 5,
-            'sub_brand' => ['id' => $subBrand->id],
-            'supplier' => ['id' => $supplier->id],
+            'sub_brand' => ['id' => $this->subBrand->id],
+            'supplier' => ['id' => $this->supplier->id],
         ];
 
         $response = $this->postJson('/api/products', $data);
@@ -625,27 +500,21 @@ class ProductControllerTest extends TestCase
 
     public function test_promotional_price_must_be_required()
     {
-        $coin = $this->coinService->createCoin(['code' => 'AUD']);
-        $measure = $this->measureService->createMeasure(['code' => 'UNIT']);
-        $brand = app(BrandService::class)->createBrand(['code' => 'ACME']);
-        $subBrand = $this->subBrandService->createSubBrand(['code' => 'ACME_ECO','brand' => ['id' => $brand->id]]);
-        $supplier = $this->supplierService->createSupplier(['name' => 'Supplier01']);
-
         $data = [
             'code' => 'P001',
             'supplier_cost_price' => 100,
-            'supplier_coin' => ['id' => $coin->id],
+            'supplier_coin' => ['id' => $this->coin->id],
             'landing_cost_price' => 120,
-            'landing_coin' => ['id' => $coin->id],
+            'landing_coin' => ['id' => $this->coin->id],
             'retail_price' => 100,
             'promotional_price' => null,
             'stock' => 10,
-            'measure' => ['id' => $measure->id],
+            'measure' => ['id' => $this->measure->id],
             'serial_tracking' => 'SER001',
             'dimension_size' => '10x10x10',
             'dimension_weight' => 5,
-            'sub_brand' => ['id' => $subBrand->id],
-            'supplier' => ['id' => $supplier->id],
+            'sub_brand' => ['id' => $this->subBrand->id],
+            'supplier' => ['id' => $this->supplier->id],
         ];
 
         $response = $this->postJson('/api/products', $data);
@@ -656,27 +525,21 @@ class ProductControllerTest extends TestCase
 
     public function test_promotional_price_must_be_numeric_invalid_string()
     {
-        $coin = $this->coinService->createCoin(['code' => 'AUD']);
-        $measure = $this->measureService->createMeasure(['code' => 'UNIT']);
-        $brand = app(BrandService::class)->createBrand(['code' => 'ACME']);
-        $subBrand = $this->subBrandService->createSubBrand(['code' => 'ACME_ECO','brand' => ['id' => $brand->id]]);
-        $supplier = $this->supplierService->createSupplier(['name' => 'Supplier01']);
-
         $data = [
             'code' => 'P001',
             'supplier_cost_price' => 100,
-            'supplier_coin' => ['id' => $coin->id],
+            'supplier_coin' => ['id' => $this->coin->id],
             'landing_cost_price' => 120,
-            'landing_coin' => ['id' => $coin->id],
+            'landing_coin' => ['id' => $this->coin->id],
             'retail_price' => 150,
             'promotional_price' => 'abc',
             'stock' => 10,
-            'measure' => ['id' => $measure->id],
+            'measure' => ['id' => $this->measure->id],
             'serial_tracking' => 'SER001',
             'dimension_size' => '10x10x10',
             'dimension_weight' => 5,
-            'sub_brand' => ['id' => $subBrand->id],
-            'supplier' => ['id' => $supplier->id],
+            'sub_brand' => ['id' => $this->subBrand->id],
+            'supplier' => ['id' => $this->supplier->id],
         ];
 
         $response = $this->postJson('/api/products', $data);
@@ -687,30 +550,21 @@ class ProductControllerTest extends TestCase
 
     public function test_promotional_price_lt_retail_price()
     {
-        $coin = $this->coinService->createCoin(['code' => 'AUD']);
-        $measure = $this->measureService->createMeasure(['code' => 'UNIT']);
-        $brand = app(BrandService::class)->createBrand(['code' => 'ACME']);
-        $subBrand = $this->subBrandService->createSubBrand([
-            'code' => 'ACME_ECO',
-            'brand' => ['id' => $brand->id],
-        ]);
-        $supplier = $this->supplierService->createSupplier(['name' => 'Supplier01']);
-
         $data = [
             'code' => 'P001',
             'supplier_cost_price' => 100,
-            'supplier_coin' => ['id' => $coin->id],
+            'supplier_coin' => ['id' => $this->coin->id],
             'landing_cost_price' => 120,
-            'landing_coin' => ['id' => $coin->id],
+            'landing_coin' => ['id' => $this->coin->id],
             'retail_price' => 100,
             'promotional_price' => 120,
             'stock' => 10,
-            'measure' => ['id' => $measure->id],
+            'measure' => ['id' => $this->measure->id],
             'serial_tracking' => 'SER001',
             'dimension_size' => '10x10x10',
             'dimension_weight' => 5,
-            'sub_brand' => ['id' => $subBrand->id],
-            'supplier' => ['id' => $supplier->id],
+            'sub_brand' => ['id' => $this->subBrand->id],
+            'supplier' => ['id' => $this->supplier->id],
         ];
 
         $response = $this->postJson('/api/products', $data);
@@ -722,27 +576,21 @@ class ProductControllerTest extends TestCase
 
     public function test_stock_must_be_required()
     {
-        $coin = $this->coinService->createCoin(['code' => 'AUD']);
-        $measure = $this->measureService->createMeasure(['code' => 'UNIT']);
-        $brand = app(BrandService::class)->createBrand(['code' => 'ACME']);
-        $subBrand = $this->subBrandService->createSubBrand(['code' => 'ACME_ECO','brand' => ['id' => $brand->id]]);
-        $supplier = $this->supplierService->createSupplier(['name' => 'Supplier01']);
-
         $data = [
             'code' => 'P001',
             'supplier_cost_price' => 100,
-            'supplier_coin' => ['id' => $coin->id],
+            'supplier_coin' => ['id' => $this->coin->id],
             'landing_cost_price' => 120,
-            'landing_coin' => ['id' => $coin->id],
+            'landing_coin' => ['id' => $this->coin->id],
             'retail_price' => 150,
             'promotional_price' => 140,
             'stock' => null,
-            'measure' => ['id' => $measure->id],
+            'measure' => ['id' => $this->measure->id],
             'serial_tracking' => 'SER001',
             'dimension_size' => '10x10x10',
             'dimension_weight' => 5,
-            'sub_brand' => ['id' => $subBrand->id],
-            'supplier' => ['id' => $supplier->id],
+            'sub_brand' => ['id' => $this->subBrand->id],
+            'supplier' => ['id' => $this->supplier->id],
         ];
 
         $response = $this->postJson('/api/products', $data);
@@ -753,27 +601,21 @@ class ProductControllerTest extends TestCase
 
     public function test_stock_must_be_integer_invalid_string()
     {
-        $coin = $this->coinService->createCoin(['code' => 'AUD']);
-        $measure = $this->measureService->createMeasure(['code' => 'UNIT']);
-        $brand = app(BrandService::class)->createBrand(['code' => 'ACME']);
-        $subBrand = $this->subBrandService->createSubBrand(['code' => 'ACME_ECO','brand' => ['id' => $brand->id]]);
-        $supplier = $this->supplierService->createSupplier(['name' => 'Supplier01']);
-
         $data = [
             'code' => 'P001',
             'supplier_cost_price' => 100,
-            'supplier_coin' => ['id' => $coin->id],
+            'supplier_coin' => ['id' => $this->coin->id],
             'landing_cost_price' => 120,
-            'landing_coin' => ['id' => $coin->id],
+            'landing_coin' => ['id' => $this->coin->id],
             'retail_price' => 150,
             'promotional_price' => 140,
             'stock' => 'abc',
-            'measure' => ['id' => $measure->id],
+            'measure' => ['id' => $this->measure->id],
             'serial_tracking' => 'SER001',
             'dimension_size' => '10x10x10',
             'dimension_weight' => 5,
-            'sub_brand' => ['id' => $subBrand->id],
-            'supplier' => ['id' => $supplier->id],
+            'sub_brand' => ['id' => $this->subBrand->id],
+            'supplier' => ['id' => $this->supplier->id],
         ];
 
         $response = $this->postJson('/api/products', $data);
@@ -784,27 +626,21 @@ class ProductControllerTest extends TestCase
 
     public function test_stock_must_be_min_0_invalid_negative()
     {
-        $coin = $this->coinService->createCoin(['code' => 'AUD']);
-        $measure = $this->measureService->createMeasure(['code' => 'UNIT']);
-        $brand = app(BrandService::class)->createBrand(['code' => 'ACME']);
-        $subBrand = $this->subBrandService->createSubBrand(['code' => 'ACME_ECO','brand' => ['id' => $brand->id]]);
-        $supplier = $this->supplierService->createSupplier(['name' => 'Supplier01']);
-
         $data = [
             'code' => 'P001',
             'supplier_cost_price' => 100,
-            'supplier_coin' => ['id' => $coin->id],
+            'supplier_coin' => ['id' => $this->coin->id],
             'landing_cost_price' => 120,
-            'landing_coin' => ['id' => $coin->id],
+            'landing_coin' => ['id' => $this->coin->id],
             'retail_price' => 150,
             'promotional_price' => 140,
             'stock' => -5,
-            'measure' => ['id' => $measure->id],
+            'measure' => ['id' => $this->measure->id],
             'serial_tracking' => 'SER001',
             'dimension_size' => '10x10x10',
             'dimension_weight' => 5,
-            'sub_brand' => ['id' => $subBrand->id],
-            'supplier' => ['id' => $supplier->id],
+            'sub_brand' => ['id' => $this->subBrand->id],
+            'supplier' => ['id' => $this->supplier->id],
         ];
 
         $response = $this->postJson('/api/products', $data);
@@ -815,27 +651,21 @@ class ProductControllerTest extends TestCase
 
     public function test_serial_tracking_must_be_required()
     {
-        $coin = $this->coinService->createCoin(['code' => 'AUD']);
-        $measure = $this->measureService->createMeasure(['code' => 'UNIT']);
-        $brand = app(BrandService::class)->createBrand(['code' => 'ACME']);
-        $subBrand = $this->subBrandService->createSubBrand(['code' => 'ACME_ECO','brand' => ['id' => $brand->id]]);
-        $supplier = $this->supplierService->createSupplier(['name' => 'Supplier01']);
-
         $data = [
             'code' => 'P001',
             'supplier_cost_price' => 100,
-            'supplier_coin' => ['id' => $coin->id],
+            'supplier_coin' => ['id' => $this->coin->id],
             'landing_cost_price' => 120,
-            'landing_coin' => ['id' => $coin->id],
+            'landing_coin' => ['id' => $this->coin->id],
             'retail_price' => 150,
             'promotional_price' => 140,
             'stock' => 10,
-            'measure' => ['id' => $measure->id],
+            'measure' => ['id' => $this->measure->id],
             'serial_tracking' => '',
             'dimension_size' => '10x10x10',
             'dimension_weight' => 5,
-            'sub_brand' => ['id' => $subBrand->id],
-            'supplier' => ['id' => $supplier->id],
+            'sub_brand' => ['id' => $this->subBrand->id],
+            'supplier' => ['id' => $this->supplier->id],
         ];
 
         $response = $this->postJson('/api/products', $data);
@@ -846,27 +676,21 @@ class ProductControllerTest extends TestCase
 
     public function test_serial_tracking_must_be_string_invalid_integer()
     {
-        $coin = $this->coinService->createCoin(['code' => 'AUD']);
-        $measure = $this->measureService->createMeasure(['code' => 'UNIT']);
-        $brand = app(BrandService::class)->createBrand(['code' => 'ACME']);
-        $subBrand = $this->subBrandService->createSubBrand(['code' => 'ACME_ECO','brand' => ['id' => $brand->id]]);
-        $supplier = $this->supplierService->createSupplier(['name' => 'Supplier01']);
-
         $data = [
             'code' => 'P001',
             'supplier_cost_price' => 100,
-            'supplier_coin' => ['id' => $coin->id],
+            'supplier_coin' => ['id' => $this->coin->id],
             'landing_cost_price' => 120,
-            'landing_coin' => ['id' => $coin->id],
+            'landing_coin' => ['id' => $this->coin->id],
             'retail_price' => 150,
             'promotional_price' => 140,
             'stock' => 10,
-            'measure' => ['id' => $measure->id],
+            'measure' => ['id' => $this->measure->id],
             'serial_tracking' => 12345,
             'dimension_size' => '10x10x10',
             'dimension_weight' => 5,
-            'sub_brand' => ['id' => $subBrand->id],
-            'supplier' => ['id' => $supplier->id],
+            'sub_brand' => ['id' => $this->subBrand->id],
+            'supplier' => ['id' => $this->supplier->id],
         ];
 
         $response = $this->postJson('/api/products', $data);
@@ -877,27 +701,21 @@ class ProductControllerTest extends TestCase
 
     public function test_serial_tracking_must_not_exceed_100_characters()
     {
-        $coin = $this->coinService->createCoin(['code' => 'AUD']);
-        $measure = $this->measureService->createMeasure(['code' => 'UNIT']);
-        $brand = app(BrandService::class)->createBrand(['code' => 'ACME']);
-        $subBrand = $this->subBrandService->createSubBrand(['code' => 'ACME_ECO','brand' => ['id' => $brand->id]]);
-        $supplier = $this->supplierService->createSupplier(['name' => 'Supplier01']);
-
         $data = [
             'code' => 'P001',
             'supplier_cost_price' => 100,
-            'supplier_coin' => ['id' => $coin->id],
+            'supplier_coin' => ['id' => $this->coin->id],
             'landing_cost_price' => 120,
-            'landing_coin' => ['id' => $coin->id],
+            'landing_coin' => ['id' => $this->coin->id],
             'retail_price' => 150,
             'promotional_price' => 140,
             'stock' => 10,
-            'measure' => ['id' => $measure->id],
+            'measure' => ['id' => $this->measure->id],
             'serial_tracking' => str_repeat('A', 101),
             'dimension_size' => '10x10x10',
             'dimension_weight' => 5,
-            'sub_brand' => ['id' => $subBrand->id],
-            'supplier' => ['id' => $supplier->id],
+            'sub_brand' => ['id' => $this->subBrand->id],
+            'supplier' => ['id' => $this->supplier->id],
         ];
 
         $response = $this->postJson('/api/products', $data);
@@ -908,27 +726,21 @@ class ProductControllerTest extends TestCase
 
     public function test_dimension_size_must_be_required()
     {
-        $coin = $this->coinService->createCoin(['code' => 'AUD']);
-        $measure = $this->measureService->createMeasure(['code' => 'UNIT']);
-        $brand = app(BrandService::class)->createBrand(['code' => 'ACME']);
-        $subBrand = $this->subBrandService->createSubBrand(['code' => 'ACME_ECO','brand' => ['id' => $brand->id]]);
-        $supplier = $this->supplierService->createSupplier(['name' => 'Supplier01']);
-
         $data = [
             'code' => 'P001',
             'supplier_cost_price' => 100,
-            'supplier_coin' => ['id' => $coin->id],
+            'supplier_coin' => ['id' => $this->coin->id],
             'landing_cost_price' => 120,
-            'landing_coin' => ['id' => $coin->id],
+            'landing_coin' => ['id' => $this->coin->id],
             'retail_price' => 150,
             'promotional_price' => 140,
             'stock' => 10,
-            'measure' => ['id' => $measure->id],
+            'measure' => ['id' => $this->measure->id],
             'serial_tracking' => 'SER001',
             'dimension_size' => '',
             'dimension_weight' => 5,
-            'sub_brand' => ['id' => $subBrand->id],
-            'supplier' => ['id' => $supplier->id],
+            'sub_brand' => ['id' => $this->subBrand->id],
+            'supplier' => ['id' => $this->supplier->id],
         ];
 
         $response = $this->postJson('/api/products', $data);
@@ -939,27 +751,21 @@ class ProductControllerTest extends TestCase
 
     public function test_dimension_size_must_be_string_invalid_integer()
     {
-        $coin = $this->coinService->createCoin(['code' => 'AUD']);
-        $measure = $this->measureService->createMeasure(['code' => 'UNIT']);
-        $brand = app(BrandService::class)->createBrand(['code' => 'ACME']);
-        $subBrand = $this->subBrandService->createSubBrand(['code' => 'ACME_ECO','brand' => ['id' => $brand->id]]);
-        $supplier = $this->supplierService->createSupplier(['name' => 'Supplier01']);
-
         $data = [
             'code' => 'P001',
             'supplier_cost_price' => 100,
-            'supplier_coin' => ['id' => $coin->id],
+            'supplier_coin' => ['id' => $this->coin->id],
             'landing_cost_price' => 120,
-            'landing_coin' => ['id' => $coin->id],
+            'landing_coin' => ['id' => $this->coin->id],
             'retail_price' => 150,
             'promotional_price' => 140,
             'stock' => 10,
-            'measure' => ['id' => $measure->id],
+            'measure' => ['id' => $this->measure->id],
             'serial_tracking' => 'SER001',
             'dimension_size' => 12345,
             'dimension_weight' => 5,
-            'sub_brand' => ['id' => $subBrand->id],
-            'supplier' => ['id' => $supplier->id],
+            'sub_brand' => ['id' => $this->subBrand->id],
+            'supplier' => ['id' => $this->supplier->id],
         ];
 
         $response = $this->postJson('/api/products', $data);
@@ -970,27 +776,21 @@ class ProductControllerTest extends TestCase
 
     public function test_dimension_size_must_not_exceed_50_characters()
     {
-        $coin = $this->coinService->createCoin(['code' => 'AUD']);
-        $measure = $this->measureService->createMeasure(['code' => 'UNIT']);
-        $brand = app(BrandService::class)->createBrand(['code' => 'ACME']);
-        $subBrand = $this->subBrandService->createSubBrand(['code' => 'ACME_ECO','brand' => ['id' => $brand->id]]);
-        $supplier = $this->supplierService->createSupplier(['name' => 'Supplier01']);
-
         $data = [
             'code' => 'P001',
             'supplier_cost_price' => 100,
-            'supplier_coin' => ['id' => $coin->id],
+            'supplier_coin' => ['id' => $this->coin->id],
             'landing_cost_price' => 120,
-            'landing_coin' => ['id' => $coin->id],
+            'landing_coin' => ['id' => $this->coin->id],
             'retail_price' => 150,
             'promotional_price' => 140,
             'stock' => 10,
-            'measure' => ['id' => $measure->id],
+            'measure' => ['id' => $this->measure->id],
             'serial_tracking' => 'SER001',
             'dimension_size' => str_repeat('A', 51),
             'dimension_weight' => 5,
-            'sub_brand' => ['id' => $subBrand->id],
-            'supplier' => ['id' => $supplier->id],
+            'sub_brand' => ['id' => $this->subBrand->id],
+            'supplier' => ['id' => $this->supplier->id],
         ];
 
         $response = $this->postJson('/api/products', $data);
@@ -1001,27 +801,21 @@ class ProductControllerTest extends TestCase
 
     public function test_dimension_weight_must_be_required()
     {
-        $coin = $this->coinService->createCoin(['code' => 'AUD']);
-        $measure = $this->measureService->createMeasure(['code' => 'UNIT']);
-        $brand = app(BrandService::class)->createBrand(['code' => 'ACME']);
-        $subBrand = $this->subBrandService->createSubBrand(['code' => 'ACME_ECO','brand' => ['id' => $brand->id]]);
-        $supplier = $this->supplierService->createSupplier(['name' => 'Supplier01']);
-
         $data = [
             'code' => 'P001',
             'supplier_cost_price' => 100,
-            'supplier_coin' => ['id' => $coin->id],
+            'supplier_coin' => ['id' => $this->coin->id],
             'landing_cost_price' => 120,
-            'landing_coin' => ['id' => $coin->id],
+            'landing_coin' => ['id' => $this->coin->id],
             'retail_price' => 150,
             'promotional_price' => 140,
             'stock' => 10,
-            'measure' => ['id' => $measure->id],
+            'measure' => ['id' => $this->measure->id],
             'serial_tracking' => 'SER001',
             'dimension_size' => '10x10x10',
             'dimension_weight' => null,
-            'sub_brand' => ['id' => $subBrand->id],
-            'supplier' => ['id' => $supplier->id],
+            'sub_brand' => ['id' => $this->subBrand->id],
+            'supplier' => ['id' => $this->supplier->id],
         ];
 
         $response = $this->postJson('/api/products', $data);
@@ -1032,27 +826,21 @@ class ProductControllerTest extends TestCase
 
     public function test_dimension_weight_must_be_integer_invalid_string()
     {
-        $coin = $this->coinService->createCoin(['code' => 'AUD']);
-        $measure = $this->measureService->createMeasure(['code' => 'UNIT']);
-        $brand = app(BrandService::class)->createBrand(['code' => 'ACME']);
-        $subBrand = $this->subBrandService->createSubBrand(['code' => 'ACME_ECO','brand' => ['id' => $brand->id]]);
-        $supplier = $this->supplierService->createSupplier(['name' => 'Supplier01']);
-
         $data = [
             'code' => 'P001',
             'supplier_cost_price' => 100,
-            'supplier_coin' => ['id' => $coin->id],
+            'supplier_coin' => ['id' => $this->coin->id],
             'landing_cost_price' => 120,
-            'landing_coin' => ['id' => $coin->id],
+            'landing_coin' => ['id' => $this->coin->id],
             'retail_price' => 150,
             'promotional_price' => 140,
             'stock' => 10,
-            'measure' => ['id' => $measure->id],
+            'measure' => ['id' => $this->measure->id],
             'serial_tracking' => 'SER001',
             'dimension_size' => '10x10x10',
             'dimension_weight' => 'abc',
-            'sub_brand' => ['id' => $subBrand->id],
-            'supplier' => ['id' => $supplier->id],
+            'sub_brand' => ['id' => $this->subBrand->id],
+            'supplier' => ['id' => $this->supplier->id],
         ];
 
         $response = $this->postJson('/api/products', $data);
@@ -1063,27 +851,21 @@ class ProductControllerTest extends TestCase
 
     public function test_dimension_weight_must_be_min_0_invalid_negative()
     {
-        $coin = $this->coinService->createCoin(['code' => 'AUD']);
-        $measure = $this->measureService->createMeasure(['code' => 'UNIT']);
-        $brand = app(BrandService::class)->createBrand(['code' => 'ACME']);
-        $subBrand = $this->subBrandService->createSubBrand(['code' => 'ACME_ECO','brand' => ['id' => $brand->id]]);
-        $supplier = $this->supplierService->createSupplier(['name' => 'Supplier01']);
-
         $data = [
             'code' => 'P001',
             'supplier_cost_price' => 100,
-            'supplier_coin' => ['id' => $coin->id],
+            'supplier_coin' => ['id' => $this->coin->id],
             'landing_cost_price' => 120,
-            'landing_coin' => ['id' => $coin->id],
+            'landing_coin' => ['id' => $this->coin->id],
             'retail_price' => 150,
             'promotional_price' => 140,
             'stock' => 10,
-            'measure' => ['id' => $measure->id],
+            'measure' => ['id' => $this->measure->id],
             'serial_tracking' => 'SER001',
             'dimension_size' => '10x10x10',
             'dimension_weight' => -1,
-            'sub_brand' => ['id' => $subBrand->id],
-            'supplier' => ['id' => $supplier->id],
+            'sub_brand' => ['id' => $this->subBrand->id],
+            'supplier' => ['id' => $this->supplier->id],
         ];
 
         $response = $this->postJson('/api/products', $data);
@@ -1094,32 +876,21 @@ class ProductControllerTest extends TestCase
 
     public function test_can_show_product_by_id()
     {
-        $coin = $this->coinService->createCoin(['code' => 'USD']);
-        $measure = $this->measureService->createMeasure(['code' => 'KG']);
-
-        $brand = app(BrandService::class)->createBrand(['code' => 'ACME']);
-        $subBrand = $this->subBrandService->createSubBrand([
-            'code' => 'SUB_ACME_1',
-            'brand' => ['id' => $brand->id],
-        ]);
-
-        $supplier = $this->supplierService->createSupplier(['name' => 'Supplier 1']);
-
         $product = $this->productService->createProduct([
             'code' => 'P001',
             'supplier_cost_price' => 100,
-            'supplier_coin' => ['id' => $coin->id],
+            'supplier_coin' => ['id' => $this->coin->id],
             'landing_cost_price' => 120,
-            'landing_coin' => ['id' => $coin->id],
+            'landing_coin' => ['id' => $this->coin->id],
             'retail_price' => 150,
             'promotional_price' => 140,
             'stock' => 10,
-            'measure' => ['id' => $measure->id],
+            'measure' => ['id' => $this->measure->id],
             'serial_tracking' => 'SER001',
             'dimension_size' => '10x10x10',
             'dimension_weight' => 5,
-            'sub_brand' => ['id' => $subBrand->id],
-            'supplier' => ['id' => $supplier->id],
+            'sub_brand' => ['id' => $this->subBrand->id],
+            'supplier' => ['id' => $this->supplier->id],
         ]);
 
         $response = $this->getJson("/api/products/{$product->id}");
@@ -1146,49 +917,38 @@ class ProductControllerTest extends TestCase
 
     public function test_can_update_product()
     {
-        $coin = $this->coinService->createCoin(['code' => 'USD']);
-        $measure = $this->measureService->createMeasure(['code' => 'KG']);
-
-        $brand = app(BrandService::class)->createBrand(['code' => 'ACME']);
-        $subBrand = $this->subBrandService->createSubBrand([
-            'code' => 'SUB_ACME_1',
-            'brand' => ['id' => $brand->id],
-        ]);
-
-        $supplier = $this->supplierService->createSupplier(['name' => 'Supplier 1']);
-
         $product = $this->productService->createProduct([
             'code' => 'OLD_CODE',
             'supplier_cost_price' => 100,
-            'supplier_coin' => ['id' => $coin->id],
+            'supplier_coin' => ['id' => $this->coin->id],
             'landing_cost_price' => 120,
-            'landing_coin' => ['id' => $coin->id],
+            'landing_coin' => ['id' => $this->coin->id],
             'retail_price' => 150,
             'promotional_price' => 140,
             'stock' => 10,
-            'measure' => ['id' => $measure->id],
+            'measure' => ['id' => $this->measure->id],
             'serial_tracking' => 'OLD123',
             'dimension_size' => '10x10x10',
             'dimension_weight' => 5,
-            'sub_brand' => ['id' => $subBrand->id],
-            'supplier' => ['id' => $supplier->id],
+            'sub_brand' => ['id' => $this->subBrand->id],
+            'supplier' => ['id' => $this->supplier->id],
         ]);
 
         $updateData = [
             'code' => 'NEW_CODE',
             'supplier_cost_price' => 200,
-            'supplier_coin' => ['id' => $coin->id],
+            'supplier_coin' => ['id' => $this->coin->id],
             'landing_cost_price' => 220,
-            'landing_coin' => ['id' => $coin->id],
+            'landing_coin' => ['id' => $this->coin->id],
             'retail_price' => 250,
             'promotional_price' => 240,
             'stock' => 20,
-            'measure' => ['id' => $measure->id],
+            'measure' => ['id' => $this->measure->id],
             'serial_tracking' => 'NEW123',
             'dimension_size' => '20x20x20',
             'dimension_weight' => 10,
-            'sub_brand' => ['id' => $subBrand->id],
-            'supplier' => ['id' => $supplier->id],
+            'sub_brand' => ['id' => $this->subBrand->id],
+            'supplier' => ['id' => $this->supplier->id],
         ];
 
         $response = $this->putJson("/api/products/{$product->id}", $updateData);
@@ -1205,66 +965,55 @@ class ProductControllerTest extends TestCase
 
     public function test_cannot_update_product_to_duplicate_code()
     {
-        $coin = $this->coinService->createCoin(['code' => 'USD']);
-        $measure = $this->measureService->createMeasure(['code' => 'KG']);
-
-        $brand = app(BrandService::class)->createBrand(['code' => 'ACME']);
-        $subBrand = $this->subBrandService->createSubBrand([
-            'code' => 'SUB_ACME_1',
-            'brand' => ['id' => $brand->id],
-        ]);
-
-        $supplier = $this->supplierService->createSupplier(['name' => 'Supplier 1']);
-
         $product1 = $this->productService->createProduct([
             'code' => 'PROD1',
             'supplier_cost_price' => 100,
-            'supplier_coin' => ['id' => $coin->id],
+            'supplier_coin' => ['id' => $this->coin->id],
             'landing_cost_price' => 120,
-            'landing_coin' => ['id' => $coin->id],
+            'landing_coin' => ['id' => $this->coin->id],
             'retail_price' => 150,
             'promotional_price' => 140,
             'stock' => 10,
-            'measure' => ['id' => $measure->id],
+            'measure' => ['id' => $this->measure->id],
             'serial_tracking' => 'ABC123',
             'dimension_size' => '10x10x10',
             'dimension_weight' => 5,
-            'sub_brand' => ['id' => $subBrand->id],
-            'supplier' => ['id' => $supplier->id],
+            'sub_brand' => ['id' => $this->subBrand->id],
+            'supplier' => ['id' => $this->supplier->id],
         ]);
 
         $product2 = $this->productService->createProduct([
             'code' => 'PROD2',
             'supplier_cost_price' => 100,
-            'supplier_coin' => ['id' => $coin->id],
+            'supplier_coin' => ['id' => $this->coin->id],
             'landing_cost_price' => 120,
-            'landing_coin' => ['id' => $coin->id],
+            'landing_coin' => ['id' => $this->coin->id],
             'retail_price' => 150,
             'promotional_price' => 140,
             'stock' => 10,
-            'measure' => ['id' => $measure->id],
+            'measure' => ['id' => $this->measure->id],
             'serial_tracking' => 'DEF123',
             'dimension_size' => '10x10x10',
             'dimension_weight' => 5,
-            'sub_brand' => ['id' => $subBrand->id],
-            'supplier' => ['id' => $supplier->id],
+            'sub_brand' => ['id' => $this->subBrand->id],
+            'supplier' => ['id' => $this->supplier->id],
         ]);
 
         $response = $this->putJson("/api/products/{$product2->id}", [
             'code' => 'PROD1',
             'supplier_cost_price' => 200,
-            'supplier_coin' => ['id' => $coin->id],
+            'supplier_coin' => ['id' => $this->coin->id],
             'landing_cost_price' => 220,
-            'landing_coin' => ['id' => $coin->id],
+            'landing_coin' => ['id' => $this->coin->id],
             'retail_price' => 250,
             'promotional_price' => 240,
             'stock' => 20,
-            'measure' => ['id' => $measure->id],
+            'measure' => ['id' => $this->measure->id],
             'serial_tracking' => 'NEW123',
             'dimension_size' => '20x20x20',
             'dimension_weight' => 10,
-            'sub_brand' => ['id' => $subBrand->id],
-            'supplier' => ['id' => $supplier->id],
+            'sub_brand' => ['id' => $this->subBrand->id],
+            'supplier' => ['id' => $this->supplier->id],
         ]);
 
         $response->assertStatus(422)
@@ -1280,30 +1029,21 @@ class ProductControllerTest extends TestCase
 
     public function test_returns_404_when_updating_non_existent_product()
     {
-        $coin = $this->coinService->createCoin(['code' => 'USD']);
-        $measure = $this->measureService->createMeasure(['code' => 'KG']);
-        $brand = app(BrandService::class)->createBrand(['code' => 'ACME']);
-        $subBrand = $this->subBrandService->createSubBrand([
-            'code' => 'SUB_ACME_1',
-            'brand' => ['id' => $brand->id],
-        ]);
-        $supplier = $this->supplierService->createSupplier(['name' => 'Supplier 1']);
-
         $data = [
             'code' => 'P001',
             'supplier_cost_price' => 100,
-            'supplier_coin' => ['id' => $coin->id],
+            'supplier_coin' => ['id' => $this->coin->id],
             'landing_cost_price' => 120,
-            'landing_coin' => ['id' => $coin->id],
+            'landing_coin' => ['id' => $this->coin->id],
             'retail_price' => 150,
             'promotional_price' => 140,
             'stock' => 10,
-            'measure' => ['id' => $measure->id],
+            'measure' => ['id' => $this->measure->id],
             'serial_tracking' => 'ABC123',
             'dimension_size' => '10x10x10',
             'dimension_weight' => 5,
-            'sub_brand' => ['id' => $subBrand->id],
-            'supplier' => ['id' => $supplier->id],
+            'sub_brand' => ['id' => $this->subBrand->id],
+            'supplier' => ['id' => $this->supplier->id],
         ];
 
         $response = $this->putJson('/api/products/99', $data);
@@ -1317,15 +1057,6 @@ class ProductControllerTest extends TestCase
 
     public function test_product_related_entities_must_exist()
     {
-        $coin = $this->coinService->createCoin(['code' => 'AUD']);
-        $measure = $this->measureService->createMeasure(['code' => 'UNIT']);
-        $brand = app(BrandService::class)->createBrand(['code' => 'ACME']);
-        $subBrand = $this->subBrandService->createSubBrand([
-            'code' => 'ACME_ECO',
-            'brand' => ['id' => $brand->id],
-        ]);
-        $supplier = $this->supplierService->createSupplier(['name' => 'Supplier01']);
-
         $data = [
             'code' => 'P001',
             'supplier_cost_price' => 100,
