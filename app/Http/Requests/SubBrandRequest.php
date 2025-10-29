@@ -2,7 +2,9 @@
 
 namespace App\Http\Requests;
 
+use App\Http\Responses\ApiResponse;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Http\Exceptions\HttpResponseException;
 
 class SubBrandRequest extends FormRequest
 {
@@ -27,5 +29,19 @@ class SubBrandRequest extends FormRequest
             'brand.id' => 'required|exists:brand,id',
             'brand.code' => 'required|string',
         ];
+    }
+
+    public function messages(): array
+    {
+        return [
+            'brand.id.exists' => 'You have not selected a valid brand.',
+        ];
+    }
+
+    protected function failedValidation(\Illuminate\Contracts\Validation\Validator $validator)
+    {
+        throw new HttpResponseException(
+            ApiResponse::error('Validation error.', 422, $validator->errors()->all())
+        );
     }
 }

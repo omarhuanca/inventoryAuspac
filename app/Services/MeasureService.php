@@ -42,11 +42,7 @@ class MeasureService
 
     public function updateMeasure(int $id, array $data)
     {
-        $measure = $this->measureRepository->find($id);
-
-        if (!$measure) {
-            throw new NotFoundException('Measure not found.');
-        }
+        $this->getMeasureById($id);
 
         if (isset($data['code'])) {
             $exists = Measure::whereRaw('LOWER(code) = ?', [strtolower($data['code'])])

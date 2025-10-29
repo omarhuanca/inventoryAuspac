@@ -2,7 +2,9 @@
 
 namespace App\Http\Requests;
 
+use App\Http\Responses\ApiResponse;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Http\Exceptions\HttpResponseException;
 
 class MeasureRequest extends FormRequest
 {
@@ -24,5 +26,12 @@ class MeasureRequest extends FormRequest
         return [
             'code' => 'required|string|min:1|max:10|regex:/^[A-Za-z]+$/',
         ];
+    }
+
+    protected function failedValidation(\Illuminate\Contracts\Validation\Validator $validator)
+    {
+        throw new HttpResponseException(
+            ApiResponse::error('Validation error.', 422, $validator->errors()->all())
+        );
     }
 }

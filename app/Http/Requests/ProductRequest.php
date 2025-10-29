@@ -45,4 +45,22 @@ class ProductRequest extends FormRequest
             'supplier.id' => 'required|exists:supplier,id',
         ];
     }
+
+    public function messages(): array
+    {
+        return [
+            'supplier_coin.id.exists' => 'You have not selected a valid supplier coin.',
+            'landing_coin.id.exists' => 'You have not selected a valid landing coin.',
+            'measure.id.exists' => 'You have not selected a valid measure.',
+            'sub_brand.id.exists' => 'You have not selected a valid sub brand.',
+            'supplier.id.exists' => 'You have not selected a valid supplier.',
+        ];
+    }
+
+    protected function failedValidation(\Illuminate\Contracts\Validation\Validator $validator)
+    {
+        throw new HttpResponseException(
+            ApiResponse::error('Validation error.', 422, $validator->errors()->all())
+        );
+    }
 }

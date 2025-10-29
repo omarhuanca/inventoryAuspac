@@ -2,7 +2,9 @@
 
 namespace App\Http\Requests;
 
+use App\Http\Responses\ApiResponse;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Http\Exceptions\HttpResponseException;
 
 class BrandRequest extends FormRequest
 {
@@ -24,5 +26,12 @@ class BrandRequest extends FormRequest
         return [
             'code' => 'required|string|min:2|max:50|regex:/^[A-Za-z0-9_-]+$/',
         ];
+    }
+
+    protected function failedValidation(\Illuminate\Contracts\Validation\Validator $validator)
+    {
+        throw new HttpResponseException(
+            ApiResponse::error('Validation error.', 422, $validator->errors()->all())
+        );
     }
 }

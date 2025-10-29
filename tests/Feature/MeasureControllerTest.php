@@ -57,8 +57,8 @@ class MeasureControllerTest extends TestCase
         $response = $this->postJson('/api/measures', $data);
 
         $response->assertStatus(422);
-        $response->assertJsonStructure(['message', 'errors' => ['code']]);
-        $response->assertJsonFragment(['errors' => ['code' => ['The code field is required.']]]);
+        $response->assertJsonStructure(['message', 'statusCode', 'error', 'data']);
+        $response->assertJsonFragment(['data' => ['The code field is required.']]);
     }
 
     public function test_code_cannot_contain_numbers()
@@ -68,10 +68,8 @@ class MeasureControllerTest extends TestCase
         $response = $this->postJson('/api/measures', $data);
 
         $response->assertStatus(422);
-        $response->assertJsonStructure(['message', 'errors' => ['code']]);
-        $response->assertJsonFragment([
-            'errors' => ['code' => ['The code field format is invalid.']],
-        ]);
+        $response->assertJsonStructure(['message', 'statusCode', 'error', 'data']);
+        $response->assertJsonFragment(['data' => ['The code field format is invalid.']]);
     }
 
     public function test_code_cannot_exceed_maximum_length()
@@ -81,10 +79,8 @@ class MeasureControllerTest extends TestCase
         $response = $this->postJson('/api/measures', $data);
 
         $response->assertStatus(422);
-        $response->assertJsonStructure(['message', 'errors' => ['code']]);
-        $response->assertJsonFragment([
-            'errors' => ['code' => ['The code field must not be greater than 10 characters.']],
-        ]);
+        $response->assertJsonStructure(['message', 'statusCode', 'error', 'data']);
+        $response->assertJsonFragment(['data' => ['The code field must not be greater than 10 characters.']]);
     }
 
     public function test_code_cannot_contain_special_characters()
@@ -94,10 +90,8 @@ class MeasureControllerTest extends TestCase
         $response = $this->postJson('/api/measures', $data);
 
         $response->assertStatus(422);
-        $response->assertJsonStructure(['message', 'errors' => ['code']]);
-        $response->assertJsonFragment([
-            'errors' => ['code' => ['The code field format is invalid.']],
-        ]);
+        $response->assertJsonStructure(['message', 'statusCode', 'error', 'data']);
+        $response->assertJsonFragment(['data' => ['The code field format is invalid.']]);
     }
 
     public function test_cannot_create_a_measure_with_duplicate_code()
