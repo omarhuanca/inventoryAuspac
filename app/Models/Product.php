@@ -172,4 +172,9 @@ class Product extends Model
     {
         return $this->belongsTo(Supplier::class);
     }
+
+    public function bundles()
+    {
+        return $this->belongsToMany(Bundle::class, 'bundle_product')->withTimestamps();
+    }
 }
