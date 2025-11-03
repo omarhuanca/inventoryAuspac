@@ -24,10 +24,8 @@ class BundleTest extends TestCase
         }
     }
 
-    public function test_can_create_valid_bundle()
+    private function makeProducts(Coin $coin): array
     {
-        $coin = Coin::at('USD');
-
         $product1 = Product::at('P001', 100, $coin, 150, $coin, 200,
             180, 10, Measure::at('UNIT'), 'SER001', '10x10x10',
             5, SubBrand::at('ACME_ECO', Brand::at('ACME')), Supplier::at('Supplier01'));
@@ -36,9 +34,15 @@ class BundleTest extends TestCase
             120, 20, Measure::at('UNIT'), 'SER002', '10x10x10',
             5, SubBrand::at('ACME_ECO', Brand::at('ACME')), Supplier::at('Supplier01'));
 
-        $bundle = Bundle::at('B001', 200, $coin, 300, 250);
-        $bundle->addProduct($product1);
-        $bundle->addProduct($product2);
+        return [$product1, $product2];
+    }
+
+    public function test_can_create_valid_bundle()
+    {
+        $coin = Coin::at('USD');
+        [$product1, $product2] = $this->makeProducts($coin);
+
+        $bundle = Bundle::at('B001', 200, $coin, 300, 250, [$product1, $product2]);
 
         $this->assertCount(2, $bundle->getProducts());
         $this->assertEquals('P001', $bundle->getProducts()[0]->code);
@@ -48,9 +52,10 @@ class BundleTest extends TestCase
     public function test_code_cannot_be_empty()
     {
         $coin = Coin::at('USD');
+        [$product1, $product2] = $this->makeProducts($coin);
 
         $this->shouldThrowAndAssert(
-            fn() => Bundle::at('', 100, $coin, 200, 150),
+            fn() => Bundle::at('', 100, $coin, 200, 150, [$product1, $product2]),
             \RuntimeException::class,
             fn($e) => $this->assertEquals(Bundle::$codeEmpty, $e->getMessage())
         );
@@ -59,9 +64,10 @@ class BundleTest extends TestCase
     public function test_code_too_short_is_invalid()
     {
         $coin = Coin::at('USD');
+        [$product1, $product2] = $this->makeProducts($coin);
 
         $this->shouldThrowAndAssert(
-            fn() => Bundle::at('B', 100, $coin, 200, 150),
+            fn() => Bundle::at(str_repeat('B', 51), 100, $coin, 200, 150, [$product1, $product2]),
             \RuntimeException::class,
             fn($e) => $this->assertEquals(Bundle::$codeLength, $e->getMessage())
         );
@@ -70,9 +76,10 @@ class BundleTest extends TestCase
     public function test_code_too_long_is_invalid()
     {
         $coin = Coin::at('USD');
+        [$product1, $product2] = $this->makeProducts($coin);
 
         $this->shouldThrowAndAssert(
-            fn() => Bundle::at(str_repeat('B', 51), 100, $coin, 200, 150),
+            fn() => Bundle::at(str_repeat('B', 51), 100, $coin, 200, 150, [$product1, $product2]),
             \RuntimeException::class,
             fn($e) => $this->assertEquals(Bundle::$codeLength, $e->getMessage())
         );
@@ -81,9 +88,10 @@ class BundleTest extends TestCase
     public function test_code_with_invalid_characters()
     {
         $coin = Coin::at('USD');
+        [$product1, $product2] = $this->makeProducts($coin);
 
         $this->shouldThrowAndAssert(
-            fn() => Bundle::at('INVALID CODE!', 100, $coin, 200, 150),
+            fn() => Bundle::at('INVALID CODE!', 100, $coin, 200, 150, [$product1, $product2]),
             \RuntimeException::class,
             fn($e) => $this->assertEquals(Bundle::$codeInvalid, $e->getMessage())
         );
@@ -92,9 +100,10 @@ class BundleTest extends TestCase
     public function test_landing_cost_must_be_non_negative_number()
     {
         $coin = Coin::at('USD');
+        [$product1, $product2] = $this->makeProducts($coin);
 
         $this->shouldThrowAndAssert(
-            fn() => Bundle::at('B001', -100, $coin, 200, 150),
+            fn() => Bundle::at('B001', -100, $coin, 200, 150, [$product1, $product2]),
             \RuntimeException::class,
             fn($e) => $this->assertEquals(Bundle::$landingCostInvalid, $e->getMessage())
         );
@@ -103,9 +112,10 @@ class BundleTest extends TestCase
     public function test_retail_price_must_be_non_negative_number()
     {
         $coin = Coin::at('USD');
+        [$product1, $product2] = $this->makeProducts($coin);
 
         $this->shouldThrowAndAssert(
-            fn() => Bundle::at('B001', 100, $coin, -100, 50),
+            fn() => Bundle::at('B001', 100, $coin, -100, 50, [$product1, $product2]),
             \RuntimeException::class,
             fn($e) => $this->assertEquals(Bundle::$retailInvalid, $e->getMessage())
         );
@@ -114,9 +124,10 @@ class BundleTest extends TestCase
     public function test_promotional_price_must_be_non_negative_number()
     {
         $coin = Coin::at('USD');
+        [$product1, $product2] = $this->makeProducts($coin);
 
         $this->shouldThrowAndAssert(
-            fn() => Bundle::at('B001', 100, $coin, 100, -50),
+            fn() => Bundle::at('B001', 100, $coin, 100, -50, [$product1, $product2]),
             \RuntimeException::class,
             fn($e) => $this->assertEquals(Bundle::$promotionalNegative, $e->getMessage())
         );
@@ -125,9 +136,10 @@ class BundleTest extends TestCase
     public function test_promotional_price_must_be_less_than_retail_price()
     {
         $coin = Coin::at('USD');
+        [$product1, $product2] = $this->makeProducts($coin);
 
         $this->shouldThrowAndAssert(
-            fn() => Bundle::at('B001', 100, $coin, 200, 250),
+            fn() => Bundle::at('B001', 100, $coin, 200, 250, [$product1, $product2]),
             \RuntimeException::class,
             fn($e) => $this->assertEquals(Bundle::$promotionalInvalid, $e->getMessage())
         );
@@ -143,17 +155,10 @@ class BundleTest extends TestCase
             5, SubBrand::at('ACME_ECO', Brand::at('ACME')), Supplier::at('Supplier01')
         );
 
-        $bundle = Bundle::at('B001', 200, $coin, 300, 250);
-
         $this->shouldThrowAndAssert(
-            function () use ($bundle, $product) {
-                $bundle->addProduct($product);
-                $bundle->addProduct($product);
-            },
+            fn() => Bundle::at('B001', 200, $coin, 300, 250, [$product, $product]),
             \RuntimeException::class,
-            function ($exception) use ($bundle) {
-                $this->assertEquals(1, count($bundle->getProducts()));
-            }
+            fn($e) => $this->assertEquals(Bundle::$productsDuplicate, $e->getMessage())
         );
     }
 
@@ -161,40 +166,26 @@ class BundleTest extends TestCase
     {
         $coin = Coin::at('USD');
 
-        $bundle = Bundle::at('B001', 200, $coin, 300, 250);
-
-        $this->assertCount(0, $bundle->getProducts());
-
         $this->shouldThrowAndAssert(
-            fn() => $bundle->ensureHasProducts(),
+            fn() => Bundle::at('B001', 200, $coin, 300, 250, []),
             \RuntimeException::class,
-            function ($exception) use ($bundle) {
-                $this->assertEquals(Bundle::$noProducts, $exception->getMessage());
-                $this->assertEquals(0, count($bundle->getProducts()));
-
-            }
+            fn($e) => $this->assertEquals(Bundle::$productsMin, $e->getMessage())
         );
     }
 
     public function test_bundle_must_have_at_least_two_products_when_only_one_is_added()
     {
         $coin = Coin::at('USD');
-        $product = Product::at('P001', 100, $coin, 150, $coin, 200,
+        $product = Product::at(
+            'P001', 100, $coin, 150, $coin, 200,
             180, 10, Measure::at('UNIT'), 'SER001', '10x10x10',
-            5, SubBrand::at('ACME_ECO', Brand::at('ACME')), Supplier::at('Supplier01'));
-
-        $bundle = Bundle::at('B001', 200, $coin, 300, 250);
-        $bundle->addProduct($product);
-
-        $this->assertCount(1, $bundle->getProducts());
+            5, SubBrand::at('ACME_ECO', Brand::at('ACME')), Supplier::at('Supplier01')
+        );
 
         $this->shouldThrowAndAssert(
-            fn() => $bundle->ensureHasProducts(),
+            fn() => Bundle::at('B001', 200, $coin, 300, 250, [$product]),
             \RuntimeException::class,
-            function ($exception) use ($bundle) {
-                $this->assertEquals(Bundle::$noProducts, $exception->getMessage());
-                $this->assertEquals(1, count($bundle->getProducts()));
-            }
+            fn($e) => $this->assertEquals(Bundle::$productsMin, $e->getMessage())
         );
     }
 }

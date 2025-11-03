@@ -36,23 +36,16 @@ class BundleRepository
                 $data['landing_cost_price'],
                 $landingCoin,
                 $data['retail_price'],
-                $data['promotional_price']
+                $data['promotional_price'],
+                $data['products']
             );
 
             $bundle->save();
 
             if (!empty($data['products'])) {
-                $productIds = [];
-
-                foreach ($data['products'] as $product) {
-                    $bundle->addProduct($product);
-                    $productIds[] = $product->id;
-                }
-
+                $productIds = array_map(fn($p) => $p->id, $data['products']);
                 $bundle->products()->sync($productIds);
             }
-
-            $bundle->ensureHasProducts();
 
             return $bundle->load(['landingCoin', 'products.supplierCoin', 'products.landingCoin', 'products.measure',
                 'products.subBrand.brand', 'products.supplier',
@@ -68,7 +61,8 @@ class BundleRepository
                 $data['landing_cost_price'],
                 $landingCoin,
                 $data['retail_price'],
-                $data['promotional_price']
+                $data['promotional_price'],
+                $data['products']
             );
 
             $bundle->update([
@@ -80,17 +74,9 @@ class BundleRepository
             ]);
 
             if (!empty($data['products'])) {
-                $productIds = [];
-
-                foreach ($data['products'] as $product) {
-                    $bundle->addProduct($product);
-                    $productIds[] = $product->id;
-                }
-
+                $productIds = array_map(fn($p) => $p->id, $data['products']);
                 $bundle->products()->sync($productIds);
             }
-
-            $bundle->ensureHasProducts();
 
             return $bundle->load([
                 'landingCoin', 'products.supplierCoin', 'products.landingCoin', 'products.measure',

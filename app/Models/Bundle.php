@@ -49,9 +49,11 @@ class Bundle extends Model
     public static $retailInvalid = 'Retail price must be a non-negative number.';
     public static $promotionalNegative = 'Promotional price must be a non-negative number.';
     public static $promotionalInvalid = 'Promotional price must be less than retail price.';
-    public static $noProducts = 'A bundle must contain at least two products.';
+    public static $productsMin = 'A bundle must contain at least two products.';
+    public static string $productsDuplicate = 'Duplicate product in bundle is not allowed.';
 
-    public static function at(string $code, float $landingCost, Coin $landingCoin, float $retailPrice, float $promotionalPrice)
+    public static function at(string $code, float $landingCost, Coin $landingCoin, float $retailPrice,
+                              float $promotionalPrice, array $products)
     {
         if ($code === '') {
             throw new \RuntimeException(self::$codeEmpty);
@@ -81,37 +83,26 @@ class Bundle extends Model
             throw new \RuntimeException(self::$promotionalInvalid);
         }
 
-        return new Bundle([
+        if (count($products) < 2) {
+            throw new \RuntimeException(self::$productsMin);
+        }
+
+        $codes = array_map(fn($p) => $p->code, $products);
+        if(count($codes) !== count(array_unique($codes))) {
+            throw new \RuntimeException(self::$productsDuplicate);
+        }
+
+        $bundle = new Bundle([
             'code' => trim($code),
             'landing_cost_price' => $landingCost,
             'landing_coin_id' => $landingCoin->id,
             'retail_price' => $retailPrice,
             'promotional_price' => $promotionalPrice,
         ]);
-    }
 
-    public function addProduct(Product $product)
-    {
-        foreach ($this->products as $existing) {
-            if ($existing->code === $product->code) {
-                throw new \RuntimeException('Duplicate product in bundle is not allowed.');
-            }
-        }
+        $bundle->products = $products;
 
-        $this->products[] = $product;
-    }
-
-    public function ensureHasProducts()
-    {
-        if (!$this->exists) {
-            $count = count($this->products ?? []);
-        } else {
-            $count = $this->products()->count();
-        }
-
-        if ($count < 2) {
-            throw new \RuntimeException(self::$noProducts);
-        }
+        return $bundle;
     }
 
     public function getProducts()

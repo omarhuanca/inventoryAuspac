@@ -45,14 +45,14 @@ class BundleService
 
         $products = [];
         if (!empty($data['products'])) {
-            foreach ($data['products'] as $productData) {
-                $product = Product::where('code', $productData['code'])->first();
+            $productCodes = array_column($data['products'], 'code');
+            $foundProducts = Product::whereIn('code', $productCodes)->get()->keyBy('code');
 
-                if (!$product) {
-                    throw new \RuntimeException("Product with code '{$productData['code']}' not found.");
+            foreach ($productCodes as $code) {
+                if (!isset($foundProducts[$code])) {
+                    throw new \RuntimeException("Product with code '{$code}' not found.");
                 }
-
-                $products[] = $product;
+                $products[] = $foundProducts[$code];
             }
         }
 
@@ -76,14 +76,14 @@ class BundleService
 
         $products = [];
         if (!empty($data['products'])) {
-            foreach ($data['products'] as $productData) {
-                $product = Product::where('code', $productData['code'])->first();
+            $productCodes = array_column($data['products'], 'code');
+            $foundProducts = Product::whereIn('code', $productCodes)->get()->keyBy('code');
 
-                if (!$product) {
-                    throw new \RuntimeException("Product with code '{$productData['code']}' not found.");
+            foreach ($productCodes as $code) {
+                if (!isset($foundProducts[$code])) {
+                    throw new \RuntimeException("Product with code '{$code}' not found.");
                 }
-
-                $products[] = $product;
+                $products[] = $foundProducts[$code];
             }
         }
 
