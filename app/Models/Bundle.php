@@ -4,6 +4,29 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
+/**
+ * @OA\Schema(
+ *     schema="Bundle",
+ *     type="object",
+ *     title="Bundle",
+ *     description="Represents a product bundle with pricing, coin and related products.",
+ *     @OA\Property(property="id", type="integer", example=1),
+ *     @OA\Property(property="code", type="string", example="B001"),
+ *     @OA\Property(property="landing_cost_price", type="number", format="float", example=300.00),
+ *     @OA\Property(
+ *         property="landing_coin",
+ *         ref="#/components/schemas/Coin"
+ *     ),
+ *     @OA\Property(property="retail_price", type="number", format="float", example=400.00),
+ *     @OA\Property(property="promotional_price", type="number", format="float", example=350.00),
+ *     @OA\Property(
+ *         property="products",
+ *         type="array",
+ *         description="List of products included in the bundle.",
+ *         @OA\Items(ref="#/components/schemas/Product")
+ *     )
+ * )
+ */
 class Bundle extends Model
 {
     protected $table = 'bundle';

@@ -28,7 +28,6 @@ class BundleRequest extends FormRequest
             'landing_cost_price' => 'required|numeric|min:0',
             'landing_coin' => 'required|array',
             'landing_coin.id' => 'required|exists:coin,id',
-
             'retail_price' => 'required|numeric|min:0',
             'promotional_price' => 'required|numeric|min:0|lt:retail_price',
 
