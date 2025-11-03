@@ -50,7 +50,7 @@ class Bundle extends Model
     public static $promotionalNegative = 'Promotional price must be a non-negative number.';
     public static $promotionalInvalid = 'Promotional price must be less than retail price.';
     public static $productsMin = 'A bundle must contain at least two products.';
-    public static string $productsDuplicate = 'Duplicate product in bundle is not allowed.';
+    public static $productsDuplicate = 'Duplicate product in bundle is not allowed.';
 
     public static function at(string $code, float $landingCost, Coin $landingCoin, float $retailPrice,
                               float $promotionalPrice, array $products)

@@ -58,8 +58,8 @@ class BundleRequest extends FormRequest
     {
         return [
             'landing_coin.id.exists' => 'Bundle: You have not selected a valid landing coin.',
-            //'products.required' => 'A bundle must contain at least two products.',
-            //'products.min' => 'A bundle must contain at least two products.',
+            'products.required' => 'A bundle must contain at least two products.',
+            'products.min' => 'A bundle must contain at least two products.',
 
             'products.*.supplier_coin.id.exists' => 'You have not selected a valid supplier coin.',
             'products.*.landing_coin.id.exists' => 'You have not selected a valid landing coin.',
