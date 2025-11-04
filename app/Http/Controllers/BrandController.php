@@ -77,7 +77,7 @@ class BrandController extends Controller
     {
         try {
             $brand = $this->brandService->createBrand($request->validated());
-            return ApiResponse::success('Brand created.', 201, $brand);
+            return ApiResponse::success('Brand created.', 201, new BrandResource($brand));
         } catch(\RuntimeException $e) {
             return ApiResponse::error('Error when creating the service.: '.$e->getMessage(), 422);
         }

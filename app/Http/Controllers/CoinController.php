@@ -67,7 +67,7 @@ class CoinController extends Controller
     {
         try {
             $coin = $this->coinService->createCoin($request->validated());
-            return ApiResponse::success('Coin created.', 201, $coin);
+            return ApiResponse::success('Coin created.', 201, new CoinResource($coin));
         } catch (\RuntimeException $e) {
             return ApiResponse::error('Error when creating the coin: ' . $e->getMessage(), 422);
         }
