@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\BrandController;
 use App\Http\Controllers\BundleController;
+use App\Http\Controllers\BundleProductController;
 use App\Http\Controllers\CoinController;
 use App\Http\Controllers\MeasureController;
 use App\Http\Controllers\ProductController;
@@ -17,4 +18,5 @@ Route::apiResource('/coins', CoinController::class);
 Route::apiResource('/measures', MeasureController::class);
 Route::apiResource('/products', ProductController::class);
 Route::apiResource('/bundles', BundleController::class);
+Route::delete('bundleproducts/{bundleId}', [BundleProductController::class, 'destroy']);
 
