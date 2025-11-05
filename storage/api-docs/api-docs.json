@@ -166,6 +166,205 @@
                 }
             }
         },
+        "/api/bundles": {
+            "get": {
+                "tags": [
+                    "Bundles"
+                ],
+                "summary": "Get all bundles",
+                "description": "Retrieve all bundles, including their products and pricing information.",
+                "operationId": "98f5c936664ad6791917eeef0ea453ed",
+                "responses": {
+                    "200": {
+                        "description": "Bundle list retrieved successfully.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "data": {
+                                            "type": "array",
+                                            "items": {
+                                                "$ref": "#/components/schemas/Bundle"
+                                            }
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Unexpected server error"
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "Bundles"
+                ],
+                "summary": "Create a new bundle",
+                "description": "Create a new bundle with its pricing, coin, and associated products. A bundle must contain at least two products.",
+                "operationId": "5ebc44da308af5c901f7391b04993eec",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "code",
+                                    "landing_cost_price",
+                                    "landing_coin",
+                                    "retail_price",
+                                    "promotional_price",
+                                    "products"
+                                ],
+                                "properties": {
+                                    "code": {
+                                        "type": "string",
+                                        "example": "B001"
+                                    },
+                                    "landing_cost_price": {
+                                        "type": "number",
+                                        "format": "float",
+                                        "example": 300
+                                    },
+                                    "landing_coin": {
+                                        "$ref": "#/components/schemas/Coin"
+                                    },
+                                    "retail_price": {
+                                        "type": "number",
+                                        "format": "float",
+                                        "example": 400
+                                    },
+                                    "promotional_price": {
+                                        "type": "number",
+                                        "format": "float",
+                                        "example": 350
+                                    },
+                                    "products": {
+                                        "description": "Products that make up this bundle",
+                                        "type": "array",
+                                        "items": {
+                                            "$ref": "#/components/schemas/Product"
+                                        }
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Bundle created successfully.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Bundle"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Validation failed"
+                    },
+                    "500": {
+                        "description": "Unexpected server error"
+                    }
+                }
+            }
+        },
+        "/api/bundles/{id}": {
+            "get": {
+                "tags": [
+                    "Bundles"
+                ],
+                "summary": "Get a specific bundle",
+                "description": "Retrieve a bundle by its ID, including its associated products.",
+                "operationId": "b422909a169ba530273d329a5bd48bba",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID of the bundle",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "example": 1
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Bundle found",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Bundle"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Bundle not found"
+                    },
+                    "500": {
+                        "description": "Unexpected server error"
+                    }
+                }
+            },
+            "put": {
+                "tags": [
+                    "Bundles"
+                ],
+                "summary": "Update a bundle",
+                "description": "Update an existing bundle by its ID, validating all constraints and product associations.",
+                "operationId": "e7f165a31cdd7323e306ec7affc81ed8",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID of the bundle to update",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "example": 1
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/Bundle"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Bundle updated successfully.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Bundle"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Bundle not found"
+                    },
+                    "422": {
+                        "description": "Validation failed"
+                    },
+                    "500": {
+                        "description": "Unexpected server error"
+                    }
+                }
+            }
+        },
         "/api/coins": {
             "get": {
                 "tags": [
@@ -971,6 +1170,46 @@
                 },
                 "type": "object"
             },
+            "Bundle": {
+                "title": "Bundle",
+                "description": "Represents a product bundle with pricing, coin and related products.",
+                "properties": {
+                    "id": {
+                        "type": "integer",
+                        "example": 1
+                    },
+                    "code": {
+                        "type": "string",
+                        "example": "B001"
+                    },
+                    "landing_cost_price": {
+                        "type": "number",
+                        "format": "float",
+                        "example": 300
+                    },
+                    "landing_coin": {
+                        "$ref": "#/components/schemas/Coin"
+                    },
+                    "retail_price": {
+                        "type": "number",
+                        "format": "float",
+                        "example": 400
+                    },
+                    "promotional_price": {
+                        "type": "number",
+                        "format": "float",
+                        "example": 350
+                    },
+                    "products": {
+                        "description": "List of products included in the bundle.",
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/Product"
+                        }
+                    }
+                },
+                "type": "object"
+            },
             "Coin": {
                 "title": "Coin",
                 "properties": {
@@ -1102,6 +1341,10 @@
         {
             "name": "Brands",
             "description": "Brands"
+        },
+        {
+            "name": "Bundles",
+            "description": "Bundles"
         },
         {
             "name": "Coins",

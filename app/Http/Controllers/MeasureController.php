@@ -67,7 +67,7 @@ class MeasureController extends Controller
     {
         try {
             $measure = $this->measureService->createMeasure($request->validated());
-            return ApiResponse::success('Measure created.', 201, $measure);
+            return ApiResponse::success('Measure created.', 201, new MeasureResource($measure));
         } catch (\RuntimeException $e) {
             return ApiResponse::error('Error when creating the measure: ' . $e->getMessage(), 422);
         }
