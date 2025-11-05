@@ -46,24 +46,30 @@ class BundleControllerTest extends TestCase
             'brand' => ['id' => $this->brand->id],
         ]);
 
-        foreach (['P001', 'P002', 'P003', 'P004'] as $code) {
-            $this->productService->createProduct([
-                'code' => $code,
-                'supplier_cost_price' => 100,
-                'supplier_coin' => ['id' => $this->coin->id],
-                'landing_cost_price' => 120,
-                'landing_coin' => ['id' => $this->coin->id],
-                'retail_price' => 150,
-                'promotional_price' => 140,
-                'stock' => 10,
-                'measure' => ['id' => $this->measure->id],
-                'serial_tracking' => 'SER_' . $code,
-                'dimension_size' => '10x10x10',
-                'dimension_weight' => 5,
-                'sub_brand' => ['id' => $this->subBrand->id],
-                'supplier' => ['id' => $this->supplier->id],
-            ]);
-        }
+        $this->productService->createProduct($this->generateProduct('P001'));
+        $this->productService->createProduct($this->generateProduct('P002'));
+        $this->productService->createProduct($this->generateProduct('P003'));
+        $this->productService->createProduct($this->generateProduct('P004'));
+    }
+
+    private function generateProduct(string $code): array
+    {
+        return [
+            'code' => $code,
+            'supplier_cost_price' => 100,
+            'supplier_coin' => ['id' => $this->coin->id],
+            'landing_cost_price' => 120,
+            'landing_coin' => ['id' => $this->coin->id],
+            'retail_price' => 150,
+            'promotional_price' => 140,
+            'stock' => 10,
+            'measure' => ['id' => $this->measure->id],
+            'serial_tracking' => 'SER001',
+            'dimension_size' => '10x10x10',
+            'dimension_weight' => 5,
+            'sub_brand' => ['id' => $this->subBrand->id],
+            'supplier' => ['id' => $this->supplier->id],
+        ];
     }
 
     public function test_can_list_bundles()
