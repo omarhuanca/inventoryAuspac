@@ -16,7 +16,7 @@
                 ],
                 "summary": "Get all brands",
                 "description": "Return a list of all brands.",
-                "operationId": "3c41aa2e65314941e37a634e810c5f73",
+                "operationId": "983f1c80e371405008db36aad30478d2",
                 "responses": {
                     "200": {
                         "description": "Brand List.",
@@ -47,7 +47,7 @@
                 ],
                 "summary": "Create a new brand",
                 "description": "Create a new brand.",
-                "operationId": "1dae5363a453b159e035bc04b3fbc0be",
+                "operationId": "5c5fdf1525970cb0011cf09bc291ac1a",
                 "requestBody": {
                     "required": true,
                     "content": {
@@ -82,7 +82,7 @@
                 ],
                 "summary": "Get a specific brand",
                 "description": "Return a specific brand by its ID.",
-                "operationId": "767f67c0955810b713c48d4100f02362",
+                "operationId": "8cd4966cfa3a357818bec98da6782f11",
                 "parameters": [
                     {
                         "name": "id",
@@ -120,7 +120,7 @@
                 ],
                 "summary": "Update a brand",
                 "description": "Update an existing brand by its ID.",
-                "operationId": "1fac61ef4f1f3db38169272ad0e5ed09",
+                "operationId": "633f028f0a8edb5e32844bc67b0074eb",
                 "parameters": [
                     {
                         "name": "id",
@@ -173,7 +173,7 @@
                 ],
                 "summary": "Get all bundles",
                 "description": "Retrieve all bundles, including their products and pricing information.",
-                "operationId": "98f5c936664ad6791917eeef0ea453ed",
+                "operationId": "59b1f894b331606d5d2ba3638b2e7789",
                 "responses": {
                     "200": {
                         "description": "Bundle list retrieved successfully.",
@@ -204,7 +204,7 @@
                 ],
                 "summary": "Create a new bundle",
                 "description": "Create a new bundle with its pricing, coin, and associated products. A bundle must contain at least two products.",
-                "operationId": "5ebc44da308af5c901f7391b04993eec",
+                "operationId": "ad2b990eb369a9d250034bfa63e168f4",
                 "requestBody": {
                     "required": true,
                     "content": {
@@ -281,7 +281,7 @@
                 ],
                 "summary": "Get a specific bundle",
                 "description": "Retrieve a bundle by its ID, including its associated products.",
-                "operationId": "b422909a169ba530273d329a5bd48bba",
+                "operationId": "078569cc5a473ec95ab64fbbb8792848",
                 "parameters": [
                     {
                         "name": "id",
@@ -319,7 +319,7 @@
                 ],
                 "summary": "Update a bundle",
                 "description": "Update an existing bundle by its ID, validating all constraints and product associations.",
-                "operationId": "e7f165a31cdd7323e306ec7affc81ed8",
+                "operationId": "241b3a388995535d8fbc62c37ea5cedd",
                 "parameters": [
                     {
                         "name": "id",
@@ -405,7 +405,7 @@
                 ],
                 "summary": "Get all coins",
                 "description": "Return a list of all coins.",
-                "operationId": "4f74eb24019b21075240d9c20f001125",
+                "operationId": "4c7b906ddc59e398b6e08c375ad774eb",
                 "responses": {
                     "200": {
                         "description": "Coin list.",
@@ -436,7 +436,7 @@
                 ],
                 "summary": "Create a new coin",
                 "description": "Create a new coin.",
-                "operationId": "e333f54412031f13ac35af2ee28efafa",
+                "operationId": "78be848d743505bac58a3b0ef6c4d3cf",
                 "requestBody": {
                     "required": true,
                     "content": {
@@ -471,7 +471,7 @@
                 ],
                 "summary": "Get a specific coin",
                 "description": "Return a specific coin by its ID.",
-                "operationId": "1058e0ab785c93a2b6e888988a91955a",
+                "operationId": "7f7f53b0b205181cb91268f3b97e784b",
                 "parameters": [
                     {
                         "name": "id",
@@ -509,7 +509,7 @@
                 ],
                 "summary": "Update a coin",
                 "description": "Update an existing coin by its ID.",
-                "operationId": "63bffab36554d31ee004876d4a533bd9",
+                "operationId": "64348cf0df417a5854b9363b94c6ccce",
                 "parameters": [
                     {
                         "name": "id",
@@ -562,7 +562,7 @@
                 ],
                 "summary": "Get all measures",
                 "description": "Return a list of all measures.",
-                "operationId": "64ef4aaeb1642ce6e5e40800d3c4ed1e",
+                "operationId": "1fef67ad098b232553f67ae68aeeca73",
                 "responses": {
                     "200": {
                         "description": "Measure list.",
@@ -593,7 +593,7 @@
                 ],
                 "summary": "Create a new measure",
                 "description": "Create a new measure.",
-                "operationId": "1e458037c238ef0657105c1f3bfe378a",
+                "operationId": "ea9caf34f38377afff48fe9d099c8afc",
                 "requestBody": {
                     "required": true,
                     "content": {
@@ -628,7 +628,7 @@
                 ],
                 "summary": "Get a specific measure",
                 "description": "Return a specific measure by its ID.",
-                "operationId": "e9e8f787a90e8d662fe0f77695f923d8",
+                "operationId": "6cd39c36d46d062fde54fc280cbe191e",
                 "parameters": [
                     {
                         "name": "id",
@@ -666,7 +666,7 @@
                 ],
                 "summary": "Update a measure",
                 "description": "Update an existing measure by its ID.",
-                "operationId": "dd1a78dad2d6717aa94c8d048b5706e6",
+                "operationId": "140e47a130e12f94e5e4889c62f314a9",
                 "parameters": [
                     {
                         "name": "id",
@@ -719,7 +719,7 @@
                 ],
                 "summary": "Get all products",
                 "description": "Return a list of all products, including pricing, stock, and related entities.",
-                "operationId": "1bfaa78d1c2c3848ab8165c5dadcad3e",
+                "operationId": "34e0c83dcdb56698361b44ef8fe420a1",
                 "responses": {
                     "200": {
                         "description": "Product list retrieved successfully.",
@@ -750,7 +750,7 @@
                 ],
                 "summary": "Create a new product",
                 "description": "Create a new product associated with a sub-brand, supplier, coins, and measure.",
-                "operationId": "e8185e307706e2cd84bbcf5171e2f09d",
+                "operationId": "624274de24aaa92b70eb367913334bfb",
                 "requestBody": {
                     "required": true,
                     "content": {
@@ -788,7 +788,7 @@
                 ],
                 "summary": "Get a specific product",
                 "description": "Return a specific product by its ID, including all related entities.",
-                "operationId": "7ab21ddb713501f3d4c2914892c02a21",
+                "operationId": "99cdec43fe2bfc237633b66ef6841cfa",
                 "parameters": [
                     {
                         "name": "id",
@@ -826,7 +826,7 @@
                 ],
                 "summary": "Update a product",
                 "description": "Update an existing product by its ID, validating uniqueness and all constraints.",
-                "operationId": "6a7e11900844cd85cff66e662b82bd4c",
+                "operationId": "bf6c24de0f2d8a4f1bce283855f8c9b5",
                 "parameters": [
                     {
                         "name": "id",
@@ -872,6 +872,193 @@
                 }
             }
         },
+        "/api/stockbuys": {
+            "get": {
+                "tags": [
+                    "StockBuys"
+                ],
+                "summary": "Get all stock buys",
+                "description": "Retrieve all stock buy records, including the related product information.",
+                "operationId": "10e9abba85f1f449c355f6a4867b034f",
+                "responses": {
+                    "200": {
+                        "description": "List of stock buys retrieved successfully.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "data": {
+                                            "type": "array",
+                                            "items": {
+                                                "$ref": "#/components/schemas/StockBuy"
+                                            }
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Unexpected server error"
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "StockBuys"
+                ],
+                "summary": "Create a new stock buy",
+                "description": "Registers a new stock purchase, increasing the stock quantity for a specific product.",
+                "operationId": "48b859bc211264aca380a690a15d1ac8",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "product",
+                                    "amount",
+                                    "date",
+                                    "description"
+                                ],
+                                "properties": {
+                                    "product": {
+                                        "$ref": "#/components/schemas/Product"
+                                    },
+                                    "amount": {
+                                        "description": "Quantity of units purchased.",
+                                        "type": "integer",
+                                        "example": 10
+                                    },
+                                    "date": {
+                                        "description": "Purchase date.",
+                                        "type": "string",
+                                        "format": "date",
+                                        "example": "2025-11-05"
+                                    },
+                                    "description": {
+                                        "description": "Short description of the purchase.",
+                                        "type": "string",
+                                        "example": "Purchase #001"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "StockBuy created successfully.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/StockBuy"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Validation failed"
+                    },
+                    "500": {
+                        "description": "Unexpected server error"
+                    }
+                }
+            }
+        },
+        "/api/stockbuys/{id}": {
+            "get": {
+                "tags": [
+                    "StockBuys"
+                ],
+                "summary": "Get a specific stock buy",
+                "description": "Retrieve a single stock buy record by its ID, including the associated product details.",
+                "operationId": "b6c8ac789db3097a4921ac883114d595",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID of the stock buy record",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "example": 1
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "StockBuy found",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/StockBuy"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "StockBuy not found"
+                    },
+                    "500": {
+                        "description": "Unexpected server error"
+                    }
+                }
+            },
+            "put": {
+                "tags": [
+                    "StockBuys"
+                ],
+                "summary": "Update a stock buy",
+                "description": "Update an existing stock buy by its ID, adjusting the stock levels of the associated product accordingly.",
+                "operationId": "904f8798396d65136cacb67bdf577b51",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID of the stock buy record to update",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "example": 1
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/StockBuy"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "StockBuy updated successfully.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/StockBuy"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "StockBuy not found"
+                    },
+                    "422": {
+                        "description": "Validation failed"
+                    },
+                    "500": {
+                        "description": "Unexpected server error"
+                    }
+                }
+            }
+        },
         "/api/subbrands": {
             "get": {
                 "tags": [
@@ -879,7 +1066,7 @@
                 ],
                 "summary": "Get all sub-brands",
                 "description": "Return a list of all sub-brands.",
-                "operationId": "2704cb42808dd9b7ed2d2dd6a435116f",
+                "operationId": "c6b7aa7b97605220ffb3af292ce4f7c7",
                 "responses": {
                     "200": {
                         "description": "SubBrand List.",
@@ -910,7 +1097,7 @@
                 ],
                 "summary": "Create a new sub-brand",
                 "description": "Create a new sub-brand associated with a brand.",
-                "operationId": "d4657c8989593505f8c99b60dd6df550",
+                "operationId": "4470a7f5992494b70a460311fcfb36f9",
                 "requestBody": {
                     "required": true,
                     "content": {
@@ -945,7 +1132,7 @@
                 ],
                 "summary": "Get a specific sub-brand",
                 "description": "Return a specific sub-brand by its ID.",
-                "operationId": "d8054d8617495141a8faaed84edf3587",
+                "operationId": "2c32ea3a2d96508c209559a1b3a44b19",
                 "parameters": [
                     {
                         "name": "id",
@@ -983,7 +1170,7 @@
                 ],
                 "summary": "Update a sub-brand",
                 "description": "Update an existing sub-brand by its ID.",
-                "operationId": "6e5705b8e818f2c352e9c92e4e9e4368",
+                "operationId": "076abbe1a15bed85f140ec8ff154ca9e",
                 "parameters": [
                     {
                         "name": "id",
@@ -1036,7 +1223,7 @@
                 ],
                 "summary": "Get all suppliers",
                 "description": "Return a list of all suppliers.",
-                "operationId": "43efd859bdde27a9e53c0afbe0891731",
+                "operationId": "dae515d720ee812c126ef52b0b2a82c9",
                 "responses": {
                     "200": {
                         "description": "Supplier List.",
@@ -1067,7 +1254,7 @@
                 ],
                 "summary": "Create a new supplier",
                 "description": "Create a new supplier.",
-                "operationId": "c1ee06af9e1f197a4aa49c1dd74c981c",
+                "operationId": "4f02944bfbebc8c3a33209a42ec43695",
                 "requestBody": {
                     "required": true,
                     "content": {
@@ -1102,7 +1289,7 @@
                 ],
                 "summary": "Get a specific supplier",
                 "description": "Return a specific supplier by its ID.",
-                "operationId": "6be0f2389de5f1d79708c391d4cb0156",
+                "operationId": "920374b5be0fda63be39c5c50106e86b",
                 "parameters": [
                     {
                         "name": "id",
@@ -1140,7 +1327,7 @@
                 ],
                 "summary": "Update a supplier",
                 "description": "Update an existing supplier by its ID.",
-                "operationId": "837f3815469c658c6255d5037dc09f5c",
+                "operationId": "c2b81c027b12fa451256697c8846b3b8",
                 "parameters": [
                     {
                         "name": "id",
@@ -1352,6 +1539,36 @@
                 },
                 "type": "object"
             },
+            "StockBuy": {
+                "title": "StockBuy",
+                "description": "Represents a purchase record that increases the stock of a product.",
+                "properties": {
+                    "id": {
+                        "type": "integer",
+                        "example": 1
+                    },
+                    "product": {
+                        "$ref": "#/components/schemas/Product"
+                    },
+                    "amount": {
+                        "description": "Quantity of units purchased.",
+                        "type": "integer",
+                        "example": 10
+                    },
+                    "date": {
+                        "description": "Date when the purchase occurred.",
+                        "type": "string",
+                        "format": "date",
+                        "example": "2025-11-05"
+                    },
+                    "description": {
+                        "description": "Short description or reference for this purchase.",
+                        "type": "string",
+                        "example": "Purchase #001"
+                    }
+                },
+                "type": "object"
+            },
             "SubBrand": {
                 "title": "SubBrand",
                 "properties": {
@@ -1409,6 +1626,10 @@
         {
             "name": "Products",
             "description": "Products"
+        },
+        {
+            "name": "StockBuys",
+            "description": "StockBuys"
         },
         {
             "name": "SubBrands",

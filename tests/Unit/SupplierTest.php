@@ -2,7 +2,7 @@
 
 namespace Tests\Unit;
 
-use App\Models\Supplier;
+use App\Modules\Supplier\Domain\Supplier;
 use PHPUnit\Framework\TestCase;
 
 class SupplierTest extends TestCase

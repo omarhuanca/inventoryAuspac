@@ -1,14 +1,14 @@
 <?php
 
-use App\Http\Controllers\BrandController;
-use App\Http\Controllers\BundleController;
-use App\Http\Controllers\BundleProductController;
-use App\Http\Controllers\CoinController;
-use App\Http\Controllers\MeasureController;
-use App\Http\Controllers\ProductController;
-use App\Http\Controllers\SubBrandController;
-use App\Http\Controllers\SupplierController;
-use Illuminate\Http\Request;
+use App\Modules\Brand\Controller\BrandController;
+use App\Modules\Bundle\Controller\BundleController;
+use App\Modules\BundleProduct\Controller\BundleProductController;
+use App\Modules\Coin\Controller\CoinController;
+use App\Modules\Measure\Controller\MeasureController;
+use App\Modules\Product\Controller\ProductController;
+use App\Modules\StockBuy\Controller\StockBuyController;
+use App\Modules\SubBrand\Controller\SubBrandController;
+use App\Modules\Supplier\Controller\SupplierController;
 use Illuminate\Support\Facades\Route;
 
 Route::apiResource('/brands', BrandController::class);
@@ -19,4 +19,5 @@ Route::apiResource('/measures', MeasureController::class);
 Route::apiResource('/products', ProductController::class);
 Route::apiResource('/bundles', BundleController::class);
 Route::delete('bundleproducts/{bundleId}', [BundleProductController::class, 'destroy']);
+Route::apiResource('/stockbuys', StockBuyController::class);
 

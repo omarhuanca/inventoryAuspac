@@ -2,7 +2,7 @@
 
 namespace Tests\Unit;
 
-use App\Models\Coin;
+use App\Modules\Coin\Domain\Coin;
 use PHPUnit\Framework\TestCase;
 
 class CoinTest extends TestCase
