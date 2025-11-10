@@ -365,6 +365,39 @@
                 }
             }
         },
+        "/api/bundleproducts/{bundleId}": {
+            "delete": {
+                "tags": [
+                    "BundleProducts"
+                ],
+                "summary": "Delete a bundle",
+                "description": "Deletes a bundle by its ID and also removes its associated products.",
+                "operationId": "577c0e30a1f69220711958c44403e355",
+                "parameters": [
+                    {
+                        "name": "bundleId",
+                        "in": "path",
+                        "description": "ID of the bundle to delete",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "example": 1
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Bundle and its associated products deleted successfully."
+                    },
+                    "404": {
+                        "description": "Bundle not found."
+                    },
+                    "500": {
+                        "description": "Unexpected server error."
+                    }
+                }
+            }
+        },
         "/api/coins": {
             "get": {
                 "tags": [
@@ -1210,6 +1243,21 @@
                 },
                 "type": "object"
             },
+            "BundleProduct": {
+                "title": "BundleProduct",
+                "description": "Represents the pivot relation between Bundles and Products.",
+                "properties": {
+                    "bundle_id": {
+                        "type": "integer",
+                        "example": 1
+                    },
+                    "product_id": {
+                        "type": "integer",
+                        "example": 2
+                    }
+                },
+                "type": "object"
+            },
             "Coin": {
                 "title": "Coin",
                 "properties": {
@@ -1345,6 +1393,10 @@
         {
             "name": "Bundles",
             "description": "Bundles"
+        },
+        {
+            "name": "BundleProducts",
+            "description": "BundleProducts"
         },
         {
             "name": "Coins",
