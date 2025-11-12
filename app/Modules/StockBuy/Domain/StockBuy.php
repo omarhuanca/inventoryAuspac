@@ -32,7 +32,7 @@ class StockBuy extends StockTransaction
         parent::__construct($attributes);
     }
 
-    public static $invalidAmount = 'The amount must be greater than zero and not negative.';
+    public static $invalidAmount = 'The amount must not be zero or less than zero.';
     public static $invalidDate = 'Date must be a valid date.';
     public static $descriptionTooLong = 'Description must not exceed 255 characters.';
 

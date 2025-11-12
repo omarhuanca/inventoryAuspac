@@ -90,6 +90,8 @@ class ProductService
 
     public function increaseStock(int $productId, float $amount)
     {
+        $this->validateAmount($amount);
+
         $product = $this->getProductById($productId);
 
         return $this->productRepository->incrementStock($product, $amount);
@@ -97,8 +99,17 @@ class ProductService
 
     public function decreaseStock(int $productId, float $amount)
     {
+        $this->validateAmount($amount);
+
         $product = $this->getProductById($productId);
 
         return $this->productRepository->decrementStock($product, $amount);
+    }
+
+    public function validateAmount(float $amount)
+    {
+        if ($amount <= 0) {
+            throw new \RuntimeException('The amount must not be zero or less than zero.');
+        }
     }
 }

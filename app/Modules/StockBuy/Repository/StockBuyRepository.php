@@ -47,8 +47,7 @@ class StockBuyRepository
             'description' => $validated->description,
         ]);
 
-        return $stockBuy->load([
-            'product.supplierCoin', 'product.landingCoin', 'product.measure',
+        return $stockBuy->load(['product.supplierCoin', 'product.landingCoin', 'product.measure',
             'product.subBrand.brand', 'product.supplier',
         ]);
     }

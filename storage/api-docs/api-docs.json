@@ -166,6 +166,39 @@
                 }
             }
         },
+        "/api/bundleproducts/{bundleId}": {
+            "delete": {
+                "tags": [
+                    "BundleProducts"
+                ],
+                "summary": "Delete a bundle",
+                "description": "Deletes a bundle by its ID and also removes its associated products.",
+                "operationId": "68ed191e91b2df577b3aa8b65d12594d",
+                "parameters": [
+                    {
+                        "name": "bundleId",
+                        "in": "path",
+                        "description": "ID of the bundle to delete",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "example": 1
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Bundle and its associated products deleted successfully."
+                    },
+                    "404": {
+                        "description": "Bundle not found."
+                    },
+                    "500": {
+                        "description": "Unexpected server error."
+                    }
+                }
+            }
+        },
         "/api/bundles": {
             "get": {
                 "tags": [
@@ -361,39 +394,6 @@
                     },
                     "500": {
                         "description": "Unexpected server error"
-                    }
-                }
-            }
-        },
-        "/api/bundleproducts/{bundleId}": {
-            "delete": {
-                "tags": [
-                    "BundleProducts"
-                ],
-                "summary": "Delete a bundle",
-                "description": "Deletes a bundle by its ID and also removes its associated products.",
-                "operationId": "577c0e30a1f69220711958c44403e355",
-                "parameters": [
-                    {
-                        "name": "bundleId",
-                        "in": "path",
-                        "description": "ID of the bundle to delete",
-                        "required": true,
-                        "schema": {
-                            "type": "integer",
-                            "example": 1
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "Bundle and its associated products deleted successfully."
-                    },
-                    "404": {
-                        "description": "Bundle not found."
-                    },
-                    "500": {
-                        "description": "Unexpected server error."
                     }
                 }
             }
@@ -1390,6 +1390,21 @@
                 },
                 "type": "object"
             },
+            "BundleProduct": {
+                "title": "BundleProduct",
+                "description": "Represents the pivot relation between Bundles and Products.",
+                "properties": {
+                    "bundle_id": {
+                        "type": "integer",
+                        "example": 1
+                    },
+                    "product_id": {
+                        "type": "integer",
+                        "example": 2
+                    }
+                },
+                "type": "object"
+            },
             "Bundle": {
                 "title": "Bundle",
                 "description": "Represents a product bundle with pricing, coin and related products.",
@@ -1426,21 +1441,6 @@
                         "items": {
                             "$ref": "#/components/schemas/Product"
                         }
-                    }
-                },
-                "type": "object"
-            },
-            "BundleProduct": {
-                "title": "BundleProduct",
-                "description": "Represents the pivot relation between Bundles and Products.",
-                "properties": {
-                    "bundle_id": {
-                        "type": "integer",
-                        "example": 1
-                    },
-                    "product_id": {
-                        "type": "integer",
-                        "example": 2
                     }
                 },
                 "type": "object"
@@ -1608,12 +1608,12 @@
             "description": "Brands"
         },
         {
-            "name": "Bundles",
-            "description": "Bundles"
-        },
-        {
             "name": "BundleProducts",
             "description": "BundleProducts"
+        },
+        {
+            "name": "Bundles",
+            "description": "Bundles"
         },
         {
             "name": "Coins",
