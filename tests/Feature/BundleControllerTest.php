@@ -2,15 +2,14 @@
 
 namespace Tests\Feature;
 
-use App\Services\BrandService;
-use App\Services\BundleService;
-use App\Services\CoinService;
-use App\Services\MeasureService;
-use App\Services\ProductService;
-use App\Services\SubBrandService;
-use App\Services\SupplierService;
+use App\Modules\Brand\Service\BrandService;
+use App\Modules\Bundle\Service\BundleService;
+use App\Modules\Coin\Service\CoinService;
+use App\Modules\Measure\Service\MeasureService;
+use App\Modules\Product\Service\ProductService;
+use App\Modules\SubBrand\Service\SubBrandService;
+use App\Modules\Supplier\Service\SupplierService;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Foundation\Testing\WithFaker;
 use Tests\TestCase;
 
 class BundleControllerTest extends TestCase

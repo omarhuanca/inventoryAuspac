@@ -2,7 +2,7 @@
 
 namespace Tests\Unit;
 
-use App\Models\Measure;
+use App\Modules\Measure\Domain\Measure;
 use PHPUnit\Framework\TestCase;
 
 class MeasureTest extends TestCase

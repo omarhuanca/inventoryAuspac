@@ -2,12 +2,12 @@
 
 namespace Tests\Unit;
 
-use App\Models\Brand;
-use App\Models\Coin;
-use App\Models\Measure;
-use App\Models\Product;
-use App\Models\SubBrand;
-use App\Models\Supplier;
+use App\Modules\Brand\Domain\Brand;
+use App\Modules\Coin\Domain\Coin;
+use App\Modules\Measure\Domain\Measure;
+use App\Modules\Product\Domain\Product;
+use App\Modules\SubBrand\Domain\SubBrand;
+use App\Modules\Supplier\Domain\Supplier;
 use PHPUnit\Framework\TestCase;
 
 class ProductTest extends TestCase

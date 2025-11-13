@@ -2,7 +2,7 @@
 
 namespace Tests\Unit;
 
-use App\Models\Brand;
+use App\Modules\Brand\Domain\Brand;
 use PHPUnit\Framework\TestCase;
 
 class BrandTest extends TestCase

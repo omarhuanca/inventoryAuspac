@@ -2,8 +2,8 @@
 
 namespace Tests\Unit;
 
-use App\Models\Brand;
-use App\Models\SubBrand;
+use App\Modules\Brand\Domain\Brand;
+use App\Modules\SubBrand\Domain\SubBrand;
 use PHPUnit\Framework\TestCase;
 
 class SubBrandTest extends TestCase

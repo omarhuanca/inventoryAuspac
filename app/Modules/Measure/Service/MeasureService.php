@@ -1,0 +1,59 @@
+<?php
+
+namespace App\Modules\Measure\Service;
+
+use App\Exceptions\NotFoundException;
+use App\Modules\Measure\Domain\Measure;
+use App\Modules\Measure\Repository\MeasureRepository;
+
+class MeasureService
+{
+    private MeasureRepository $measureRepository;
+
+    public function __construct(MeasureRepository $measureRepository)
+    {
+        $this->measureRepository = $measureRepository;
+    }
+
+    public function getAllMeasures()
+    {
+        return $this->measureRepository->getAll();
+    }
+
+    public function getMeasureById($id)
+    {
+        $measure = $this->measureRepository->find($id);
+
+        if (!$measure) {
+            throw new NotFoundException('Measure not found.');
+        }
+
+        return $measure;
+    }
+
+    public function createMeasure(array $data)
+    {
+        if (Measure::whereRaw('LOWER(code) = ?', [strtolower($data['code'])])->exists()) {
+            throw new \RuntimeException('Measure code already exists.');
+        }
+
+        return $this->measureRepository->create($data);
+    }
+
+    public function updateMeasure(int $id, array $data)
+    {
+        $this->getMeasureById($id);
+
+        if (isset($data['code'])) {
+            $exists = Measure::whereRaw('LOWER(code) = ?', [strtolower($data['code'])])
+                ->where('id', '!=', $id)
+                ->exists();
+
+            if ($exists) {
+                throw new \RuntimeException('Measure code already exists.');
+            }
+        }
+
+        return $this->measureRepository->update($id, $data);
+    }
+}

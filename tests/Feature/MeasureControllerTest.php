@@ -2,9 +2,8 @@
 
 namespace Tests\Feature;
 
-use App\Services\MeasureService;
+use App\Modules\Measure\Service\MeasureService;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Foundation\Testing\WithFaker;
 use Tests\TestCase;
 
 class MeasureControllerTest extends TestCase
