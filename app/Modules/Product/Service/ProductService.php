@@ -103,6 +103,10 @@ class ProductService
 
         $product = $this->getProductById($productId);
 
+        if ($product->stock < $amount) {
+            throw new \RuntimeException('Insufficient stock.');
+        }
+
         return $this->productRepository->decrementStock($product, $amount);
     }
 
