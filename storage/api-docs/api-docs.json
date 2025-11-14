@@ -1059,6 +1059,187 @@
                 }
             }
         },
+        "/api/stockreferrals": {
+            "get": {
+                "tags": [
+                    "StockReferrals"
+                ],
+                "summary": "Get all stock referrals",
+                "description": "Retrieve all stock referral records, including the related product information.",
+                "operationId": "6ab9c5871dde51d95a101f3264e409a8",
+                "responses": {
+                    "200": {
+                        "description": "List of stock referrals retrieved successfully.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "data": {
+                                            "type": "array",
+                                            "items": {
+                                                "$ref": "#/components/schemas/StockReferral"
+                                            }
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Unexpected server error"
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "StockReferrals"
+                ],
+                "summary": "Create a new stock referral",
+                "description": "Registers a new stock referral, decreasing the stock quantity for a specific product.",
+                "operationId": "460fab39ff5013e55f1e141ad94693df",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "product",
+                                    "amount",
+                                    "date"
+                                ],
+                                "properties": {
+                                    "product": {
+                                        "$ref": "#/components/schemas/Product"
+                                    },
+                                    "amount": {
+                                        "description": "Quantity removed from stock.",
+                                        "type": "integer",
+                                        "example": 5
+                                    },
+                                    "date": {
+                                        "description": "Referral date.",
+                                        "type": "string",
+                                        "format": "date",
+                                        "example": "2025-11-05"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "StockReferral created successfully.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/StockReferral"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Validation failed"
+                    },
+                    "500": {
+                        "description": "Unexpected server error"
+                    }
+                }
+            }
+        },
+        "/api/stockreferrals/{id}": {
+            "get": {
+                "tags": [
+                    "StockReferrals"
+                ],
+                "summary": "Get a specific stock referral",
+                "description": "Retrieve a single stock referral record by its ID, including the associated product details.",
+                "operationId": "514bbe906767dd04de1b539833113500",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID of the stock referral record",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "example": 1
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "StockReferral found",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/StockReferral"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "StockReferral not found"
+                    },
+                    "500": {
+                        "description": "Unexpected server error"
+                    }
+                }
+            },
+            "put": {
+                "tags": [
+                    "StockReferrals"
+                ],
+                "summary": "Update a stock referral",
+                "description": "Update an existing stock referral by its ID, adjusting the stock levels of the associated product accordingly.",
+                "operationId": "c708701473950bd93312ff89986273f5",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID of the stock referral record to update",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "example": 1
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/StockReferral"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "StockReferral updated successfully.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/StockReferral"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "StockReferral not found"
+                    },
+                    "422": {
+                        "description": "Validation failed"
+                    },
+                    "500": {
+                        "description": "Unexpected server error"
+                    }
+                }
+            }
+        },
         "/api/subbrands": {
             "get": {
                 "tags": [
@@ -1569,6 +1750,31 @@
                 },
                 "type": "object"
             },
+            "StockReferral": {
+                "title": "StockReferral",
+                "description": "Represents a stock exit record that decreases the stock of a product.",
+                "properties": {
+                    "id": {
+                        "type": "integer",
+                        "example": 1
+                    },
+                    "product": {
+                        "$ref": "#/components/schemas/Product"
+                    },
+                    "amount": {
+                        "description": "Quantity of units removed from stock.",
+                        "type": "integer",
+                        "example": 5
+                    },
+                    "date": {
+                        "description": "Date when the stock exit occurred.",
+                        "type": "string",
+                        "format": "date",
+                        "example": "2025-11-05"
+                    }
+                },
+                "type": "object"
+            },
             "SubBrand": {
                 "title": "SubBrand",
                 "properties": {
@@ -1630,6 +1836,10 @@
         {
             "name": "StockBuys",
             "description": "StockBuys"
+        },
+        {
+            "name": "StockReferrals",
+            "description": "StockReferrals"
         },
         {
             "name": "SubBrands",
