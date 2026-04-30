@@ -1553,6 +1553,252 @@
                     }
                 }
             }
+        },
+        "/api/xero/auth": {
+            "get": {
+                "tags": [
+                    "Xero"
+                ],
+                "summary": "Redirect to Xero authorization screen",
+                "description": "Redirects the user to Xero's OAuth2 login and consent screen.",
+                "operationId": "c18ccef982c829e6b18a7a5084d92b67",
+                "responses": {
+                    "302": {
+                        "description": "Redirect to Xero authorization URL"
+                    },
+                    "500": {
+                        "description": "Unexpected server error"
+                    }
+                }
+            }
+        },
+        "/api/xero/callback": {
+            "get": {
+                "tags": [
+                    "Xero"
+                ],
+                "summary": "Handle Xero OAuth callback",
+                "description": "Receives the authorization code and state from Xero after user consent and completes the OAuth connection.",
+                "operationId": "07f4a41a376390811b56564befdb6896",
+                "parameters": [
+                    {
+                        "name": "code",
+                        "in": "query",
+                        "description": "Authorization code returned by Xero",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "example": "4/0AX4XfWhExampleCode"
+                        }
+                    },
+                    {
+                        "name": "state",
+                        "in": "query",
+                        "description": "OAuth state used for CSRF protection",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "example": "random_generated_state"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Xero connected successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Xero connected successfully."
+                                        },
+                                        "data": {
+                                            "properties": {
+                                                "tenant_id": {
+                                                    "type": "string",
+                                                    "example": "12345678-abcd-1234-abcd-123456789abc"
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Authorization code missing"
+                    },
+                    "422": {
+                        "description": "Invalid OAuth state"
+                    },
+                    "500": {
+                        "description": "Unexpected server error"
+                    }
+                }
+            }
+        },
+        "/api/xero/status": {
+            "get": {
+                "tags": [
+                    "Xero"
+                ],
+                "summary": "Check Xero connection status",
+                "description": "Returns the current status of the Xero integration, including tenant connection details.",
+                "operationId": "40ef8263ade0cb3c389c79e3a682ee63",
+                "responses": {
+                    "200": {
+                        "description": "Xero connection status retrieved successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Xero connection status."
+                                        },
+                                        "data": {
+                                            "properties": {
+                                                "connected": {
+                                                    "type": "boolean",
+                                                    "example": true
+                                                },
+                                                "tenant_id": {
+                                                    "type": "string",
+                                                    "example": "12345678-abcd-1234-abcd-123456789abc"
+                                                },
+                                                "tenant_name": {
+                                                    "type": "string",
+                                                    "example": "Demo Company"
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Unexpected server error"
+                    }
+                }
+            }
+        },
+        "/api/xero/items": {
+            "post": {
+                "tags": [
+                    "Xero"
+                ],
+                "summary": "Create product locally and sync to Xero",
+                "description": "Creates a product in the local database and then pushes it to Xero as an Item. If Xero sync fails, the product remains saved locally.",
+                "operationId": "dc5b235a313c61c25fa524c09bab6cd5",
+                "requestBody": {
+                    "description": "Product data to create and sync",
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/Product"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Product created and synced successfully to Xero",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Product created and synced to Xero."
+                                        },
+                                        "data": {
+                                            "$ref": "#/components/schemas/Product"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Validation failed or product creation error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Error creating product: Validation failed."
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "503": {
+                        "description": "Product saved locally but could not sync to Xero because no valid Xero token exists",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Product saved locally but could not sync to Xero: No valid Xero token found."
+                                        },
+                                        "data": {
+                                            "$ref": "#/components/schemas/Product"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "502": {
+                        "description": "Product saved locally but Xero API sync failed",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Product saved locally but Xero sync failed: Xero API returned an error."
+                                        },
+                                        "data": {
+                                            "$ref": "#/components/schemas/Product"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Unexpected server error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Unexpected error: Internal server error."
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
         }
     },
     "components": {
@@ -1848,6 +2094,10 @@
         {
             "name": "Suppliers",
             "description": "Suppliers"
+        },
+        {
+            "name": "Xero",
+            "description": "Xero"
         }
     ]
 }
