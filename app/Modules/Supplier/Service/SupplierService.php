@@ -60,4 +60,15 @@ class SupplierService
 
         return $this->supplierRepository->update($id, $data);
     }
+
+    public function deleteSupplier(int $id): void
+    {
+        $supplier = $this->supplierRepository->find($id);
+
+        if (!$supplier) {
+            throw new NotFoundException('Supplier not found.');
+        }
+
+        $this->supplierRepository->delete($id);
+    }
 }

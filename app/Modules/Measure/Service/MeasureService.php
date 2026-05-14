@@ -56,4 +56,15 @@ class MeasureService
 
         return $this->measureRepository->update($id, $data);
     }
+
+    public function deleteMeasure(int $id): void
+    {
+        $measure = $this->measureRepository->find($id);
+
+        if (!$measure) {
+            throw new NotFoundException('Measure not found.');
+        }
+
+        $this->measureRepository->delete($id);
+    }
 }

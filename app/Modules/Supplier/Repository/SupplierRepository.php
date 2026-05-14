@@ -42,4 +42,10 @@ class SupplierRepository
         $supplier->save();
         return $supplier;
     }
+
+    public function delete(int $id): void
+    {
+        $supplier = $this->find($id);
+        $supplier->delete();
+    }
 }

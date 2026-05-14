@@ -146,4 +146,34 @@ class SubBrandController extends Controller
             return ApiResponse::error('Unexpected error: ' . $e->getMessage(), 500);
         }
     }
+
+    /**
+     * @OA\Delete(
+     *     path="/api/sub-brands/{id}",
+     *     summary="Delete a sub-brand",
+     *     tags={"SubBrands"},
+     *     description="Delete an existing sub-brand by its ID.",
+     *     @OA\Parameter(
+     *         name="id",
+     *         in="path",
+     *         description="ID of the sub-brand",
+     *         required=true,
+     *         @OA\Schema(type="integer", example=1)
+     *     ),
+     *     @OA\Response(response=200, description="SubBrand deleted successfully"),
+     *     @OA\Response(response=404, description="SubBrand not found"),
+     *     @OA\Response(response=500, description="Unexpected server error")
+     * )
+     */
+    public function destroy(string $id)
+    {
+        try {
+            $this->subBrandService->deleteSubBrand((int) $id);
+            return ApiResponse::success('SubBrand deleted.', 200);
+        } catch (NotFoundException $e) {
+            return ApiResponse::error($e->getMessage(), 404);
+        } catch (\Exception $e) {
+            return ApiResponse::error('Unexpected error: ' . $e->getMessage(), 500);
+        }
+    }
 }

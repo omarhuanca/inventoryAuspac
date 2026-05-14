@@ -84,4 +84,10 @@ class BundleRepository
         });
     }
 
+    public function delete(Bundle $bundle): void
+    {
+        $bundle->products()->detach();
+        $bundle->delete();
+    }
+
 }

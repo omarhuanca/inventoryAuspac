@@ -34,12 +34,13 @@ Route::prefix('xero')->group(function () {
 });
 
 Route::prefix('taxcore')->group(function () {
-    Route::get('/status',        [TaxCoreController::class, 'status']);
-    Route::post('/sync-rates',   [TaxCoreController::class, 'syncRates']);
-    Route::get('/rates',         [TaxCoreController::class, 'getRates']);
-    Route::post('/fiscalize',    [TaxCoreController::class, 'fiscalize']);
-    Route::post('/test-invoice', [TaxCoreController::class, 'testInvoice']);
-    Route::get('/invoices',      [TaxCoreController::class, 'getInvoices']);
-    Route::get('/invoices/{id}', [TaxCoreController::class, 'getInvoice']);
+    Route::get('/status',                   [TaxCoreController::class, 'status']);
+    Route::post('/sync-rates',              [TaxCoreController::class, 'syncRates']);
+    Route::get('/rates',                    [TaxCoreController::class, 'getRates']);
+    Route::post('/fiscalize',               [TaxCoreController::class, 'fiscalize']);
+    Route::post('/test-invoice',            [TaxCoreController::class, 'testInvoice']);
+    Route::get('/invoices',                 [TaxCoreController::class, 'getInvoices']);
+    Route::get('/invoices/{id}',            [TaxCoreController::class, 'getInvoice']);
+    Route::post('/invoices/{id}/retry',     [TaxCoreController::class, 'retryInvoice']);
 });
 

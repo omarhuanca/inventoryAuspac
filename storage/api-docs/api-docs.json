@@ -164,6 +164,37 @@
                         "description": "Unexpected server error"
                     }
                 }
+            },
+            "delete": {
+                "tags": [
+                    "Brands"
+                ],
+                "summary": "Delete a brand",
+                "description": "Delete an existing brand by its ID.",
+                "operationId": "cac51e686b2001395f6032427f08d25c",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID of the brand",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "example": 1
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Brand deleted successfully"
+                    },
+                    "404": {
+                        "description": "Brand not found"
+                    },
+                    "500": {
+                        "description": "Unexpected server error"
+                    }
+                }
             }
         },
         "/api/bundleproducts/{bundleId}": {
@@ -396,6 +427,37 @@
                         "description": "Unexpected server error"
                     }
                 }
+            },
+            "delete": {
+                "tags": [
+                    "Bundles"
+                ],
+                "summary": "Delete a bundle",
+                "description": "Delete an existing bundle and detach its products.",
+                "operationId": "8afa7cd970dc72d2044dd599f734abab",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID of the bundle",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "example": 1
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Bundle deleted successfully"
+                    },
+                    "404": {
+                        "description": "Bundle not found"
+                    },
+                    "500": {
+                        "description": "Unexpected server error"
+                    }
+                }
             }
         },
         "/api/coins": {
@@ -548,6 +610,37 @@
                     },
                     "422": {
                         "description": "Validation failed"
+                    },
+                    "500": {
+                        "description": "Unexpected server error"
+                    }
+                }
+            },
+            "delete": {
+                "tags": [
+                    "Coins"
+                ],
+                "summary": "Delete a coin",
+                "description": "Delete an existing coin by its ID.",
+                "operationId": "67387629d8d70d85ef5716944a343a42",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID of the coin",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "example": 1
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Coin deleted successfully"
+                    },
+                    "404": {
+                        "description": "Coin not found"
                     },
                     "500": {
                         "description": "Unexpected server error"
@@ -710,6 +803,37 @@
                         "description": "Unexpected server error"
                     }
                 }
+            },
+            "delete": {
+                "tags": [
+                    "Measures"
+                ],
+                "summary": "Delete a measure",
+                "description": "Delete an existing measure by its ID.",
+                "operationId": "569b8da0a2cc283aa6b107b51e0587d0",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID of the measure",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "example": 1
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Measure deleted successfully"
+                    },
+                    "404": {
+                        "description": "Measure not found"
+                    },
+                    "500": {
+                        "description": "Unexpected server error"
+                    }
+                }
             }
         },
         "/api/products": {
@@ -865,6 +989,37 @@
                     },
                     "422": {
                         "description": "Validation failed"
+                    },
+                    "500": {
+                        "description": "Unexpected server error"
+                    }
+                }
+            },
+            "delete": {
+                "tags": [
+                    "Products"
+                ],
+                "summary": "Delete a product",
+                "description": "Delete an existing product by its ID.",
+                "operationId": "436316420cba681cb4b8d060d6fbaf6f",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID of the product",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "example": 1
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Product deleted successfully"
+                    },
+                    "404": {
+                        "description": "Product not found"
                     },
                     "500": {
                         "description": "Unexpected server error"
@@ -1059,6 +1214,39 @@
                 }
             }
         },
+        "/api/stock-buys/{id}": {
+            "delete": {
+                "tags": [
+                    "StockBuys"
+                ],
+                "summary": "Delete a stock purchase",
+                "description": "Delete an existing stock purchase. This will reverse the stock increase applied when the purchase was created.",
+                "operationId": "914332a30a0e9ba320033db40414b0bf",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID of the stock purchase",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "example": 1
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "StockBuy deleted successfully"
+                    },
+                    "404": {
+                        "description": "StockBuy not found"
+                    },
+                    "500": {
+                        "description": "Unexpected server error"
+                    }
+                }
+            }
+        },
         "/api/stockreferrals": {
             "get": {
                 "tags": [
@@ -1240,6 +1428,39 @@
                 }
             }
         },
+        "/api/stock-referrals/{id}": {
+            "delete": {
+                "tags": [
+                    "StockReferrals"
+                ],
+                "summary": "Delete a stock referral",
+                "description": "Delete an existing stock referral. This will reverse the stock decrease applied when the referral was created.",
+                "operationId": "2727e7310648c22a1207ce5cb7739f32",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID of the stock referral",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "example": 1
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "StockReferral deleted successfully"
+                    },
+                    "404": {
+                        "description": "StockReferral not found"
+                    },
+                    "500": {
+                        "description": "Unexpected server error"
+                    }
+                }
+            }
+        },
         "/api/subbrands": {
             "get": {
                 "tags": [
@@ -1390,6 +1611,39 @@
                     },
                     "422": {
                         "description": "Validation failed"
+                    },
+                    "500": {
+                        "description": "Unexpected server error"
+                    }
+                }
+            }
+        },
+        "/api/sub-brands/{id}": {
+            "delete": {
+                "tags": [
+                    "SubBrands"
+                ],
+                "summary": "Delete a sub-brand",
+                "description": "Delete an existing sub-brand by its ID.",
+                "operationId": "472cbc2ea6c9c771317dd919fb8562a9",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID of the sub-brand",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "example": 1
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "SubBrand deleted successfully"
+                    },
+                    "404": {
+                        "description": "SubBrand not found"
                     },
                     "500": {
                         "description": "Unexpected server error"
@@ -1550,6 +1804,302 @@
                     },
                     "500": {
                         "description": "Unexpected server error"
+                    }
+                }
+            },
+            "delete": {
+                "tags": [
+                    "Suppliers"
+                ],
+                "summary": "Delete a supplier",
+                "description": "Delete an existing supplier by its ID.",
+                "operationId": "2cf025c2a5b1ee0d4e46daa9478b2866",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID of the supplier",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "example": 1
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Supplier deleted successfully"
+                    },
+                    "404": {
+                        "description": "Supplier not found"
+                    },
+                    "500": {
+                        "description": "Unexpected server error"
+                    }
+                }
+            }
+        },
+        "/api/taxcore/status": {
+            "get": {
+                "tags": [
+                    "TaxCore"
+                ],
+                "summary": "Check TaxCore connection status",
+                "description": "Reads the installed PFX certificate, extracts the API endpoint, and verifies that a token can be obtained from the V-SDC.",
+                "operationId": "905d42ee9422206bae6320ca6685a92b",
+                "responses": {
+                    "200": {
+                        "description": "Connection is healthy",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "TaxCore connection OK"
+                                        },
+                                        "statusCode": {
+                                            "type": "integer",
+                                            "example": 200
+                                        },
+                                        "error": {
+                                            "type": "boolean",
+                                            "example": false
+                                        },
+                                        "data": {
+                                            "properties": {
+                                                "endpoint": {
+                                                    "type": "string"
+                                                },
+                                                "token_preview": {
+                                                    "type": "string"
+                                                },
+                                                "certificate": {
+                                                    "type": "object"
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "503": {
+                        "description": "Connection failed"
+                    }
+                }
+            }
+        },
+        "/api/taxcore/sync-rates": {
+            "post": {
+                "tags": [
+                    "TaxCore"
+                ],
+                "summary": "Sync tax rates from TaxCore",
+                "description": "Calls Get Environment Parameters on the V-SDC and persists the returned tax rates in the local database.",
+                "operationId": "35d5193a26306eafcf507d1764e4bc27",
+                "responses": {
+                    "200": {
+                        "description": "Tax rates synced successfully"
+                    },
+                    "503": {
+                        "description": "Sync failed"
+                    }
+                }
+            }
+        },
+        "/api/taxcore/rates": {
+            "get": {
+                "tags": [
+                    "TaxCore"
+                ],
+                "summary": "List stored tax rates",
+                "operationId": "574938f077077585a402caaed5ffc0ae",
+                "responses": {
+                    "200": {
+                        "description": "List of persisted tax rates"
+                    }
+                }
+            }
+        },
+        "/api/taxcore/fiscalize": {
+            "post": {
+                "tags": [
+                    "TaxCore"
+                ],
+                "summary": "Fiscalize (send) an invoice to TaxCore",
+                "description": "Builds the TaxCore invoice payload from the request body, sends it to the V-SDC, and persists the fiscal response (QR code, digital signature, verification URL).",
+                "operationId": "32a9e97345815a89883831bf299e5148",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "invoiceNumber",
+                                    "invoiceDate",
+                                    "items"
+                                ],
+                                "properties": {
+                                    "invoiceNumber": {
+                                        "type": "string",
+                                        "example": "INV-0001"
+                                    },
+                                    "invoiceDate": {
+                                        "type": "string",
+                                        "format": "date-time"
+                                    },
+                                    "saleId": {
+                                        "type": "string",
+                                        "example": "42"
+                                    },
+                                    "buyerName": {
+                                        "type": "string",
+                                        "example": "John Doe"
+                                    },
+                                    "buyerTaxId": {
+                                        "type": "string",
+                                        "example": "123456789"
+                                    },
+                                    "items": {
+                                        "type": "array",
+                                        "items": {
+                                            "properties": {
+                                                "name": {
+                                                    "type": "string",
+                                                    "example": "Product A"
+                                                },
+                                                "quantity": {
+                                                    "type": "number",
+                                                    "example": 2
+                                                },
+                                                "unitPrice": {
+                                                    "type": "number",
+                                                    "example": 10
+                                                },
+                                                "taxCode": {
+                                                    "type": "string",
+                                                    "example": "A"
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "202": {
+                        "description": "Invoice queued for fiscalization"
+                    },
+                    "422": {
+                        "description": "Validation error"
+                    }
+                }
+            }
+        },
+        "/api/taxcore/invoices/{id}/retry": {
+            "post": {
+                "tags": [
+                    "TaxCore"
+                ],
+                "summary": "Retry a dead-lettered or failed invoice",
+                "operationId": "3178f4bd0120c570d7ad6d69872ee6dd",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "202": {
+                        "description": "Invoice re-queued"
+                    },
+                    "404": {
+                        "description": "Invoice not found"
+                    },
+                    "409": {
+                        "description": "Invoice is not in a retryable state"
+                    }
+                }
+            }
+        },
+        "/api/taxcore/invoices": {
+            "get": {
+                "tags": [
+                    "TaxCore"
+                ],
+                "summary": "List all fiscalized invoices",
+                "description": "Returns a paginated list of all invoices that have been fiscalized and stored locally.",
+                "operationId": "b6456a3f044c92b560af6e7ff45e5e70",
+                "parameters": [
+                    {
+                        "name": "per_page",
+                        "in": "query",
+                        "required": false,
+                        "schema": {
+                            "type": "integer",
+                            "default": 20
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Paginated list of fiscal invoices"
+                    }
+                }
+            }
+        },
+        "/api/taxcore/invoices/{id}": {
+            "get": {
+                "tags": [
+                    "TaxCore"
+                ],
+                "summary": "Get a single fiscalized invoice",
+                "operationId": "2fd93a1e2e9a3a0a59a97ddaca80d392",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Invoice found"
+                    },
+                    "404": {
+                        "description": "Invoice not found"
+                    }
+                }
+            }
+        },
+        "/api/taxcore/test-invoice": {
+            "post": {
+                "tags": [
+                    "TaxCore"
+                ],
+                "summary": "Send a hardcoded test invoice to TaxCore",
+                "description": "Sends a sample Normal Sale invoice with one product and returns the full raw fiscal response including QR code, signature and verification URL.",
+                "operationId": "ce24ce3a556922011f3acf756e5fcba7",
+                "responses": {
+                    "200": {
+                        "description": "Test invoice fiscalized successfully"
+                    },
+                    "503": {
+                        "description": "Fiscalization failed"
                     }
                 }
             }
@@ -2051,6 +2601,106 @@
                     }
                 },
                 "type": "object"
+            },
+            "TaxCoreInvoice": {
+                "title": "TaxCoreInvoice",
+                "description": "Represents a fiscalized invoice sent to the TaxCore E-SDC.",
+                "properties": {
+                    "id": {
+                        "type": "integer",
+                        "example": 1
+                    },
+                    "status": {
+                        "type": "string",
+                        "enum": [
+                            "pending",
+                            "processing",
+                            "completed",
+                            "failed",
+                            "dead_lettered"
+                        ],
+                        "example": "completed"
+                    },
+                    "sale_id": {
+                        "type": "string",
+                        "example": "SALE-001"
+                    },
+                    "esdc_id": {
+                        "type": "string",
+                        "example": "default"
+                    },
+                    "taxcore_uid": {
+                        "type": "string",
+                        "example": "INV-2026-00001"
+                    },
+                    "qr_code": {
+                        "type": "string",
+                        "example": "https://taxcore.example.com/qr/..."
+                    },
+                    "digital_signature": {
+                        "type": "string",
+                        "example": "ABC123XYZ"
+                    },
+                    "verification_url": {
+                        "type": "string",
+                        "example": "https://taxcore.example.com/verify/..."
+                    },
+                    "queue_job_id": {
+                        "type": "string",
+                        "format": "uuid",
+                        "nullable": true
+                    },
+                    "attempts": {
+                        "type": "integer",
+                        "example": 1
+                    },
+                    "error_message": {
+                        "type": "string",
+                        "nullable": true
+                    },
+                    "queued_at": {
+                        "type": "string",
+                        "format": "date-time"
+                    },
+                    "processed_at": {
+                        "type": "string",
+                        "format": "date-time",
+                        "nullable": true
+                    }
+                },
+                "type": "object"
+            },
+            "TaxRate": {
+                "title": "TaxRate",
+                "description": "Tax rate synced from TaxCore E-SDC environment parameters.",
+                "properties": {
+                    "id": {
+                        "type": "integer",
+                        "example": 1
+                    },
+                    "code": {
+                        "type": "string",
+                        "example": "A"
+                    },
+                    "name": {
+                        "type": "string",
+                        "example": "Standard Rate"
+                    },
+                    "rate": {
+                        "type": "number",
+                        "format": "float",
+                        "example": 0.2
+                    },
+                    "description": {
+                        "type": "string",
+                        "nullable": true
+                    },
+                    "synced_at": {
+                        "type": "string",
+                        "format": "date-time"
+                    }
+                },
+                "type": "object"
             }
         }
     },
@@ -2094,6 +2744,10 @@
         {
             "name": "Suppliers",
             "description": "Suppliers"
+        },
+        {
+            "name": "TaxCore",
+            "description": "TaxCore"
         },
         {
             "name": "Xero",

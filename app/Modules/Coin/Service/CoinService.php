@@ -60,4 +60,15 @@ class CoinService
 
         return $this->coinRepository->update($id, $data);
     }
+
+    public function deleteCoin(int $id): void
+    {
+        $coin = $this->coinRepository->find($id);
+
+        if (!$coin) {
+            throw new NotFoundException('Coin not found.');
+        }
+
+        $this->coinRepository->delete($id);
+    }
 }

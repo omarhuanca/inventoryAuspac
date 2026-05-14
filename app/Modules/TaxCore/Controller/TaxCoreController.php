@@ -4,6 +4,7 @@ namespace App\Modules\TaxCore\Controller;
 
 use App\Http\Controllers\Controller;
 use App\Http\Responses\ApiResponse;
+use App\Modules\TaxCore\Jobs\FiscalizeInvoiceJob;
 use App\Modules\TaxCore\Repository\TaxCoreInvoiceRepository;
 use App\Modules\TaxCore\Repository\TaxRateRepository;
 use App\Modules\TaxCore\Service\TaxCoreAuthService;
@@ -12,6 +13,7 @@ use App\Modules\TaxCore\Service\TaxCoreInvoiceService;
 use App\Modules\TaxCore\Service\TaxCoreParameterService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Str;
 
 class TaxCoreController extends Controller
 {
@@ -137,43 +139,109 @@ class TaxCoreController extends Controller
      *             )
      *         )
      *     ),
-     *     @OA\Response(response=201, description="Invoice fiscalized successfully"),
-     *     @OA\Response(response=422, description="Validation error"),
-     *     @OA\Response(response=503, description="Fiscalization failed")
+     *     @OA\Response(response=202, description="Invoice queued for fiscalization"),
+     *     @OA\Response(response=422, description="Validation error")
      * )
      */
     public function fiscalize(Request $request): JsonResponse
     {
         $validated = $request->validate([
-            'invoiceType' => 'nullable|string',
-            'transactionType' => 'nullable|string',
-            'cashier' => 'nullable|string|max:50',
-            'buyerId' => 'nullable|string|max:20',
-            'buyerCostCenterId' => 'nullable|string|max:50',
-            'invoiceNumber' => 'nullable|string|max:60',
-            'dateAndTimeOfIssue' => 'nullable|string',
-            'saleId' => 'nullable|string|max:50',
-            'items' => 'required|array|min:1',
-            'items.*.name' => 'required|string',
-            'items.*.quantity' => 'required|numeric|min:0.001',
-            'items.*.unitPrice' => 'required|numeric|min:0',
-            'items.*.labels' => 'nullable|array',
-            'items.*.labels.*' => 'string',
-            'items.*.taxCode' => 'nullable|string',
-            'items.*.totalAmount' => 'nullable|numeric',
-            'payment' => 'nullable|array',
+            'invoiceType'          => 'nullable|string',
+            'transactionType'      => 'nullable|string',
+            'cashier'              => 'nullable|string|max:50',
+            'buyerId'              => 'nullable|string|max:20',
+            'buyerCostCenterId'    => 'nullable|string|max:50',
+            'invoiceNumber'        => 'nullable|string|max:60',
+            'dateAndTimeOfIssue'   => 'nullable|string',
+            'saleId'               => 'nullable|string|max:50',
+            'esdcId'               => 'nullable|string|max:50',
+            'items'                => 'required|array|min:1',
+            'items.*.name'         => 'required|string',
+            'items.*.quantity'     => 'required|numeric|min:0.001',
+            'items.*.unitPrice'    => 'required|numeric|min:0',
+            'items.*.labels'       => 'nullable|array',
+            'items.*.labels.*'     => 'string',
+            'items.*.taxCode'      => 'nullable|string',
+            'items.*.totalAmount'  => 'nullable|numeric',
+            'payment'              => 'nullable|array',
             'payment.*.paymentType' => 'required_with:payment|string',
-            'payment.*.amount' => 'required_with:payment|numeric',
+            'payment.*.amount'      => 'required_with:payment|numeric',
         ]);
 
-        try {
-            $payload = $this->invoiceService->buildPayload($validated);
-            $invoice = $this->invoiceService->fiscalize($payload, $validated['saleId'] ?? '');
+        $esdcId  = $validated['esdcId'] ?? 'default';
+        $payload = $this->invoiceService->buildPayload($validated);
 
-            return ApiResponse::success('Invoice fiscalized successfully', 201, $invoice);
-        } catch (\Throwable $e) {
-            return ApiResponse::error('Fiscalization failed: ' . $e->getMessage(), 503);
+        // 1. Persist a pending record so the client can track it immediately
+        $invoice = $this->invoiceRepository->createPending([
+            'sale_id' => $validated['saleId'] ?? null,
+            'esdc_id' => $esdcId,
+        ]);
+
+        // 2. Dispatch the job — returns immediately (non-blocking)
+        $jobId = (string) Str::uuid();
+        FiscalizeInvoiceJob::dispatch($payload, $invoice->id, $esdcId)
+            ->onQueue("taxcore:{$esdcId}");
+
+        // 3. Store the job UUID so the client can correlate
+        $this->invoiceRepository->updateStatus($invoice, 'pending', [
+            'queue_job_id' => $jobId,
+        ]);
+
+        return ApiResponse::success('Invoice queued for fiscalization', 202, [
+            'invoice_id' => $invoice->id,
+            'job_id'     => $jobId,
+            'status'     => 'pending',
+            'poll_url'   => url("/api/taxcore/invoices/{$invoice->id}"),
+        ]);
+    }
+
+    /**
+     * @OA\Post(
+     *     path="/api/taxcore/invoices/{id}/retry",
+     *     summary="Retry a dead-lettered or failed invoice",
+     *     tags={"TaxCore"},
+     *     @OA\Parameter(name="id", in="path", required=true, @OA\Schema(type="integer")),
+     *     @OA\Response(response=202, description="Invoice re-queued"),
+     *     @OA\Response(response=404, description="Invoice not found"),
+     *     @OA\Response(response=409, description="Invoice is not in a retryable state")
+     * )
+     */
+    public function retryInvoice(int $id): JsonResponse
+    {
+        $invoice = $this->invoiceRepository->findById($id);
+
+        if (! $invoice) {
+            return ApiResponse::error('Invoice not found', 404);
         }
+
+        if (! $invoice->isFailed()) {
+            return ApiResponse::error(
+                "Invoice status is '{$invoice->status}' — only failed or dead_lettered invoices can be retried.",
+                409
+            );
+        }
+
+        $esdcId  = $invoice->esdc_id ?? 'default';
+        $payload = $invoice->raw_response
+            ? $this->invoiceService->buildPayload(
+                array_merge($invoice->raw_response, ['items' => $invoice->raw_response['items'] ?? []])
+              )
+            : [];
+
+        $this->invoiceRepository->updateStatus($invoice, 'pending', [
+            'error_message' => null,
+            'attempts'      => 0,
+            'queued_at'     => now(),
+        ]);
+
+        FiscalizeInvoiceJob::dispatch($payload, $invoice->id, $esdcId)
+            ->onQueue("taxcore:{$esdcId}");
+
+        return ApiResponse::success('Invoice re-queued for fiscalization', 202, [
+            'invoice_id' => $invoice->id,
+            'status'     => 'pending',
+            'poll_url'   => url("/api/taxcore/invoices/{$invoice->id}"),
+        ]);
     }
 
     /**

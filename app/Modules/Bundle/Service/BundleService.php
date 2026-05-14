@@ -93,4 +93,10 @@ class BundleService
         return $this->bundleRepository->update($bundle, $data, $landingCoin);
     }
 
+    public function deleteBundle(int $id): void
+    {
+        $bundle = $this->getBundleById($id);
+        $this->bundleRepository->delete($bundle);
+    }
+
 }

@@ -116,4 +116,10 @@ class ProductService
             throw new \RuntimeException('The amount must not be zero or less than zero.');
         }
     }
+
+    public function deleteProduct(int $id): void
+    {
+        $product = $this->getProductById($id);
+        $this->productRepository->delete($product);
+    }
 }

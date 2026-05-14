@@ -38,33 +38,44 @@ class TaxCoreInvoiceService
 
     private function doFiscalize(array $invoiceData, string $saleId): TaxCoreInvoice
     {
+        $data = $this->doFiscalizeRaw($invoiceData);
+
+        return $this->invoiceRepository->store([
+            'sale_id'           => $saleId ?: null,
+            'taxcore_uid'       => $data['invoiceNumber']      ?? null,
+            'qr_code'           => $data['verificationQRCode'] ?? null,
+            'digital_signature' => $data['signature']          ?? null,
+            'verification_url'  => $data['verificationUrl']    ?? null,
+            'raw_response'      => $data,
+        ]);
+    }
+
+    /**
+     * Send the payload to the E-SDC and return the raw decoded response array.
+     * Used by FiscalizeInvoiceJob so the Job manages DB persistence itself.
+     *
+     * @throws \RuntimeException on E-SDC errors
+     * @throws \GuzzleHttp\Exception\GuzzleException on HTTP errors
+     */
+    public function doFiscalizeRaw(array $invoiceData): array
+    {
         $client  = $this->certService->buildGuzzleClient();
         $baseUrl = $this->certService->getEndpoint();
         $path    = config('taxcore.paths.invoice', '/v3/invoices');
 
-        // E-SDC does not require an Authorization header.
-        // Ensure PIN was verified (throws if PIN verification fails).
+        // Ensure PIN is verified (throws on 2100/2110; returns cached state on 0100)
         $this->authService->getToken();
 
         $response = $client->post($baseUrl . $path, [
             'headers' => [
-                'Accept' => 'application/json',
-                'Content-Type' => 'application/json',
+                'Accept'          => 'application/json',
+                'Content-Type'    => 'application/json',
                 'Accept-Language' => 'en-US',
             ],
             'json' => $invoiceData,
         ]);
 
-        $data = json_decode($response->getBody()->getContents(), true) ?? [];
-
-        return $this->invoiceRepository->store([
-            'sale_id' => $saleId ?: null,
-            'taxcore_uid' => $data['invoiceNumber']    ?? null,
-            'qr_code' => $data['verificationQRCode'] ?? null,
-            'digital_signature' => $data['signature']          ?? null,
-            'verification_url' => $data['verificationUrl']    ?? null,
-            'raw_response' => $data,
-        ]);
+        return json_decode($response->getBody()->getContents(), true) ?? [];
     }
 
     /**

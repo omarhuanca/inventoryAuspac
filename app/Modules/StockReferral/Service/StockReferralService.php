@@ -72,4 +72,16 @@ class StockReferralService
             return $this->stockReferralRepository->update($stockReferral, $data);
         });
     }
+
+    public function deleteStockReferral(int $id): void
+    {
+        DB::transaction(function () use ($id) {
+            $stockReferral = $this->getStockReferralById($id);
+
+            // Reverse the stock decrease that was applied when this referral was created
+            $this->productService->increaseStock($stockReferral->product_id, $stockReferral->amount);
+
+            $this->stockReferralRepository->delete($stockReferral);
+        });
+    }
 }

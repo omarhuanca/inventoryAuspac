@@ -172,4 +172,34 @@ class StockReferralController extends Controller
             return ApiResponse::error('Unexpected error: ' . $e->getMessage(), 500);
         }
     }
+
+    /**
+     * @OA\Delete(
+     *     path="/api/stock-referrals/{id}",
+     *     summary="Delete a stock referral",
+     *     tags={"StockReferrals"},
+     *     description="Delete an existing stock referral. This will reverse the stock decrease applied when the referral was created.",
+     *     @OA\Parameter(
+     *         name="id",
+     *         in="path",
+     *         description="ID of the stock referral",
+     *         required=true,
+     *         @OA\Schema(type="integer", example=1)
+     *     ),
+     *     @OA\Response(response=200, description="StockReferral deleted successfully"),
+     *     @OA\Response(response=404, description="StockReferral not found"),
+     *     @OA\Response(response=500, description="Unexpected server error")
+     * )
+     */
+    public function destroy(string $id)
+    {
+        try {
+            $this->stockReferralService->deleteStockReferral((int) $id);
+            return ApiResponse::success('StockReferral deleted.', 200);
+        } catch (NotFoundException $e) {
+            return ApiResponse::error($e->getMessage(), 404);
+        } catch (\Exception $e) {
+            return ApiResponse::error('Unexpected error: ' . $e->getMessage(), 500);
+        }
+    }
 }

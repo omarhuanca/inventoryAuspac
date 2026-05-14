@@ -61,4 +61,15 @@ class BrandService
         return $this->brandRepository->update($id, $data);
     }
 
+    public function deleteBrand(int $id): void
+    {
+        $brand = $this->brandRepository->find($id);
+
+        if (!$brand) {
+            throw new NotFoundException('Brand not found.');
+        }
+
+        $this->brandRepository->delete($id);
+    }
+
 }
