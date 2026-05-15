@@ -30,6 +30,7 @@ class ProductResource extends JsonResource
             'dimension_weight' => $this->dimension_weight,
             'sub_brand' => new SubBrandResource($this->whenLoaded('subBrand')),
             'supplier' => new SupplierResource($this->whenLoaded('supplier')),
+            'xero_item_id' => $this->xero_item_id,
         ];
     }
 }

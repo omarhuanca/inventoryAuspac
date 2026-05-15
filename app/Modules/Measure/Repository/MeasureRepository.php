@@ -42,4 +42,10 @@ class MeasureRepository
         $measure->save();
         return $measure;
     }
+
+    public function delete(int $id): void
+    {
+        $measure = $this->find($id);
+        $measure->delete();
+    }
 }

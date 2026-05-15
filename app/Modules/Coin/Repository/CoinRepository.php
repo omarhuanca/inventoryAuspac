@@ -42,4 +42,10 @@ class CoinRepository
         $coin->save();
         return $coin;
     }
+
+    public function delete(int $id): void
+    {
+        $coin = $this->find($id);
+        $coin->delete();
+    }
 }

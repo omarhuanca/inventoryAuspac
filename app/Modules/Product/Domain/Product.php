@@ -67,6 +67,7 @@ class Product extends Model
         'dimension_weight',
         'sub_brand_id',
         'supplier_id',
+        'xero_item_id',
     ];
 
     public static $codeEmpty = 'Product code cannot be empty.';

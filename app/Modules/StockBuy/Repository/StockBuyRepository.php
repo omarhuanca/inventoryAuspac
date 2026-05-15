@@ -51,4 +51,9 @@ class StockBuyRepository
             'product.subBrand.brand', 'product.supplier',
         ]);
     }
+
+    public function delete(StockBuy $stockBuy): void
+    {
+        $stockBuy->delete();
+    }
 }

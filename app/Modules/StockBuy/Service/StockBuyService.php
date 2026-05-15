@@ -69,4 +69,16 @@ class StockBuyService
             return $this->stockBuyRepository->update($stockBuy, $data);
         });
     }
+
+    public function deleteStockBuy(int $id): void
+    {
+        DB::transaction(function () use ($id) {
+            $stockBuy = $this->getStockBuyById($id);
+
+            // Reverse the stock increase that was applied when this purchase was created
+            $this->productService->decreaseStock($stockBuy->product_id, $stockBuy->amount);
+
+            $this->stockBuyRepository->delete($stockBuy);
+        });
+    }
 }

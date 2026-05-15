@@ -83,4 +83,9 @@ class ProductRepository
         $product->decrement('stock', $amount);
         return $product->refresh();
     }
+
+    public function delete(Product $product): void
+    {
+        $product->delete();
+    }
 }

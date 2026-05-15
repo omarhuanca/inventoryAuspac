@@ -42,4 +42,10 @@ class SubBrandRepository
         $subBrand->save();
         return $subBrand->load('brand');
     }
+
+    public function delete(int $id): void
+    {
+        $subBrand = $this->find($id);
+        $subBrand->delete();
+    }
 }

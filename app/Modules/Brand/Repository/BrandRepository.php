@@ -41,4 +41,10 @@ class BrandRepository
         $brand->save();
         return $brand;
     }
+
+    public function delete(int $id): void
+    {
+        $brand = $this->find($id);
+        $brand->delete();
+    }
 }

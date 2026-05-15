@@ -51,4 +51,9 @@ class StockReferralRepository
         return $stockReferral->load(['product.supplierCoin', 'product.landingCoin', 'product.measure',
             'product.subBrand.brand', 'product.supplier']);
     }
+
+    public function delete(StockReferral $stockReferral): void
+    {
+        $stockReferral->delete();
+    }
 }

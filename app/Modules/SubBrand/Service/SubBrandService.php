@@ -64,4 +64,15 @@ class SubBrandService
 
         return $this->subBrandRepository->update($subBrand, $data, $brand);
     }
+
+    public function deleteSubBrand(int $id): void
+    {
+        $subBrand = $this->subBrandRepository->find($id);
+
+        if (!$subBrand) {
+            throw new NotFoundException('SubBrand not found.');
+        }
+
+        $this->subBrandRepository->delete($id);
+    }
 }

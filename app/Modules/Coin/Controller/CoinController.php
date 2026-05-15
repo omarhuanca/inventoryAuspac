@@ -136,4 +136,34 @@ class CoinController extends Controller
             return ApiResponse::error('Unexpected error: ' . $e->getMessage(), 500);
         }
     }
+
+    /**
+     * @OA\Delete(
+     *     path="/api/coins/{id}",
+     *     summary="Delete a coin",
+     *     tags={"Coins"},
+     *     description="Delete an existing coin by its ID.",
+     *     @OA\Parameter(
+     *         name="id",
+     *         in="path",
+     *         description="ID of the coin",
+     *         required=true,
+     *         @OA\Schema(type="integer", example=1)
+     *     ),
+     *     @OA\Response(response=200, description="Coin deleted successfully"),
+     *     @OA\Response(response=404, description="Coin not found"),
+     *     @OA\Response(response=500, description="Unexpected server error")
+     * )
+     */
+    public function destroy(string $id)
+    {
+        try {
+            $this->coinService->deleteCoin((int) $id);
+            return ApiResponse::success('Coin deleted.', 200);
+        } catch (NotFoundException $e) {
+            return ApiResponse::error($e->getMessage(), 404);
+        } catch (\Exception $e) {
+            return ApiResponse::error('Unexpected error: ' . $e->getMessage(), 500);
+        }
+    }
 }

@@ -144,4 +144,34 @@ class StockBuyController extends Controller
             return ApiResponse::error('Unexpected error: ' . $e->getMessage(), 500);
         }
     }
+
+    /**
+     * @OA\Delete(
+     *     path="/api/stock-buys/{id}",
+     *     summary="Delete a stock purchase",
+     *     tags={"StockBuys"},
+     *     description="Delete an existing stock purchase. This will reverse the stock increase applied when the purchase was created.",
+     *     @OA\Parameter(
+     *         name="id",
+     *         in="path",
+     *         description="ID of the stock purchase",
+     *         required=true,
+     *         @OA\Schema(type="integer", example=1)
+     *     ),
+     *     @OA\Response(response=200, description="StockBuy deleted successfully"),
+     *     @OA\Response(response=404, description="StockBuy not found"),
+     *     @OA\Response(response=500, description="Unexpected server error")
+     * )
+     */
+    public function destroy(string $id)
+    {
+        try {
+            $this->stockBuyService->deleteStockBuy((int) $id);
+            return ApiResponse::success('StockBuy deleted.', 200);
+        } catch (NotFoundException $e) {
+            return ApiResponse::error($e->getMessage(), 404);
+        } catch (\Exception $e) {
+            return ApiResponse::error('Unexpected error: ' . $e->getMessage(), 500);
+        }
+    }
 }

@@ -163,4 +163,33 @@ class BrandController extends Controller
             return ApiResponse::error('Unexpected error: ' . $e->getMessage(), 500);
         }
     }
+    /**
+     * @OA\Delete(
+     *     path="/api/brands/{id}",
+     *     summary="Delete a brand",
+     *     tags={"Brands"},
+     *     description="Delete an existing brand by its ID.",
+     *     @OA\Parameter(
+     *         name="id",
+     *         in="path",
+     *         description="ID of the brand",
+     *         required=true,
+     *         @OA\Schema(type="integer", example=1)
+     *     ),
+     *     @OA\Response(response=200, description="Brand deleted successfully"),
+     *     @OA\Response(response=404, description="Brand not found"),
+     *     @OA\Response(response=500, description="Unexpected server error")
+     * )
+     */
+    public function destroy(string $id)
+    {
+        try {
+            $this->brandService->deleteBrand((int) $id);
+            return ApiResponse::success('Brand deleted.', 200);
+        } catch (NotFoundException $e) {
+            return ApiResponse::error($e->getMessage(), 404);
+        } catch (\Exception $e) {
+            return ApiResponse::error('Unexpected error: ' . $e->getMessage(), 500);
+        }
+    }
 }

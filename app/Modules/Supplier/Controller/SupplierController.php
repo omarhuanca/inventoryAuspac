@@ -153,4 +153,34 @@ class SupplierController extends Controller
             return ApiResponse::error('Unexpected error: ' . $e->getMessage(), 500);
         }
     }
+
+    /**
+     * @OA\Delete(
+     *     path="/api/suppliers/{id}",
+     *     summary="Delete a supplier",
+     *     tags={"Suppliers"},
+     *     description="Delete an existing supplier by its ID.",
+     *     @OA\Parameter(
+     *         name="id",
+     *         in="path",
+     *         description="ID of the supplier",
+     *         required=true,
+     *         @OA\Schema(type="integer", example=1)
+     *     ),
+     *     @OA\Response(response=200, description="Supplier deleted successfully"),
+     *     @OA\Response(response=404, description="Supplier not found"),
+     *     @OA\Response(response=500, description="Unexpected server error")
+     * )
+     */
+    public function destroy(string $id)
+    {
+        try {
+            $this->supplierService->deleteSupplier((int) $id);
+            return ApiResponse::success('Supplier deleted.', 200);
+        } catch (NotFoundException $e) {
+            return ApiResponse::error($e->getMessage(), 404);
+        } catch (\Exception $e) {
+            return ApiResponse::error('Unexpected error: ' . $e->getMessage(), 500);
+        }
+    }
 }
